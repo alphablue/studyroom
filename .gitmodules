@@ -1,0 +1,3 @@
+[submodule "sass/jica/seulbinim/NaverSass"]
+	path = sass/jica/seulbinim/NaverSass
+	url = https://github.com/alphablue/NaverSass.git

@@ -1,0 +1,119 @@
+@use "sass:math";
+// 미디어 쿼리 중단점 (Breakpoints) --------------------------------------------------------------- /
+$breakpoint: 950px;
+
+@mixin mobile {
+  @media screen and (max-width: #{$breakpoint - 1}) {
+    @content;
+  }
+}
+@mixin desktop {
+  @media screen and (min-width: #{$breakpoint}) {
+    @content;
+  }
+}
+
+// 숨김 콘텐츠
+@mixin a11y{
+  overflow: hidden;
+  position: absolute !important;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+}
+
+// 루트 요소 기본 단위 --------------------------------------------------------------- /
+$rootUnit: 16px !default;
+
+// 단위 제거 함수 ------------------------------------------------------------------ /
+@function removeUnit($value){
+  @return ($value / ($value * 0 + 1));
+}
+
+// px을 rem 단위로 변경하는 함수 ------------------------------------------------------- /
+@function rem($value, $base: $rootUnit){
+  @return (removeUnit(math.div($value , $base))) * 1rem;
+}
+
+// px을 em 단위로 변경하는 함수 ------------------------------------------------------- /
+@function em($value, $base: $rootUnit){
+  @return (removeUnit($value / $base)) * 1em;
+}
+
+// Float 해제를 위한 clear 스타일 ---------------------------------------------------- /
+@mixin clearFix{
+  &::after{
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
+// Auto Margin을 활용한 박스 가운데 정렬 ------------------------------------------------ /
+@mixin autoMargin($marginX: auto) {
+  margin-left: $marginX;
+  margin-right: $marginX;
+}
+
+@mixin marginY($marginY: 16px){
+  margin-top: rem($marginY);
+  margin-bottom: rem($marginY);
+}
+
+@mixin marginX($marginX: 16px){
+  margin-left: rem($marginX);
+  margin-right: rem($marginX);
+}
+
+@mixin paddingY($paddingY: 16px){
+  padding-top: rem($paddingY);
+  padding-bottom: rem($paddingY);
+}
+
+@mixin paddingX($paddingX: 16px){
+  padding-left: rem($paddingX);
+  padding-right: rem($paddingX);
+}
+
+// 플렉스 박스 믹스인 ---------------------------------------------------------------- /
+@mixin flexbox($direction: row, $justify: flex-start, $items: stretch, $wrap: nowrap) {
+  display: flex;
+  flex-flow: $direction $wrap;
+  justify-content: $justify;
+  align-items: $items;
+}
+
+// 반응형 이미지 ------------------------------------------------------------------- /
+@mixin responsiveImg {
+  max-width: 100%;
+  height: auto;
+}
+
+// 반응형 비디오 및 SVG 요소 ---------------------------------------------------------- /
+@mixin responsiveMedia {
+  width: 100%;
+  height: 100%;
+}
+
+// 반응형 iFrame ---------------------------------------------------------------- /
+@mixin responsiveIframe($ratioX: 16, $ratioY:9)  {
+  position: relative;
+  width: 100%;
+  height: 0 !important;
+  padding-top: ($ratioY / $ratioX) * 100%;
+
+  iframe{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+
+

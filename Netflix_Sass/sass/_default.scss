@@ -1,0 +1,27 @@
+// 기본 스타일
+body, body::before, body::after, body *, body *::before, body *::after {
+  box-sizing: border-box;
+}
+
+body{
+  color: $white;
+  font-family: $baseFont;
+  font-weight: 400;
+  background: $black url(../assets/images/hero-bg-mobile.png) no-repeat 50% 0;
+  @include desktop{
+    background-image: url(../assets/images/hero-bg-desktop.png);
+  }
+}
+
+// 링크 스타일
+a{
+  color: inherit;
+  text-decoration: none;
+}
+
+// fieldset 요소
+fieldset{
+  margin: 0;
+  padding: 0;
+  border: 0;
+}

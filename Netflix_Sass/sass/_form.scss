@@ -1,0 +1,117 @@
+// 언어 선택 (셀렉트 박스)
+.select-language{
+  position: relative;
+  @include flexbox($items: center);
+  border: 1px solid $gray200;
+
+  &__select{
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    color: $gray200;
+    font-size: rem(12px);
+    padding: rem(4px) rem(22px);
+    position: relative;
+    z-index: 10;
+    @include desktop{
+      font-size: rem(16px);
+      padding: rem(8px) rem(33px);
+    }
+  }
+  
+  %icon{
+    position: absolute;
+    width: rem(10px);
+    height: rem(10px);
+    @include desktop{
+      width: rem(15px);
+      height: rem(15px);
+    }
+  }
+
+  @at-root .icon-global{
+    @extend %icon;
+    left: rem(7px);
+    @include desktop{
+      left: rem(10px);
+    }
+  }
+
+  @at-root .icon-triangle{
+    @extend %icon;
+    right: rem(7px);
+    @include desktop{
+      right: rem(10px);
+    }
+  }
+}
+
+// 이메일 주소 입력 서식
+.form-input{
+  position: relative;
+  width: 75%;
+  @include desktop{
+    width: rem(560px);
+  }
+
+  &__input{
+    appearance: none;
+    color: $gray500;
+    width: 100%;
+    height: rem(40px);
+    @include paddingX(20px);
+    border: 0;
+    border-radius: rem(12px);
+    @include desktop{
+      height: rem(64px);
+      padding-top: rem(12px);
+      border-radius: 0;
+    }
+  }
+
+  &__label{
+    color: $gray500;
+    position: absolute;
+    left: rem(20px);
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: rem(14px);
+    @include desktop{
+      font-size: rem(16px);
+    }
+  }
+
+  &__input:focus + &__label{
+    top: -15%;
+    font-size: rem(10px);
+    color: $white;
+  }
+}
+
+// 버튼
+.button-membership{
+  color: inherit;
+  background-color: $red500;
+  border: 0;
+  font-size: rem(14px);
+  font-weight: 700;
+  @include flexbox($items: center);
+  height: rem(40px);
+  padding: rem(6px) rem(20px);
+  margin-top: rem(12px);
+  border-radius: rem(12px);
+  @include desktop{
+    font-size: rem(16px);
+    height: rem(64px);
+    padding: rem(8px) rem(20px);
+    margin-top: 0;
+    border-radius: 0;
+  }
+}
+
+.icon-arrow{
+  margin-left: rem(8px);
+  width: rem(16px);
+  height: rem(16px);
+}

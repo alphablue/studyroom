@@ -1,0 +1,237 @@
+.promotion{
+  text-align: center;
+  @include paddingY(20px);
+  @include paddingX(18px);
+  @include desktop{
+    @include paddingX(20px);
+  }
+
+  &__area{
+    @include marginY(24px);
+    @include paddingY(48px);
+    @include desktop{
+      @include marginY(28px);
+      @include paddingY(58px);
+    }
+
+    em{
+      font-style: normal;
+    }
+  }
+
+  &__description--large{
+    font-weight: 700;
+    line-height: 1.25;
+    font-size: rem(48px);
+    @include desktop{
+      font-size: rem(96px);
+    }
+
+    span, em{
+      display: block;
+    }
+  }
+
+  &__description--medium{
+    color: $gray200;
+    font-size: rem(18px);
+    @include desktop{
+      font-size: rem(20px);
+    }
+
+    em{
+      @include mobile{
+        display: block;
+      }
+    }
+  }
+
+  &__description--small{
+    color: $gray300;
+    font-size: rem(14px);
+    @include desktop{
+      font-size: rem(16px);
+    }
+  }
+
+  &__description--xsmall{
+    color: $gray400;
+    font-size: rem(12px);
+    @include desktop{
+      font-size: rem(16px);
+      font-weight: 700;
+    }
+  }
+
+  &__restart{
+    display: block;
+  }
+}
+
+.membership-form__area{
+  @include flexbox($direction: column, $justify: center, $items: center);
+  @include desktop{
+    flex-direction: row;
+  }
+}
+
+
+
+.service-guide{
+  &__list{
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    text-align: center;
+    border-bottom: rem(4px) solid $gray800;
+    @include desktop{
+      text-align: left;
+    }
+  }
+
+  &__item{
+    border-top: rem(4px) solid $gray800;
+    padding: rem(16px) rem(18px) rem(20px);
+    @include desktop{
+      padding: rem(15px) rem(20px) rem(60px);
+    }
+  }
+}
+
+.card{
+  @include flexbox($direction: column);
+  @include paddingY(60px);
+  @include desktop{
+    @include flexbox($justify:space-between, $items: center);
+    @include paddingY(0);
+    @include autoMargin;
+    width: rem(1280px);
+  }
+
+  &__description{
+    margin-bottom: rem(10px);
+    @include desktop{
+      margin-bottom: 0;
+      width: 50%;
+    }
+
+    &--large{
+      font-weight: 700;
+      font-size: rem(24px);
+      margin-bottom: rem(30px);
+      @include desktop{
+        font-size: rem(60px);
+        margin-bottom: rem(20px);
+      }
+    }
+
+    &--small{
+      color: $gray600;
+      @include desktop{
+        font-size: rem(20px);
+      }
+    }
+  }
+
+  &__thumbnail{
+    position: relative;
+    overflow: hidden;
+    background-color: $black;
+
+    &--media{
+      margin: 0;
+    }
+  }
+}
+
+.media-tv{
+  @include autoMargin;
+  max-width: rem(600px);
+
+  .card__thumbnail--bg{
+    position: relative;
+    z-index: 10;
+  }
+
+  .card__thumbnail--media{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 46%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 73%;
+    max-height: 54%;
+  }
+}
+
+.media-save{
+  .card__thumbnail--bg{
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &__images{
+    width: 73%;
+    position: absolute;
+    left: 50%;
+    bottom: 7%;
+    transform: translateX(-50%);
+    border: rem(2px) solid #464646;
+    border-radius: rem(10px);
+    @include flexbox($justify: space-around, $items: center);
+    background-color: $black;
+    padding: rem(6px) rem(12px);
+  }
+
+  &__poster{
+    width: 14%;
+    max-width: 40%;
+  }
+
+  &__download{
+    width: 12%;
+    max-width: 50%;
+    order: 9999;
+  }
+
+  &__caption{
+    font-weight: 700;
+    @include flexbox($direction: column, $items: flex-start);
+    display: flex;
+    margin-left: rem(18px);
+    margin-right: auto;
+  }
+
+  &__caption--medium{
+    font-size: rem(14px);
+    @include desktop{
+      font-size: rem(18px);
+    }
+  }
+
+  &__caption--small{
+    color: $blue500;
+    font-size: rem(12px);
+    @include desktop{
+      font-size: rem(14px);
+    }
+  }
+}
+
+.multi-device{
+  @include autoMargin;
+  max-width: rem(600px);
+
+  &__video{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 34%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 63%;
+    max-height: 47%;
+  }
+}

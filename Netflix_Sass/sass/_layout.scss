@@ -1,0 +1,137 @@
+// 헤더
+.header{
+  @include flexbox($items: center);
+  height: rem(80px);
+  padding: rem(20px) rem(24px);
+  @include desktop{
+    height: rem(140px);
+    padding: rem(40px) rem(20px);
+    max-width: rem(1280px);
+    @include autoMargin; 
+  }
+
+  // 넷플릭스 로고
+  &__title{
+    margin-right: auto;
+
+    @at-root .logo{
+      display: block;
+      width: rem(80px);
+      padding-top: rem(8px);
+      padding-bottom: rem(8px);
+      @include desktop{
+        width: rem(144px);
+        padding-top: rem(12px);
+        padding-bottom: rem(12px);
+      }
+    }
+
+    img{
+      @include responsiveImg;
+    }
+  }
+
+  // 로그인 링크(버튼 스타일)
+  @at-root .link-login{
+    margin-left: rem(12px);
+    padding: rem(6px) rem(20px);
+    font-size: rem(12px);
+    background-color: $red500;
+    font-weight: 700;
+    white-space: nowrap;
+    @include desktop{
+      margin-left: rem(40px);
+      padding-top: rem(8px);
+      padding-bottom: rem(8px);
+      font-size: rem(16px);
+    }
+  }
+}
+
+
+// 푸터
+.footer{
+  padding: rem(40px) rem(24px);
+  @include desktop{
+    padding: rem(48px) rem(20px);
+    @include autoMargin;
+    max-width: rem(1280px);
+  }
+
+  // 질문이 있으신가요?
+  &__description{
+    color: $gray200;
+    // @include flexbox($direction: column);
+    margin-bottom: rem(16px);
+    font-size: rem(20px);
+    @include desktop{
+      // flex-direction: row;
+      margin-bottom: rem(32px);
+    }
+  }
+
+  // 문의전화 번호
+  &__description .phonenumber{
+    @include mobile{
+      display: block;
+    }
+    @include desktop{
+      margin-left: rem(8px);
+    }
+  }
+
+  // 푸터 링크 목록
+  &__list{
+    list-style: none;
+    padding-left: 0;
+    @include marginY(10px);
+    color: $gray300;
+    @include flexbox($wrap: wrap);
+    font-size: rem(14px);
+    @include desktop{
+      font-size: rem(16px);
+      @include marginY;
+    }
+  }
+
+  // 푸터 링크 아이템
+  &__item{
+    width: 50%;
+    margin-bottom: rem(10px);
+    @include desktop{
+      width: 25%;
+      margin-bottom: rem(16px);
+    }
+  }
+
+  // 언어 선택 (셀렉트 박스)
+  .select-language{
+    display: inline-flex;
+  }
+
+  // 저작권 정보
+  @at-root .copyright{
+    display: block;
+    color: #acacac;
+    font-weight: 700;
+    margin-top: rem(48px);
+    font-size: rem(20px);
+    @include desktop{
+      font-size: rem(22px)
+    }
+  }
+
+  // 주소
+  @at-root .address{
+    @include flexbox(column);
+    color: $gray400;
+    font-style: normal;
+    font-size: rem(14px);
+    margin-top: rem(8px);
+    @include desktop{
+      font-weight: 700;
+      font-size: rem(16px);
+      margin-top: rem(16px);
+    }
+  }
+}

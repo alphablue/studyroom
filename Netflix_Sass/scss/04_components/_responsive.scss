@@ -1,0 +1,41 @@
+// 반응형 이미지 ------------------------------------------------------------------- /
+.responsiveImg {
+  max-width: 100%;
+  height: auto;
+}
+
+// 반응형 비디오 및 SVG 요소 ---------------------------------------------------------- /
+.responsiveVideo, 
+.responsiveSvg {
+  width: 100%;
+  height: 100%;
+}
+
+// 반응형 iFrame ---------------------------------------------------------------- /
+.iframeWrapper  {
+  position: relative;
+  width: 100%;
+  height: 0 !important;
+}
+
+.iframe4-3{
+  padding-top: 75%;
+}
+
+.iframe16-9{
+  padding-top: 56.25%;
+}
+
+.iframe1-1{
+  padding-top: 100%;
+}
+
+.iframe{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

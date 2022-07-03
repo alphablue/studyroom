@@ -1,0 +1,14 @@
+// 스크린 리더 사용자를 위한 숨김 스타일
+.sr-only{
+  @include a11y;
+}
+
+// 반응형 이미지 및 비디오
+img{
+  max-width: 100%;
+  height: auto;
+}
+
+video{
+  width: 100%;
+}

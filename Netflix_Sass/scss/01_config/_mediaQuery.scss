@@ -1,0 +1,13 @@
+// 미디어 쿼리 중단점 (Breakpoints) --------------------------------------------------------------- /
+$breakpoint: 950px;
+
+@mixin mobile {
+  @media screen and (max-width: #{$breakpoint - 1}) {
+    @content;
+  }
+}
+@mixin desktop {
+  @media screen and (min-width: #{$breakpoint}) {
+    @content;
+  }
+}

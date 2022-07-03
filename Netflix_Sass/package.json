@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "start": "run-p dev watch",
-    "sass": "sass sass:css",
+    "start": "run-p dev watch:sass",
+    "sass": "sass style:css",
     "watch:sass": "npm run sass -- --watch",
     "dev": "live-server --port=8090",
     "build:sass": "npm run sass -- --no-source-map",

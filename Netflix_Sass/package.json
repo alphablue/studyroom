@@ -5,7 +5,7 @@
     "watch:sass": "npm run sass -- --watch",
     "dev": "live-server --port=8090",
     "build:sass": "npm run sass -- --no-source-map",
-    "build:postcss": "postcss css/style.css -o css/style.css",
+    "build:postcss": "postcss css/index.css -o css/style.css",
     "build": "run-s build:sass build:postcss"
   },
   "devDependencies": {

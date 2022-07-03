@@ -1,0 +1,10 @@
+.home {
+  @include mobile {
+    
+  }
+
+  @include desktop {
+    margin: 40px 140px 80px 140px;
+  }
+
+}

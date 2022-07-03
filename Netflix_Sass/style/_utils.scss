@@ -1,0 +1,44 @@
+@use "sass:math";
+// 미디어 쿼리 중단점 (Breakpoints) --------------------------------------------------------------- /
+$breakpoint: 376px;
+
+@mixin mobile {
+  @media screen and (max-width: #{$breakpoint - 1}) {
+    @content;
+  }
+}
+@mixin desktop {
+  @media screen and (min-width: #{$breakpoint}) {
+    @content;
+  }
+}
+
+// 숨김 콘텐츠
+@mixin a11y{
+  overflow: hidden;
+  position: absolute !important;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+}
+
+@mixin flexbox($direction: row, $justify: flex-start, $items: stretch, $wrap: nowrap) {
+  display: flex;
+  flex-flow: $direction $wrap;
+  justify-content: $justify;
+  align-items: $items;
+}
+
+$rootUnit: 16px !default;
+
+// 단위 제거 함수 ------------------------------------------------------------------ /
+@function removeUnit($value){
+  @return math.div($value, ($value * 0 + 1));
+}
+
+// px을 rem 단위로 변경하는 함수 ------------------------------------------------------- /
+@function rem($value, $base: $rootUnit){
+  @return (removeUnit(math.div($value , $base))) * 1rem;
+}

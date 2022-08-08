@@ -1,6 +1,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:startbasic/utils/app_styles.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -8,7 +10,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFeeedf2),
+      backgroundColor: Styles.bgColor,
       body: ListView(
         children: [
           Container(
@@ -23,9 +25,15 @@ class HomeScreen extends StatelessWidget {
                        * 내부 텍스트의 라인을 맞춰주기 위한 속성
                        * */
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text("Good Morning"),
-                        Text("Book Tickets")
+                      children: [
+                        Text("Good Morning", style: Styles.headLineStyle3,),
+                        /**
+                         * 이렇게 SizedBox 를 계속 사용하기는 어려우니 Gap 이라는 라이브러리를 활용하면 편리하게 간격
+                         * 조절이 가능하다. pubspec 을 참고 해 보면 gap 이라는 것이 등록 되어 있음
+                         * */
+                        // SizedBox(height: 5,),
+                        const Gap(5),
+                        Text("Book Tickets", style: Styles.headLineStyle1,)
                       ],
                     ),
                     Container(

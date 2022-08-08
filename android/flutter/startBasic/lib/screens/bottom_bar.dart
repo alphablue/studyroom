@@ -21,7 +21,9 @@ class _BottomBarState extends State<BottomBar> {
   ];
 
   void _onItemTapped(int index) {
-    _selectedIndex = index;
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
@@ -35,6 +37,11 @@ class _BottomBarState extends State<BottomBar> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         /**
+         * ui의 state 가 변하면 바텀네비게이션도 그와 동일하게 작동하기를 원한다. 그러기 위해
+         * 네비게이션에서 현재 어떤 것을 선택하고 있는지에 대한 상태를 위한 값도 지정해줘야 할
+         * 필요가 있음음         * */
+        currentIndex: _selectedIndex,
+        /**
          * onTap 속성은 탭 했을 때 불려지는 옵션임 클릭 했을 때의 인덱스를 자동으로 넘겨줌
         * */
         onTap: _onItemTapped,
@@ -42,6 +49,11 @@ class _BottomBarState extends State<BottomBar> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
         selectedItemColor: Colors.blueGrey,
+        /**
+         * 기본속성은 아이콘이 클릭된 것에 따라서 움직이는데 다른 원하는 속성이 있다면
+         * 아래의 옵션을 사용해서 제거해 줄 수 있다.
+         * */
+        type: BottomNavigationBarType.fixed,
         unselectedItemColor: const Color(0xff526480),
         items: const [
           BottomNavigationBarItem(

@@ -12,12 +12,17 @@ class HomeScreen extends StatelessWidget {
       body: ListView(
         children: [
           Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
+                      /**
+                       * 내부 텍스트의 라인을 맞춰주기 위한 속성
+                       * */
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text("Good Morning"),
                         Text("Book Tickets")

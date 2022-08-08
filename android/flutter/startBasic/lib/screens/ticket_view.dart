@@ -12,10 +12,14 @@ class TicketView extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = AppLayout.getSize(context);
     return SizedBox(
-      width: size.width,
+      /**
+       * 티켓이 화면 전체를 채우는 것 보다 일부분은 덜채워서 여러개가 있다는 것을 보여 주는
+       * 것이 더 직관적이다.
+       * */
+      width: size.width * 0.85,
       height: 200,
       child: Container(
-        margin: const EdgeInsets.only(left: 16),
+        margin: const EdgeInsets.only(right: 16),
         child: Column(
           children: [
             /**

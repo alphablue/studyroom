@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:startbasic/utils/app_layout.dart';
 import 'package:startbasic/utils/app_styles.dart';
 import 'package:startbasic/widgets/icon_text_widget.dart';
+import 'package:startbasic/widgets/ticket_tabs.dart';
 
 import '../widgets/doutble_text_widget.dart';
 
@@ -28,58 +29,11 @@ class SearchScreen extends StatelessWidget {
                     35)), //fontSize: 35 를 width 사이즈로 조정이 가능하다
           ),
           Gap(AppLayout.getHeight(20)),
-          FittedBox(
-            child: Container(
-              padding: const EdgeInsets.all(3.5),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppLayout.getHeight(50)),
-                  color: const Color(0xFFf4f6fd)),
-              child: Row(
-                children: [
-                  /**
-                   * 비행기 티켓
-                   * */
-                  Container(
-                    width: size.width * 0.44,
-                    padding:
-                        EdgeInsets.symmetric(vertical: AppLayout.getHeight(7)),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.horizontal(
-                            //horizontal 을 넣으면 좌, 우 중 하나에게 radius 값을 줄 수 있음
-                            left: Radius.circular(AppLayout.getHeight(50))),
-                        color: Colors.white),
-                    child: Center(
-                      child: Text("Airline Tickets"),
-                    ),
-                  ),
-
-                  /**
-                   * 호텔
-                   * */
-                  Container(
-                    width: size.width * 0.44,
-                    padding:
-                        EdgeInsets.symmetric(vertical: AppLayout.getHeight(7)),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.horizontal(
-                            //horizontal 을 넣으면 좌, 우 중 하나에게 radius 값을 줄 수 있음
-                            right: Radius.circular(AppLayout.getHeight(50))),
-                        /**
-                         * 상위 컨테이너의 색을 그대로 사용하기 위해서 transparent 를 사용함
-                         * */
-                        color: Colors.transparent),
-                    child: Center(
-                      child: Text("Hotel"),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          const AppTicketTabs(firstTab: "Airline Tickets", secondTab: "Hotels",),
           Gap(AppLayout.getHeight(25)),
-          AppIconText(icon: Icons.flight_takeoff_rounded, text: "Departure"),
+          const AppIconText(icon: Icons.flight_takeoff_rounded, text: "Departure"),
           Gap(AppLayout.getHeight(15)),
-          AppIconText(icon: Icons.flight_land_rounded, text: "Arrival"),
+          const AppIconText(icon: Icons.flight_land_rounded, text: "Arrival"),
           Gap(AppLayout.getHeight(25)),
           Container(
               padding: EdgeInsets.symmetric(

@@ -8,6 +8,7 @@ import 'package:startbasic/utils/app_styles.dart';
 import 'package:startbasic/widgets/column_layout.dart';
 import 'package:startbasic/widgets/layout_builder_widget.dart';
 import 'package:startbasic/widgets/ticket_tabs.dart';
+import 'package:barcode_widget/barcode_widget.dart';
 
 class TicketScreen extends StatelessWidget {
   const TicketScreen({Key? key}) : super(key: key);
@@ -39,7 +40,7 @@ class TicketScreen extends StatelessWidget {
                   isColor: true,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 1,
               ),
               Container(
@@ -55,11 +56,13 @@ class TicketScreen extends StatelessWidget {
                           firstText: 'Flutter DB',
                           secondText: 'Passenger',
                           alignment: CrossAxisAlignment.start,
+                          isColor: true,
                         ),
                         AppColumnLayout(
                           firstText: '5221 364869',
                           secondText: 'Passport',
                           alignment: CrossAxisAlignment.end,
+                          isColor: true,
                         )
                       ],
                     ),
@@ -74,11 +77,13 @@ class TicketScreen extends StatelessWidget {
                           firstText: '3654684 81312153',
                           secondText: 'Number of E-ticket',
                           alignment: CrossAxisAlignment.start,
+                          isColor: true,
                         ),
                         AppColumnLayout(
                           firstText: 'B2SG28',
                           secondText: 'Booking code',
                           alignment: CrossAxisAlignment.end,
+                          isColor: true,
                         )
                       ],
                     ),
@@ -114,15 +119,54 @@ class TicketScreen extends StatelessWidget {
                           firstText: '\$249.99',
                           secondText: 'Price',
                           alignment: CrossAxisAlignment.end,
+                          isColor: true,
                         ),
                       ],
                     ),
-                    const SizedBox(height: 1,),
+                    const SizedBox(
+                      height: 1,
+                    ),
                     Gap(AppLayout.getHeight(20)),
                   ],
                 ),
               ),
-
+              const SizedBox(
+                height: 1,
+              ),
+              /**
+               * 바코드 보여주기
+               * */
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(AppLayout.getHeight(21)),
+                        bottomLeft: Radius.circular(AppLayout.getHeight(21)))),
+                margin:
+                    EdgeInsets.symmetric(horizontal: AppLayout.getHeight(15)),
+                padding: EdgeInsets.only(top: AppLayout.getHeight(15), bottom: AppLayout.getHeight(15)),
+                child: Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: AppLayout.getHeight(15)),
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(AppLayout.getHeight(15)),
+                    child: BarcodeWidget(
+                      data: 'https://github.com/martinovovo',
+                      barcode: Barcode.code128(),
+                      drawText: false,
+                      color: Styles.textColor,
+                      width: double.infinity,
+                      height: 70,
+                    ),
+                  ),
+                ),
+              ),
+              Gap(AppLayout.getHeight(20)),
+              Container(
+                padding: EdgeInsets.only(left: AppLayout.getHeight(15)),
+                child: TicketView(ticket: ticketList[0],),
+              )
             ],
           )
         ],

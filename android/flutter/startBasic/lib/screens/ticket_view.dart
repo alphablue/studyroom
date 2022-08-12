@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:startbasic/utils/app_layout.dart';
 import 'package:startbasic/utils/app_styles.dart';
 import 'package:startbasic/widgets/ticket_container.dart';
@@ -22,7 +23,7 @@ class TicketView extends StatelessWidget {
        * 것이 더 직관적이다.
        * */
       width: size.width * 0.85,
-      height: AppLayout.getHeight(200),
+      height: AppLayout.getHeight(GetPlatform.isAndroid == true ? 159 : 161),
       child: Container(
         margin: EdgeInsets.only(right: AppLayout.getHeight(16)),
         child: Column(
@@ -193,6 +194,9 @@ class TicketView extends StatelessWidget {
                       },
                     ),
                   )),
+                  /**
+                   * 티켓의 파인 홈 표현 하는 부분
+                   * */
                   SizedBox(
                     height: AppLayout.getHeight(20),
                     width: AppLayout.getWidth(10),
@@ -217,8 +221,8 @@ class TicketView extends StatelessWidget {
               decoration: BoxDecoration(
                   color: isColor == null ? Styles.orangeColor : Colors.white,
                   borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(AppLayout.getHeight(21)),
-                      bottomRight: Radius.circular(AppLayout.getHeight(21)))),
+                      bottomLeft: Radius.circular(isColor == null? AppLayout.getHeight(21) : 0),
+                      bottomRight: Radius.circular(isColor == null? AppLayout.getHeight(21) : 0))),
               padding: const EdgeInsets.only(
                   left: 16, top: 10, right: 16, bottom: 16),
               child: Column(
@@ -231,14 +235,18 @@ class TicketView extends StatelessWidget {
                         children: [
                           Text(
                             ticket['date'],
-                            style: Styles.headLineStyle3
-                                .copyWith(color: Colors.white),
+                            style: isColor == null
+                                ? Styles.headLineStyle3
+                                    .copyWith(color: Colors.white)
+                                : Styles.headLineStyle3,
                           ),
                           const Gap(5),
                           Text(
                             "Date",
-                            style: Styles.headLineStyle4
-                                .copyWith(color: Colors.white),
+                            style: isColor == null
+                                ? Styles.headLineStyle4
+                                    .copyWith(color: Colors.white)
+                                : Styles.headLineStyle4,
                           )
                         ],
                       ),
@@ -275,8 +283,10 @@ class TicketView extends StatelessWidget {
                           const Gap(5),
                           Text(
                             "Number",
-                            style: Styles.headLineStyle4
-                                .copyWith(color: Colors.white),
+                            style: isColor == null
+                                ? Styles.headLineStyle4
+                                    .copyWith(color: Colors.white)
+                                : Styles.headLineStyle4,
                           )
                         ],
                       ),

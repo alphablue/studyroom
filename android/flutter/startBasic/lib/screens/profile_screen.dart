@@ -166,7 +166,27 @@ class ProfileScreen extends StatelessWidget {
           ),
           Gap(AppLayout.getHeight(25)),
           Text('Accumulated miles', style: Styles.headLineStyle2,),
-
+          Container(
+            child: Column(
+              children: [
+                Gap(AppLayout.getHeight(15)),
+                Text(
+                  "192802",
+                  style: TextStyle(
+                    fontSize: 45, color: Styles.textColor, fontWeight: FontWeight.w600
+                  ),
+                ),
+                Gap(AppLayout.getHeight(20)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Miles accrued", style: Styles.headLineStyle4.copyWith(fontSize: 16),),
+                    Text("23 May 2022", style: Styles.headLineStyle4.copyWith(fontSize: 16),),
+                  ],
+                )
+              ],
+            ),
+          )
         ],
       ),
     );

@@ -6,6 +6,7 @@ import 'package:startbasic/utils/app_info_list.dart';
 import 'package:startbasic/utils/app_layout.dart';
 import 'package:startbasic/utils/app_styles.dart';
 import 'package:startbasic/widgets/column_layout.dart';
+import 'package:startbasic/widgets/layout_builder_widget.dart';
 import 'package:startbasic/widgets/ticket_tabs.dart';
 
 class TicketScreen extends StatelessWidget {
@@ -32,8 +33,9 @@ class TicketScreen extends StatelessWidget {
                 padding: EdgeInsets.only(left: AppLayout.getHeight(15)),
                 child: TicketView(ticket: ticketList[0], isColor: true,),
               ),
+              SizedBox(height: 1,),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.all(15),
                 margin: EdgeInsets.symmetric(horizontal: 15),
                 color: Colors.white,
                 child: Column(
@@ -52,7 +54,9 @@ class TicketScreen extends StatelessWidget {
                           alignment: CrossAxisAlignment.end,
                         )
                       ],
-                    )
+                    ),
+                    Gap(AppLayout.getHeight(20)),
+                    const AppLayoutBuilderWidget(sections: 15, isColor: false, width: 5),
                   ],
                 ),
               )

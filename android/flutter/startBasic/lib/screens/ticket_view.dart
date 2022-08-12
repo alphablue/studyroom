@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:startbasic/utils/app_layout.dart';
 import 'package:startbasic/utils/app_styles.dart';
 import 'package:startbasic/widgets/column_layout.dart';
+import 'package:startbasic/widgets/layout_builder_widget.dart';
 import 'package:startbasic/widgets/ticket_container.dart';
 
 class TicketView extends StatelessWidget {
@@ -24,7 +25,7 @@ class TicketView extends StatelessWidget {
        * 것이 더 직관적이다.
        * */
       width: size.width * 0.85,
-      height: AppLayout.getHeight(GetPlatform.isAndroid == true ? 159 : 161),
+      height: AppLayout.getHeight(GetPlatform.isAndroid == true ? 156 : 158),
       child: Container(
         margin: EdgeInsets.only(right: AppLayout.getHeight(16)),
         child: Column(
@@ -169,31 +170,10 @@ class TicketView extends StatelessWidget {
                                   Radius.circular(AppLayout.getHeight(10)))),
                     ),
                   ),
-                  Expanded(
+                  const Expanded(
                       child: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: LayoutBuilder(
-                      builder:
-                          (BuildContext context, BoxConstraints constraints) {
-                        return Flex(
-                          direction: Axis.horizontal,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          children: List.generate(
-                              (constraints.constrainWidth() / 15).floor(),
-                              (index) => SizedBox(
-                                    width: AppLayout.getWidth(5),
-                                    height: AppLayout.getHeight(1),
-                                    child: DecoratedBox(
-                                      decoration: BoxDecoration(
-                                          color: isColor == null
-                                              ? Colors.white
-                                              : Colors.grey.shade300),
-                                    ),
-                                  )),
-                        );
-                      },
-                    ),
+                    padding: EdgeInsets.all(6.0),
+                    child: AppLayoutBuilderWidget(sections: 6,)
                   )),
                   /**
                    * 티켓의 파인 홈 표현 하는 부분

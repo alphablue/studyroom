@@ -45,10 +45,12 @@ class _BmiHomeState extends State<BmiHome> {
               const Text('신장'),
               TextField(
                 controller: height,
+                keyboardType: TextInputType.number,
               ),
               const Text('체중'),
               TextField(
                 controller: weight,
+                keyboardType: TextInputType.number,
               ),
               TextButton(onPressed: () {
                 final double result =
@@ -76,9 +78,30 @@ class ResultView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(resultData.toString())
+        child: Text(resultText(resultData))
       ),
     );
   }
+
+  String resultText (double data) {
+    String dd = "";
+
+    if(data >= 35.0) {
+      dd = "고도 비만";
+    } else if (data >= 30.0) {
+      dd = "중정도 비만";
+    } else if (data >= 25.0) {
+      dd = "경도 비만";
+    } else if (data >= 23.0) {
+      dd = "과체중";
+    } else if (data >= 18.5) {
+      dd = "정상체중";
+    } else {
+      dd = "저체중";
+    }
+
+    return dd;
+  }
 }
+
 

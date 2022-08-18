@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'androidx.navigation.safeargs.kotlin'
 
+    //secret properties
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -88,4 +90,5 @@ dependencies {
 
     //viewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$compose_version"
+
 }

@@ -1,4 +1,4 @@
-package com.example.portfolio.ui.screen.permission
+package com.example.portfolio.ui.screen.util.permission
 
 import android.Manifest
 import android.content.Intent
@@ -21,11 +21,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
+import com.example.portfolio.ui.common.HardwareName
+import com.example.portfolio.ui.common.PermissionName
 import com.example.portfolio.ui.screen.util.findActivity
 import com.example.portfolio.ui.screen.util.observeAsState
 
 @Composable
 fun PermissionCheck(
+    permissionName: PermissionName,
+    hardwareName: HardwareName
 ) {
     val context = LocalContext.current
     var alertDialogState by remember {
@@ -43,7 +47,7 @@ fun PermissionCheck(
     when(lifecycleState) {
         Lifecycle.Event.ON_RESUME -> {
             if (context.packageManager.hasSystemFeature(
-                    PackageManager.FEATURE_LOCATION_GPS
+                    hardwareName.name
                 )
             ) {
                 Log.d("permissionCheck", "하드웨어 체크 [가능]")

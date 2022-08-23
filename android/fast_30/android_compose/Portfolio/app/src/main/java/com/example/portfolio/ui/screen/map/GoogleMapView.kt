@@ -1,44 +1,48 @@
 package com.example.portfolio.ui.screen.map
 
-import android.Manifest
 import android.content.Context
-import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
-import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.window.Popup
-import androidx.core.content.ContextCompat.startActivity
+import androidx.compose.ui.unit.dp
+import com.example.portfolio.ui.common.HardwareName
+import com.example.portfolio.ui.common.PermissionName
+import com.example.portfolio.ui.screen.util.getMyLocation
+import com.example.portfolio.ui.screen.util.permission.PermissionCheck
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.compose.*
-import kotlinx.coroutines.launch
 
 @Composable
 fun GoogleMapView() {
     val singapore = LatLng(1.35, 103.87)
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(singapore, 10f)
-    }
-
-    val textLocation = LatLng(35.826, 128.736)
-
-    val context = LocalContext.current
-    val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
     var myLocation by remember {
         mutableStateOf<Location?>(null)
     }
+
+    val cameraPositionState = rememberCameraPositionState {
+        position = if(myLocation != null) {
+            CameraPosition.fromLatLngZoom(LatLng(myLocation!!.latitude, myLocation!!.longitude), 10f)
+        } else {
+            CameraPosition.fromLatLngZoom(singapore, 10f)
+        }
+    }
+
+    val context = LocalContext.current
+    val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
     val clickLocation = remember {
         mutableStateListOf<LatLng>()
@@ -56,65 +60,81 @@ fun GoogleMapView() {
         ))
     }
 
-    GoogleMap(
-        modifier = Modifier.fillMaxSize(),
-        onMyLocationButtonClick = {
-            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-            ) {
+    var permissionGranted by remember { mutableStateOf(false)}
+
+    PermissionCheck(permissionName = PermissionName.GPS, hardwareName = HardwareName.GPS, grantedCheck = {permissionGranted = it})
+
+    if(permissionGranted) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            GoogleMap(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.Center),
+                onMyLocationButtonClick = {
+                    if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                    ) {
 //                buildAlertMessageNoGps(context)
-                Toast.makeText(context, "don't have gps", Toast.LENGTH_SHORT).show()
-                return@GoogleMap true
-            }
-            Toast.makeText(context, "click on my location", Toast.LENGTH_SHORT).show()
-            return@GoogleMap false
+                        Toast.makeText(context, "don't have gps", Toast.LENGTH_SHORT).show()
+                        return@GoogleMap true
+                    }
+                    Toast.makeText(context, "click on my location", Toast.LENGTH_SHORT).show()
+                    return@GoogleMap false
 
-        },
-        onMyLocationClick = {
-            myLocation = it
-        },
-        onMapClick = {
-           clickLocation.add(it)
-        },
-        properties = properties,
-        uiSettings = uiSettings
-    ) {
-        Marker(
-            state = MarkerState(
-                position = singapore
-            ),
-            title = "Singapore",
-            snippet = "Marker in Singapore"
-        )
-
-        myLocation?.let {
-            Marker(
-                state = MarkerState(
-                    position = LatLng(it.latitude, it.longitude)
-                ),
-                title = "my location",
-                snippet = "lat : ${it.latitude}, log : ${it.longitude}"
-            )
-        }
-
-        if(clickLocation.isNotEmpty()) {
-            clickLocation.forEach {
+                },
+                onMyLocationClick = {
+                    myLocation = it
+                },
+                onMapClick = {
+                    clickLocation.add(it)
+                },
+                properties = properties,
+                uiSettings = uiSettings,
+                cameraPositionState = cameraPositionState
+            ) {
                 Marker(
                     state = MarkerState(
-                        position = it
+                        position = singapore
                     ),
-                    title = "clicked position",
-                    snippet = "lat : ${it.latitude}, log : ${it.longitude}"
+                    title = "Singapore",
+                    snippet = "Marker in Singapore"
+                )
+
+                myLocation?.let {
+                    Marker(
+                        state = MarkerState(
+                            position = LatLng(it.latitude, it.longitude)
+                        ),
+                        title = "my location",
+                        snippet = "lat : ${it.latitude}, log : ${it.longitude}"
+                    )
+                }
+
+                if (clickLocation.isNotEmpty()) {
+                    clickLocation.forEach {
+                        Marker(
+                            state = MarkerState(
+                                position = it
+                            ),
+                            title = "clicked position",
+                            snippet = "lat : ${it.latitude}, log : ${it.longitude}"
+                        )
+                    }
+                }
+            }
+
+            IconButton(
+                modifier = Modifier.size(35.dp).align(Alignment.BottomEnd),
+                onClick = { myLocation = getMyLocation(context) }) {
+                Icon(
+                    imageVector = Icons.Filled.LocationOn,
+                    contentDescription = "LocationButton"
                 )
             }
         }
-
-        Marker(
-            state = MarkerState(position = textLocation),
-            title = "test location",
-            flat = false,
-            infoWindowAnchor = Offset(0.2f, 0.3f)
-        )
-
+    } else {
+        Text(text = "권한 설정이 필요합니다.")
     }
+
+    
 
 }

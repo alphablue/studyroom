@@ -29,7 +29,8 @@ import com.example.portfolio.ui.screen.util.observeAsState
 @Composable
 fun PermissionCheck(
     permissionName: PermissionName,
-    hardwareName: HardwareName
+    hardwareName: HardwareName,
+    grantedCheck: (Boolean) -> Unit
 ) {
     val context = LocalContext.current
     var alertDialogState by remember {
@@ -47,7 +48,7 @@ fun PermissionCheck(
     when(lifecycleState) {
         Lifecycle.Event.ON_RESUME -> {
             if (context.packageManager.hasSystemFeature(
-                    hardwareName.name
+                    hardwareName.packageManager
                 )
             ) {
                 Log.d("permissionCheck", "하드웨어 체크 [가능]")
@@ -55,6 +56,7 @@ fun PermissionCheck(
                 if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     Log.d("permissionCheck", "셀프 퍼미션 체크 [승인]")
                     alertDialogState = true
+                    grantedCheck(true)
                 } else {
                     Log.d("permissionCheck", "셀프 퍼미션 체크 [거부]")
 
@@ -64,19 +66,22 @@ fun PermissionCheck(
                         )
                     ) {
                         Log.d("permissionCheck", "권한창 무시 [승인]")
+                        grantedCheck(true)
                     } else {
                         // 다시보지 않기를 클릭 하고 승인 하지 않은 경우
                         Log.d("permissionCheck", "권한창 무시 [거부]")
                         alertDialogState = false
+                        grantedCheck(false)
                     }
                 }
 
             } else {
                 Log.d("permissionCheck", "하드웨어 체크 [불가능]")
+                grantedCheck(false)
             }
         }
         else -> {
-
+            grantedCheck(false)
         }
     }
 

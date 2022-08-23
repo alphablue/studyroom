@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.window.Popup
 import androidx.core.content.ContextCompat.startActivity
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -66,10 +67,6 @@ fun GoogleMapView() {
             // Permission Denied: Do something
             Log.d("ExampleScreen","PERMISSION DENIED")
         }
-    }
-
-    LaunchedEffect(Unit ) {
-        launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
     GoogleMap(

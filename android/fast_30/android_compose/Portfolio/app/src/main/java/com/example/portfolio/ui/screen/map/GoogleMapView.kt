@@ -14,11 +14,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.Popup
 import androidx.core.content.ContextCompat.startActivity
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.compose.*
 import kotlinx.coroutines.launch
 
@@ -28,6 +30,9 @@ fun GoogleMapView() {
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(singapore, 10f)
     }
+
+    val textLocation = LatLng(35.826, 128.736)
+
     val context = LocalContext.current
     val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
@@ -35,8 +40,21 @@ fun GoogleMapView() {
         mutableStateOf<Location?>(null)
     }
 
-    val uiSettings = remember {MapUiSettings(myLocationButtonEnabled = true)}
-    val properties by remember { mutableStateOf(MapProperties(isMyLocationEnabled = true))}
+    val clickLocation = remember {
+        mutableStateListOf<LatLng>()
+    }
+
+    val uiSettings = remember {
+        MapUiSettings(
+            myLocationButtonEnabled = true,
+            zoomControlsEnabled = false)
+    }
+    val properties by remember { mutableStateOf(
+        MapProperties(
+            isMyLocationEnabled = true,
+            isBuildingEnabled = true,
+        ))
+    }
 
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -60,21 +78,56 @@ fun GoogleMapView() {
                 Toast.makeText(context, "don't have gps", Toast.LENGTH_SHORT).show()
                 return@GoogleMap true
             }
+            Toast.makeText(context, "click on my location", Toast.LENGTH_SHORT).show()
             return@GoogleMap false
 
         },
         onMyLocationClick = {
             myLocation = it
-            Toast.makeText(context, "long : ${myLocation?.longitude}, lat : ${myLocation?.latitude}", Toast.LENGTH_SHORT).show()
+        },
+        onMapClick = {
+           clickLocation.add(it)
         },
         properties = properties,
         uiSettings = uiSettings
     ) {
         Marker(
-            state = MarkerState(position = singapore),
+            state = MarkerState(
+                position = singapore
+            ),
             title = "Singapore",
             snippet = "Marker in Singapore"
         )
+
+        myLocation?.let {
+            Marker(
+                state = MarkerState(
+                    position = LatLng(it.latitude, it.longitude)
+                ),
+                title = "my location",
+                snippet = "lat : ${it.latitude}, log : ${it.longitude}"
+            )
+        }
+
+        if(clickLocation.isNotEmpty()) {
+            clickLocation.forEach {
+                Marker(
+                    state = MarkerState(
+                        position = it
+                    ),
+                    title = "clicked position",
+                    snippet = "lat : ${it.latitude}, log : ${it.longitude}"
+                )
+            }
+        }
+
+        Marker(
+            state = MarkerState(position = textLocation),
+            title = "test location",
+            flat = false,
+            infoWindowAnchor = Offset(0.2f, 0.3f)
+        )
+
     }
 
 }

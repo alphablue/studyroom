@@ -56,19 +56,6 @@ fun GoogleMapView() {
         ))
     }
 
-    val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            // Permission Accepted: Do something
-            Log.d("ExampleScreen","PERMISSION GRANTED")
-
-        } else {
-            // Permission Denied: Do something
-            Log.d("ExampleScreen","PERMISSION DENIED")
-        }
-    }
-
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         onMyLocationButtonClick = {

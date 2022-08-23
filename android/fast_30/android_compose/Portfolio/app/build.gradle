@@ -95,4 +95,7 @@ dependencies {
     //viewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$compose_version"
 
+    // google play service
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
+
 }

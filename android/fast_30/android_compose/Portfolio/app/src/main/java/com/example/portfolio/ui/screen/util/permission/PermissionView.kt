@@ -34,6 +34,9 @@ fun PermissionCheck(
 ) {
     val context = LocalContext.current
     var alertDialogState by remember {
+        mutableStateOf(true)
+    }
+    var doNotShowPermission by remember {
         mutableStateOf(false)
     }
 
@@ -42,7 +45,7 @@ fun PermissionCheck(
     val requestPermission =
         rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
 
-            alertDialogState = isGranted
+            doNotShowPermission = isGranted
         }
 
     when(lifecycleState) {
@@ -59,6 +62,7 @@ fun PermissionCheck(
                     grantedCheck(true)
                 } else {
                     Log.d("permissionCheck", "셀프 퍼미션 체크 [거부]")
+                    requestPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
 
                     if (ActivityCompat.shouldShowRequestPermissionRationale(
                             context.findActivity(),
@@ -69,8 +73,10 @@ fun PermissionCheck(
                         grantedCheck(true)
                     } else {
                         // 다시보지 않기를 클릭 하고 승인 하지 않은 경우
-                        Log.d("permissionCheck", "권한창 무시 [거부]")
-                        alertDialogState = false
+                        if(!doNotShowPermission) {
+                            Log.d("permissionCheck", "권한창 무시 [거부]")
+                            alertDialogState = false
+                        }
                         grantedCheck(false)
                     }
                 }
@@ -104,15 +110,6 @@ fun PermissionCheck(
                     context.findActivity().finish()
                 }
             )
-        }
-
-        Box(modifier = Modifier.fillMaxSize()) {
-            Button(
-                onClick = { requestPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION) },
-                modifier = Modifier.align(Alignment.Center)
-            ) {
-                Text(text = "권한 요청")
-            }
         }
     }
 }

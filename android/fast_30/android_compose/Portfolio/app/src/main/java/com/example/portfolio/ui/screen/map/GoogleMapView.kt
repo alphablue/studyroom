@@ -1,5 +1,6 @@
 package com.example.portfolio.ui.screen.map
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.location.LocationManager
@@ -15,7 +16,6 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.portfolio.ui.common.HardwareName
@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 
+@SuppressLint("MissingPermission")
 @Composable
 fun GoogleMapView() {
     val singapore = LatLng(1.35, 103.87)
@@ -65,6 +66,7 @@ fun GoogleMapView() {
     PermissionCheck(permissionName = PermissionName.GPS, hardwareName = HardwareName.GPS, grantedCheck = {permissionGranted = it})
 
     if(permissionGranted) {
+
         Box(modifier = Modifier.fillMaxSize()) {
             GoogleMap(
                 modifier = Modifier
@@ -73,7 +75,6 @@ fun GoogleMapView() {
                 onMyLocationButtonClick = {
                     if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                     ) {
-//                buildAlertMessageNoGps(context)
                         Toast.makeText(context, "don't have gps", Toast.LENGTH_SHORT).show()
                         return@GoogleMap true
                     }
@@ -123,8 +124,15 @@ fun GoogleMapView() {
             }
 
             IconButton(
-                modifier = Modifier.size(35.dp).align(Alignment.BottomEnd),
-                onClick = { myLocation = getMyLocation(context) }) {
+                modifier = Modifier
+                    .size(35.dp)
+                    .align(Alignment.BottomEnd),
+                onClick = {
+                    getMyLocation(context) {
+                        cameraPositionState.position = CameraPosition.fromLatLngZoom(LatLng(it.latitude, it.longitude), 20f)
+                    }
+                    Toast.makeText(context, "click iconButton myLocation: $myLocation", Toast.LENGTH_SHORT).show()
+                }) {
                 Icon(
                     imageVector = Icons.Filled.LocationOn,
                     contentDescription = "LocationButton"
@@ -134,7 +142,4 @@ fun GoogleMapView() {
     } else {
         Text(text = "권한 설정이 필요합니다.")
     }
-
-    
-
 }

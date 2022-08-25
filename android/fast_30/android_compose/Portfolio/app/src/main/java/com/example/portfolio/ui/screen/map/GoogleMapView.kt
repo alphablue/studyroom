@@ -18,10 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.portfolio.repository.GoogleRepository
 import com.example.portfolio.ui.common.HardwareName
 import com.example.portfolio.ui.common.PermissionName
 import com.example.portfolio.ui.screen.util.getMyLocation
 import com.example.portfolio.ui.screen.util.permission.PermissionCheck
+import com.example.portfolio.viewmodel.TestViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
@@ -29,6 +32,8 @@ import com.google.maps.android.compose.*
 @SuppressLint("MissingPermission")
 @Composable
 fun GoogleMapView() {
+    val testViewModel: TestViewModel = viewModel()
+
     val singapore = LatLng(1.35, 103.87)
     var myLocation by remember {
         mutableStateOf<Location?>(null)
@@ -130,6 +135,7 @@ fun GoogleMapView() {
                 onClick = {
                     getMyLocation(context) {
                         cameraPositionState.position = CameraPosition.fromLatLngZoom(LatLng(it.latitude, it.longitude), 20f)
+                        testViewModel.getData("json", it.latitude, it.longitude)
                     }
                     Toast.makeText(context, "click iconButton myLocation: $myLocation", Toast.LENGTH_SHORT).show()
                 }) {

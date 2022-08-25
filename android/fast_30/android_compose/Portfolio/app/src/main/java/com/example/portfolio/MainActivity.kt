@@ -7,7 +7,9 @@ import com.example.portfolio.ui.screen.map.GoogleMapView
 import com.example.portfolio.ui.screen.util.permission.PermissionCheck
 import com.example.portfolio.ui.testview.TestView
 import com.example.portfolio.ui.theme.PortfolioTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

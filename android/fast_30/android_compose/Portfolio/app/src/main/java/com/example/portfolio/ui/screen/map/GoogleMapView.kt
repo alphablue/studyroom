@@ -168,7 +168,7 @@ fun GoogleMapView(
                             LatLng(it.latitude, it.longitude),
                             20f
                         )
-                        testViewModel.getData("json", it.latitude, it.latitude)
+                        testViewModel.getData("json", it.latitude, it.longitude)
                     }
                     Toast.makeText(
                         context,

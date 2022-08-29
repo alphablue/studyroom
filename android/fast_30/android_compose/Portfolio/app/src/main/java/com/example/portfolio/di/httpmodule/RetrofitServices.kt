@@ -5,14 +5,16 @@ import com.example.portfolio.model.googlegeocode.GoogleGeoCode
 import retrofit2.Call
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface RetrofitServices {
 
-    @POST("/{callType}?latlng={lat},{lng}&language={language}&key=$GOOGLE_MAPS_API_KEY")
+    @POST("{callType}?")
     fun getReverseGeoCode(
         @Path("callType") returnType: String,
-        @Path("lat") lat: Double,
-        @Path("lng") lng: Double,
-        @Path("language") language: String = "ko"
+        @Query("latlng") lng: String,
+        @Query("language") language: String = "ko",
+        @Query("key") key: String = GOOGLE_MAPS_API_KEY
     ): Call<GoogleGeoCode>
 }

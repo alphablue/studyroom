@@ -1,5 +1,6 @@
 package com.example.portfolio.repository
 
+import android.util.Log
 import com.example.portfolio.di.httpmodule.RetrofitServices
 import com.example.portfolio.model.googlegeocode.GoogleGeoCode
 import dagger.Module
@@ -26,7 +27,7 @@ class GoogleRepository @Inject constructor(
         lng: Double
     ): GoogleGeoCode = withContext(Dispatchers.IO) {
         suspendCoroutine { supCoroutine ->
-            retrofit.getReverseGeoCode(returnType, lat, lng)
+            retrofit.getReverseGeoCode(returnType, "$lat,$lng")
                 .enqueue(object : Callback<GoogleGeoCode> {
                     override fun onResponse(
                         call: Call<GoogleGeoCode>,
@@ -38,9 +39,11 @@ class GoogleRepository @Inject constructor(
                         body?.let {
                             supCoroutine.resume(it)
                         }
+                        Log.d("TestViewModel", "retrofit Service run")
                     }
 
                     override fun onFailure(call: Call<GoogleGeoCode>, t: Throwable) {
+                        Log.d("TestViewModel", "retrofit Service run")
                         throw Exception("error")
                     }
                 })

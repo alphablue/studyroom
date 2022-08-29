@@ -1,11 +1,9 @@
 package com.example.portfolio.viewmodel
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import com.example.portfolio.model.googlegeocode.GoogleGeoCode
 import com.example.portfolio.repository.GoogleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +15,7 @@ class TestViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider
 ) : BaseViewModel(dispatcherProvider) {
 
-    var geocodeState by mutableStateOf<GoogleGeoCode?>(null)
+    private var geocodeState by mutableStateOf<GoogleGeoCode?>(null)
 
     fun getData(
         returnType: String,
@@ -25,9 +23,11 @@ class TestViewModel @Inject constructor(
         lng: Double
     ) = onIO {
         try{
-            geocodeState = googleRepository.getReverseGeoCodeData(returnType, lat, lng)
+            val testData = googleRepository.getReverseGeoCodeData(returnType, lat, lng)
+            geocodeState = testData
+            Log.d("TestViewModel", "get data :: ${testData.results}")
         } catch (e: Exception) {
-            Log.d("Exception", "TestViewModel:: ${e.message}")
+            Log.d("TestViewModel_Exception", "TestViewModel:: ${e.message}")
         }
     }
 }

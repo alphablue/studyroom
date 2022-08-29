@@ -4,10 +4,10 @@ import com.example.portfolio.di.httpmodule.RetrofitServices
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -27,12 +27,14 @@ object RetrofitModule {
     @Singleton
     @Provides
     fun provideRetrofitService(okHttpClient: OkHttpClient): Retrofit =
-         Retrofit.Builder()
+        Retrofit.Builder()
             .baseUrl(GOOGLE_BASE_URL)
-             .client(okHttpClient)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
 
     @Singleton
     @Provides
-    fun provideRetrofitServiceClient(retrofit: Retrofit): RetrofitServices = retrofit.create(RetrofitServices::class.java)
+    fun provideRetrofitServiceClient(retrofit: Retrofit): RetrofitServices =
+        retrofit.create(RetrofitServices::class.java)
 }

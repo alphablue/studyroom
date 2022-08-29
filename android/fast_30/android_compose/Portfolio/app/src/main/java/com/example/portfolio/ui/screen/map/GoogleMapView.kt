@@ -27,7 +27,6 @@ import com.example.portfolio.viewmodel.TestViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
-import dagger.hilt.android.AndroidEntryPoint
 
 @SuppressLint("MissingPermission")
 @Composable

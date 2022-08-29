@@ -3,10 +3,12 @@ buildscript {
         compose_version = '1.2.0'
         hilt_compose_version = '1.0.0'
         nav_version = '2.5.1'
+        hilt_version = '2.43.2'
     }
 
     dependencies {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {

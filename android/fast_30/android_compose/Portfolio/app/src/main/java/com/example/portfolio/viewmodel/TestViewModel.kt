@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TestViewModel @Inject constructor(
-    val googleRepository: GoogleRepository,
+    private val googleRepository: GoogleRepository,
     dispatcherProvider: DispatcherProvider
 ) : BaseViewModel(dispatcherProvider) {
 

@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.portfolio.repository.GoogleRepository
 import com.example.portfolio.ui.common.HardwareName
 import com.example.portfolio.ui.common.PermissionName
 import com.example.portfolio.ui.screen.util.getMyLocation
@@ -28,13 +27,15 @@ import com.example.portfolio.viewmodel.TestViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import dagger.hilt.android.AndroidEntryPoint
 
 @SuppressLint("MissingPermission")
 @Composable
-fun GoogleMapView() {
-    val testViewModel: TestViewModel = viewModel()
+fun GoogleMapView(
+    testViewModel: TestViewModel = viewModel()
+) {
 
-    val singapore = LatLng(1.35, 103.87)
+    val seoul = LatLng(37.5666805, 126.9784147)
     var myLocation by remember {
         mutableStateOf<Location?>(null)
     }
@@ -43,7 +44,7 @@ fun GoogleMapView() {
         position = if(myLocation != null) {
             CameraPosition.fromLatLngZoom(LatLng(myLocation!!.latitude, myLocation!!.longitude), 10f)
         } else {
-            CameraPosition.fromLatLngZoom(singapore, 10f)
+            CameraPosition.fromLatLngZoom(seoul, 10f)
         }
     }
 
@@ -99,7 +100,7 @@ fun GoogleMapView() {
             ) {
                 Marker(
                     state = MarkerState(
-                        position = singapore
+                        position = seoul
                     ),
                     title = "Singapore",
                     snippet = "Marker in Singapore"

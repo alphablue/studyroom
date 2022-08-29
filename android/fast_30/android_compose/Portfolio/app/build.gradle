@@ -5,6 +5,10 @@ plugins {
 
     //secret properties
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+
+    //hilt
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -76,6 +80,8 @@ dependencies {
 
     // hilt
     implementation "androidx.hilt:hilt-navigation-compose:$hilt_compose_version"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     // navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"

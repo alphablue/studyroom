@@ -6,7 +6,6 @@ import android.location.Location
 import android.os.Looper
 import android.util.Log
 import com.google.android.gms.location.*
-import kotlinx.coroutines.delay
 
 @SuppressLint("MissingPermission")
 fun getMyLocation(context: Context, getLocation: (Location) -> Unit) {

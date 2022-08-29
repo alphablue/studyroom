@@ -19,22 +19,3 @@ fun Context.findActivity(): Activity {
 
     throw IllegalStateException("no activity")
 }
-
-@Composable
-fun Lifecycle.observeAsState(): Lifecycle.Event {
-    var state by remember {
-        mutableStateOf(Lifecycle.Event.ON_ANY)
-    }
-
-    DisposableEffect(this) {
-        val observer = LifecycleEventObserver { _, event ->
-            state = event
-        }
-        this@observeAsState.addObserver(observer)
-        onDispose {
-            this@observeAsState.removeObserver(observer)
-        }
-    }
-
-    return state
-}

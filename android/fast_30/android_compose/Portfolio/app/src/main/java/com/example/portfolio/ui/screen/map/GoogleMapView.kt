@@ -1,9 +1,9 @@
 package com.example.portfolio.ui.screen.map
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.location.LocationManager
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,31 +17,36 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.portfolio.ui.common.HardwareName
 import com.example.portfolio.ui.common.PermissionName
-import com.example.portfolio.ui.screen.util.getMyLocation
+import com.example.portfolio.ui.screen.util.observeAsState
 import com.example.portfolio.ui.screen.util.permission.PermissionCheck
+import com.example.portfolio.viewmodel.MainActivityViewModel
 import com.example.portfolio.viewmodel.TestViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 
-@SuppressLint("MissingPermission")
 @Composable
 fun GoogleMapView(
-    testViewModel: TestViewModel = viewModel()
+    testViewModel: TestViewModel = viewModel(),
+    activityViewModel: MainActivityViewModel
 ) {
-
     val seoul = LatLng(37.5666805, 126.9784147)
     var myLocation by remember {
         mutableStateOf<Location?>(null)
     }
 
     val cameraPositionState = rememberCameraPositionState {
-        position = if(myLocation != null) {
-            CameraPosition.fromLatLngZoom(LatLng(myLocation!!.latitude, myLocation!!.longitude), 10f)
+        position = if (myLocation != null) {
+            CameraPosition.fromLatLngZoom(
+                LatLng(myLocation!!.latitude, myLocation!!.longitude),
+                10f
+            )
         } else {
             CameraPosition.fromLatLngZoom(seoul, 10f)
         }
@@ -57,20 +62,43 @@ fun GoogleMapView(
     val uiSettings = remember {
         MapUiSettings(
             myLocationButtonEnabled = true,
-            zoomControlsEnabled = false)
+            zoomControlsEnabled = false
+        )
     }
-    val properties by remember { mutableStateOf(
-        MapProperties(
-            isMyLocationEnabled = true,
-            isBuildingEnabled = true,
-        ))
+    val properties by remember {
+        mutableStateOf(
+            MapProperties(
+                isMyLocationEnabled = true,
+                isBuildingEnabled = true,
+            )
+        )
     }
 
-    var permissionGranted by remember { mutableStateOf(false)}
+    var permissionGranted by remember { mutableStateOf(false) }
 
-    PermissionCheck(permissionName = PermissionName.GPS, hardwareName = HardwareName.GPS, grantedCheck = {permissionGranted = it})
+    PermissionCheck(
+        permissionName = PermissionName.GPS,
+        hardwareName = HardwareName.GPS,
+        grantedCheck = { permissionGranted = it })
 
-    if(permissionGranted) {
+    if (permissionGranted) {
+
+        when (LocalLifecycleOwner.current.lifecycle.observeAsState()) {
+            Lifecycle.Event.ON_START -> {
+                activityViewModel.startLocationUpdate()
+                Log.d("mapView", "ON_START start")
+            }
+
+            Lifecycle.Event.ON_RESUME -> {
+                activityViewModel.startLocationUpdate()
+                Log.d("mapView", "onResume start")
+            }
+            Lifecycle.Event.ON_PAUSE -> {
+                activityViewModel.stopLocationUpdate()
+                Log.d("mapView", "onPause start")
+            }
+            else -> {}
+        }
 
         Box(modifier = Modifier.fillMaxSize()) {
             GoogleMap(
@@ -133,11 +161,20 @@ fun GoogleMapView(
                     .size(35.dp)
                     .align(Alignment.BottomEnd),
                 onClick = {
-                    getMyLocation(context) {
-                        cameraPositionState.position = CameraPosition.fromLatLngZoom(LatLng(it.latitude, it.longitude), 20f)
-                        testViewModel.getData("json", it.latitude, it.longitude)
+                    activityViewModel.getLocation()
+                    activityViewModel.userLocation?.let {
+                        myLocation = it
+                        cameraPositionState.position = CameraPosition.fromLatLngZoom(
+                            LatLng(it.latitude, it.longitude),
+                            20f
+                        )
+                        testViewModel.getData("json", it.latitude, it.latitude)
                     }
-                    Toast.makeText(context, "click iconButton myLocation: $myLocation", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        "click iconButton myLocation: $myLocation",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }) {
                 Icon(
                     imageVector = Icons.Filled.LocationOn,
@@ -146,6 +183,8 @@ fun GoogleMapView(
             }
         }
     } else {
-        Text(text = "권한 설정이 필요합니다.")
+        Box(modifier = Modifier.fillMaxSize()) {
+            Text(text = "권한 설정이 필요합니다.", modifier = Modifier.align(Alignment.Center))
+        }
     }
 }

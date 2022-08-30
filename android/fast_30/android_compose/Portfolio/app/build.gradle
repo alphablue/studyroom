@@ -63,6 +63,8 @@ dependencies {
     implementation "androidx.compose.animation:animation:$compose_version"
     implementation "androidx.compose.runtime:runtime:$compose_version"
 
+    // MDC
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
 
     // life cycle
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'

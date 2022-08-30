@@ -5,20 +5,22 @@ import android.location.Location
 import android.location.LocationManager
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.outlined.FilterTiltShift
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.portfolio.ui.common.HardwareName
@@ -154,6 +156,27 @@ fun GoogleMapView(
                         )
                     }
                 }
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.Center),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                IconButton(onClick = { }) {
+                    Image(
+                        imageVector = Icons.Outlined.FilterTiltShift,
+                        contentDescription = "mapCenterMarker"
+                    )
+                }
+                Text(
+                    text = "Camera Moving : ${cameraPositionState.isMoving}" +
+                            "\n Lat and lng : ${cameraPositionState.position.target.latitude}, ${cameraPositionState.position.target.longitude}",
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp
+                )
             }
 
             IconButton(

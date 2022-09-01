@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             PortfolioTheme {
-                GoogleMapView(activityViewModel = activityViewModel)
+                StartApp()
             }
         }
     }

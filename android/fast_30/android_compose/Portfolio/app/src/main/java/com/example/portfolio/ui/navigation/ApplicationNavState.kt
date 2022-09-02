@@ -1,9 +1,11 @@
 package com.example.portfolio.ui.navigation
 
+import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
@@ -23,21 +25,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun rememberApplicationNavState(
     navController: NavHostController = rememberNavController(),
-    coroutineScope: CoroutineScope = rememberCoroutineScope()
-) = remember(navController, coroutineScope) {
-    ApplicationNavState(navController, coroutineScope)
+) = remember(navController) {
+    ApplicationNavState(navController)
 }
 
 @Stable
 class ApplicationNavState(
     val navController: NavHostController,
-    coroutineScope: CoroutineScope
 ) {
-    init {
-        coroutineScope.launch {
-
-        }
-    }
 
     val bottomBarTabs = Sections.values()
     private val bottomBarRoutes = bottomBarTabs.map{it.route}
@@ -59,9 +54,10 @@ class ApplicationNavState(
                 launchSingleTop = true
                 restoreState = true
 
-                popUpTo(findStartDestination(navController.graph).id) {
-                    saveState = true
-                }
+                Log.d("checkBottomBar", "$route , current: $currentRoute")
+//                popUpTo(findStartDestination(navController.graph).id) {
+//                    saveState = true
+//                }
             }
         }
     }
@@ -74,7 +70,7 @@ enum class Sections(
     val route: String
 ) {
     HOME("home", Icons.Outlined.Home, "home/appHome"),
-    DIBS("dibs", Icons.Outlined.Favorite, "home/dibs"),
+    CART("cart", Icons.Outlined.ShoppingCart, "home/cart"),
     PROFILE("profile", Icons.Outlined.Person, "home/profile")
 }
 

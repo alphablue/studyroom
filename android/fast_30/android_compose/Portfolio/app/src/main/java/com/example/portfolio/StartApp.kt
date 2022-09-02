@@ -69,8 +69,10 @@ fun ApplicationBottomBar(
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+
+    val paddingValues = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     BottomNavigation(
-        modifier = Modifier.padding(vertical = 56.dp)
+        modifier = Modifier.padding(bottom = paddingValues),
     ) {
         tabs.forEach { screen ->
             BottomNavigationItem(

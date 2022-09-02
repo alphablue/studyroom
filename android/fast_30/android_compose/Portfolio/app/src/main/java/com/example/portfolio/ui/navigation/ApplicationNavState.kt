@@ -55,9 +55,9 @@ class ApplicationNavState(
                 restoreState = true
 
                 Log.d("checkBottomBar", "$route , current: $currentRoute")
-//                popUpTo(findStartDestination(navController.graph).id) {
-//                    saveState = true
-//                }
+                popUpTo(findStartDestination(navController.graph).id) {
+                    saveState = true
+                }
             }
         }
     }

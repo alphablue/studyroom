@@ -1,6 +1,5 @@
 package com.example.portfolio.ui.screen.util.permission
 
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -8,14 +7,12 @@ import android.provider.Settings
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -50,25 +47,40 @@ fun PermissionCheck(
 
     when(lifecycleState) {
         Lifecycle.Event.ON_RESUME -> {
-            if (context.packageManager.hasSystemFeature(
-                    hardwareName.packageManager
-                )
+            val isHardWareOk =
+                hardwareName.packageManager.filter{
+                    context.packageManager.hasSystemFeature(it)
+                }.size == hardwareName.packageManager.size
+
+            if (isHardWareOk
             ) {
                 Log.d("permissionCheck", "하드웨어 체크 [가능]")
 
-                if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                val isCheckSelfPermissionOk =
+                    permissionName.permissionName.filter {
+                        context.checkSelfPermission(it) == PackageManager.PERMISSION_GRANTED
+                    }.size == permissionName.permissionName.size
+
+                if (isCheckSelfPermissionOk) {
                     Log.d("permissionCheck", "셀프 퍼미션 체크 [승인]")
                     alertDialogState = true
                     grantedCheck(true)
                 } else {
                     Log.d("permissionCheck", "셀프 퍼미션 체크 [거부]")
-                    requestPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
 
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(
-                            context.findActivity(),
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        )
-                    ) {
+                    permissionName.permissionName.forEach {
+                        requestPermission.launch(it)
+                    }
+
+                    val isShowRequestPermissionOk =
+                        permissionName.permissionName.filter {
+                            ActivityCompat.shouldShowRequestPermissionRationale(
+                                context.findActivity(),
+                                it
+                            )
+                        }.size == permissionName.permissionName.size
+
+                    if (isShowRequestPermissionOk) {
                         Log.d("permissionCheck", "권한창 무시 [승인]")
                         grantedCheck(true)
                     } else {

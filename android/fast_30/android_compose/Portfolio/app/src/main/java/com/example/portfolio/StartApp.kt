@@ -3,8 +3,7 @@ package com.example.portfolio
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomAppBar
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -30,6 +29,7 @@ fun StartApp() {
         val appState = rememberApplicationNavState()
 
         Scaffold(
+            modifier = Modifier.fillMaxSize(),
             bottomBar = {
                 if(appState.shouldShowBottomBar) {
                     ApplicationBottomBar(
@@ -62,4 +62,21 @@ fun ApplicationBottomBar(
     val routes = remember { tabs.map { it.route }}
     val currentSection = tabs.first { it.route == currentRoute }
 
+    BottomNavigation {
+        tabs.forEach { section ->
+            BottomNavigationItem(
+                selected = (section == currentSection), 
+                onClick = { navigateToRoute(section.route) },
+                icon = {
+                    Icon(
+                        imageVector = section.icon,
+                        contentDescription = section.title
+                    )
+                },
+                label = {
+                    Text(text = section.title)
+                }
+            ) 
+        }
+    }
 }

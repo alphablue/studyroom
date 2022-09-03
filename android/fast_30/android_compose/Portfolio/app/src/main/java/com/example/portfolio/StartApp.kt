@@ -1,18 +1,14 @@
 package com.example.portfolio
 
 import android.util.Log
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
@@ -64,8 +60,10 @@ fun ApplicationBottomBar(
     navigateToRoute: (String) -> Unit,
     navController: NavController
 ) {
-    val routes = remember { tabs.map { it.route }}
-    val currentSection = tabs.first { it.route == currentRoute }
+
+    // TODO 커스텀 네비게이션을 활용하기 위해 필요함
+//    val routes = remember { tabs.map { it.route }}
+//    val currentSection = tabs.first { it.route == currentRoute }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination

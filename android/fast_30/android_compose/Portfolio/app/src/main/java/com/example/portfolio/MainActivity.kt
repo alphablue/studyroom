@@ -25,18 +25,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        val requestList = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-//        val requestPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-//            it.forEach { (permission, granted) ->
-//                if(granted) {
-//                    activityViewModel.getLocation()
-//                    Log.d("MainActivity_check", "${activityViewModel.userLocation}")
-//                }
-//            }
-//        }
-
-//        requestPermission.launch(requestList)
-//        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             var permissionGrantCheck by remember{ mutableStateOf(false)}

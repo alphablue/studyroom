@@ -21,7 +21,7 @@ class MainActivityViewModel @Inject constructor(
 
     private val defaultLocationRequestClient = LocationRequest.create().apply {
         priority = Priority.PRIORITY_HIGH_ACCURACY
-        interval = 500
+        interval = 5000
     }
 
     private val locationCallback = object: LocationCallback() {

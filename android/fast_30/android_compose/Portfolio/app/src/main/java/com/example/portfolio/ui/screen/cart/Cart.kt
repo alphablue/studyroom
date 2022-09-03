@@ -1,4 +1,4 @@
-package com.example.portfolio.ui.screen.profile
+package com.example.portfolio.ui.screen.cart
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,10 +9,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun Profile(modifier: Modifier) {
+fun Cart(modifier: Modifier) {
     Column(modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = "Profile")
+        Text(text = "Cart")
     }
 }

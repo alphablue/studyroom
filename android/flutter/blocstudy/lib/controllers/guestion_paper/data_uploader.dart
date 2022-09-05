@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:blocstudy/models/question_paper_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -24,10 +25,13 @@ class DataUploader extends GetxController {
             path.startsWith("assets/DB/paper") && path.contains(".json"))
         .toList();
 
+    List<QuestionPaperModel> questionPapers = [];
 
     for(var paper in papersInAssets){
       String stringPaperContent = await rootBundle.loadString(paper);
-      print(stringPaperContent);
+
+      questionPapers.add(QuestionPaperModel.fromJson(json.decode(stringPaperContent)));
+      print("items Numbers ${questionPapers[0].id}");
     }
   }
 }

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:blocstudy/firebase_ref/references.dart';
 import 'package:blocstudy/models/question_paper_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -14,6 +16,7 @@ class DataUploader extends GetxController {
   }
 
   Future<void> uploadData() async {
+    final fireStore = FirebaseFirestore.instance;
     /// 내부 저장소에 저장한 데이터를 불러와서 확인 하기 위해 사용 하는 부분
     final manifestContent = await DefaultAssetBundle.of(Get.context!)
         .loadString("AssetManifest.json");
@@ -32,6 +35,14 @@ class DataUploader extends GetxController {
 
       questionPapers.add(QuestionPaperModel.fromJson(json.decode(stringPaperContent)));
       print("items Numbers ${questionPapers[0].id}");
+    }
+
+    var batch = fireStore.batch();
+
+    for( var paper in questionPapers) {
+      batch.set(questionPaperRF.doc(paper.id), {
+        "title":paper.title
+      });
     }
   }
 }

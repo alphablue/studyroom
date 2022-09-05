@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 /// 앱이 실행하는동안 한번만 호출되는 것임
@@ -23,6 +24,10 @@ class DataUploader extends GetxController {
             path.startsWith("assets/DB/paper") && path.contains(".json"))
         .toList();
 
-    print(papersInAssets);
+
+    for(var paper in papersInAssets){
+      String stringPaperContent = await rootBundle.loadString(paper);
+      print(stringPaperContent);
+    }
   }
 }

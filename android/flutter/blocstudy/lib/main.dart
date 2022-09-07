@@ -1,8 +1,5 @@
-import 'package:blocstudy/controllers/data_uploader_screen.dart';
-import 'package:blocstudy/firebase_options.dart';
+import 'package:blocstudy/routes/app_routes.dart';
 import 'package:blocstudy/screen/introduction/introduction.dart';
-import 'package:blocstudy/screen/splash/splash_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,8 +12,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
-      home: AppIntroductionScreen(),
+    return GetMaterialApp(
+      getPages: AppRoutes.routes(),
     );
   }
 }

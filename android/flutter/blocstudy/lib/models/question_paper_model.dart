@@ -51,7 +51,7 @@ class Questions {
       : id = json['id'],
         question = json['question'],
         answers =
-            (json['ansers'] as List).map((e) => Answers.fromJson(e)).toList(),
+            (json['answers'] as List).map((e) => Answers.fromJson(e)).toList(),
         correctAnswer = json['correct_answer'];
 
   Map<String, dynamic> toJson() {

@@ -1,3 +1,5 @@
+import 'package:blocstudy/controllers/guestion_paper/question_paper_controller.dart';
+import 'package:blocstudy/screen/home/home_screen.dart';
 import 'package:blocstudy/screen/splash/splash_screen.dart';
 import 'package:get/get.dart';
 import '../screen/introduction/introduction.dart';
@@ -7,5 +9,8 @@ class AppRoutes{
   static List<GetPage> routes () => [
     GetPage(name: "/", page: () => SplashScreen()),
     GetPage(name: "/introduction", page: () => AppIntroductionScreen()),
+    GetPage(name: "/home", page: () => const HomeScreen(), binding: BindingsBuilder(() {
+      Get.put(QuestionPaperController());
+    }))
   ];
 }

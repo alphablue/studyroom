@@ -21,12 +21,18 @@ class AppIntroductionScreen extends StatelessWidget {
               const Icon(
                 Icons.star,
                 size: 65,
-                color: Colors.amber,
               ),
               SizedBox(height: 40,),
-              const Text('This is a study app. You can use it as you want.'
+              const Text(
+                  'This is a study app. You can use it as you want.'
                   'If you understand how it works you would be able to scale it.'
-                  'With this you will master firebase backend and flutter front end.'),
+                  'With this you will master firebase backend and flutter front end.',
+              style: TextStyle(
+                fontSize: 18,
+                color: onSurfaceTextColor,
+              ),
+              textAlign: TextAlign.center,
+              ),
               SizedBox(height: 40,),
               AppCircleButton(
                 onTap: () => null,

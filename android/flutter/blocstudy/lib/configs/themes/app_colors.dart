@@ -3,6 +3,8 @@ import 'package:blocstudy/configs/themes/app_light_theme.dart';
 import 'package:blocstudy/configs/themes/ui_parameters.dart';
 import 'package:flutter/material.dart';
 
+const Color onSurfaceTextColor = Colors.white;
+
 /// 우리앱은 그레디언트 색상을 배경으로 뿌려줄 것이기 때문에 시작점과 끝점을 지정해 줘야한다.
 const mainGradientLight = LinearGradient(
     begin: Alignment.topLeft,

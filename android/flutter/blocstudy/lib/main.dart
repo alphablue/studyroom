@@ -1,7 +1,11 @@
 import 'package:blocstudy/binding/initial_bindings.dart';
+import 'package:blocstudy/configs/themes/app_light_theme.dart';
+import 'package:blocstudy/controllers/theme_controller.dart';
 import 'package:blocstudy/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'configs/themes/app_dark_theme.dart';
 
 void main() {
 
@@ -17,6 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      theme: Get.find<ThemeController>().lightTheme,
       getPages: AppRoutes.routes(),
     );
   }

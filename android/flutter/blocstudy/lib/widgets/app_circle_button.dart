@@ -17,6 +17,8 @@ class AppCircleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      type: MaterialType.transparency,
+      clipBehavior: Clip.hardEdge,
       shape: const CircleBorder(),
       /// inkwell 을 하면 클릭이벤트를 줄 수 있음
       child: InkWell(

@@ -1,4 +1,5 @@
 import 'package:blocstudy/controllers/guestion_paper/data_uploader.dart';
+import 'package:blocstudy/firebase_ref/loading_status.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,9 +12,12 @@ class DataUploaderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text("uploading"),
+        child: Obx(() => Text(
+            controller.loadingStatus.value == LoadingStatus.completed
+                ? "Uploading completed"
+                : "Uploading ... ")),
       ),
     );
   }

@@ -1,9 +1,13 @@
+import 'package:blocstudy/binding/initial_bindings.dart';
 import 'package:blocstudy/routes/app_routes.dart';
-import 'package:blocstudy/screen/introduction/introduction.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void main() {
+
+  /// 앱이 시작될때 주입 받도록 한 것
+  WidgetsFlutterBinding.ensureInitialized();
+  InitialBindings().dependencies();
   runApp(MyApp());
 }
 

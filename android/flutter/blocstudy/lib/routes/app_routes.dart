@@ -5,5 +5,6 @@ import '../screen/introduction/introduction.dart';
 class AppRoutes{
   static List<GetPage> routes () => [
     GetPage(name: "/", page: () => AppIntroductionScreen()),
+    GetPage(name: "/introduction", page: () => AppIntroductionScreen()),
   ];
 }

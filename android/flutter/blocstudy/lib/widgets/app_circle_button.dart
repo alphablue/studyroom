@@ -22,6 +22,7 @@ class AppCircleButton extends StatelessWidget {
       shape: const CircleBorder(),
       /// inkwell 을 하면 클릭이벤트를 줄 수 있음
       child: InkWell(
+        onTap: onTap,
         child: child,
       ),
     );

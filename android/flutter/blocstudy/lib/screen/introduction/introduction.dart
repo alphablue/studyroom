@@ -1,4 +1,5 @@
 import 'package:blocstudy/configs/themes/app_colors.dart';
+import 'package:blocstudy/screen/home/home_screen.dart';
 import 'package:blocstudy/widgets/app_circle_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class AppIntroductionScreen extends StatelessWidget {
               ),
               SizedBox(height: 40,),
               AppCircleButton(
-                onTap: () => null,
+                onTap: () => Get.offAndToNamed("/home"),
                 child: const Icon(
                   Icons.arrow_forward,
                   size: 48,

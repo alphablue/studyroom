@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
     QuestionPaperController _questionPaperController = Get.find();
 
     return Scaffold(
-      body: ListView.separated(
+      body: Obx(() => ListView.separated(
           itemBuilder: (BuildContext context, int index) {
             return ClipRRect(
               child: SizedBox(
@@ -31,6 +31,6 @@ class HomeScreen extends StatelessWidget {
             );
           },
           itemCount: _questionPaperController.allPapersImages.length),
-    );
+    ));
   }
 }

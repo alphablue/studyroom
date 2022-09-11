@@ -8,13 +8,15 @@ import com.example.portfolio.MainDestinations
 import com.example.portfolio.ui.screen.cart.Cart
 import com.example.portfolio.ui.screen.home.Home
 import com.example.portfolio.ui.screen.profile.Profile
+import com.example.portfolio.viewmodel.MainActivityViewModel
 
 
 fun NavGraphBuilder.addHomeGraph(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    activityViewModel: MainActivityViewModel
 ) {
     composable(Sections.HOME.route) { from ->
-        Home(modifier)
+        Home(modifier, activityViewModel)
     }
     composable(Sections.CART.route) { from ->
         Cart(modifier)
@@ -25,13 +27,14 @@ fun NavGraphBuilder.addHomeGraph(
 }
 
 fun NavGraphBuilder.applicationNavGraph(
-    upPress: () -> Unit
+    upPress: () -> Unit,
+    activityViewModel: MainActivityViewModel
 ) {
     navigation(
         route = MainDestinations.HOME_ROUTE,
         startDestination = Sections.HOME.route
     ) {
-        addHomeGraph()
+        addHomeGraph(activityViewModel = activityViewModel)
     }
 }
 

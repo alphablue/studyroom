@@ -184,14 +184,14 @@ fun GoogleMapView(
                     .size(35.dp)
                     .align(Alignment.BottomEnd),
                 onClick = {
-                    activityViewModel.getLocation()
-                    activityViewModel.userLocation?.let {
+//                    activityViewModel.getLocation()
+                    activityViewModel.realTimeUserLocation?.let {
                         myLocation = it
                         cameraPositionState.position = CameraPosition.fromLatLngZoom(
                             LatLng(it.latitude, it.longitude),
                             20f
                         )
-                        testViewModel.getData("json", it.latitude, it.longitude)
+//                        testViewModel.getData("json", it.latitude, it.longitude)
                     }
                     Toast.makeText(
                         context,

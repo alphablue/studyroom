@@ -39,12 +39,12 @@ class GoogleRepository @Inject constructor(
                         body?.let {
                             supCoroutine.resume(it)
                         }
-                        Log.d("TestViewModel", "retrofit Service run")
+                        Log.d("GoogleRepository", "retrofit Service run")
                     }
 
                     override fun onFailure(call: Call<GoogleGeoCode>, t: Throwable) {
-                        Log.d("TestViewModel", "retrofit Service run")
-                        throw Exception("error")
+                        Log.d("GoogleRepository", "retrofit Service run")
+                        throw Exception("GoogleRepository error")
                     }
                 })
         }

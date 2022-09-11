@@ -17,13 +17,16 @@ import com.example.portfolio.ui.navigation.Sections
 import com.example.portfolio.ui.navigation.applicationNavGraph
 import com.example.portfolio.ui.navigation.rememberApplicationNavState
 import com.example.portfolio.ui.theme.PortfolioTheme
+import com.example.portfolio.viewmodel.MainActivityViewModel
 
 object MainDestinations {
     const val HOME_ROUTE = "home"
 }
 
 @Composable
-fun StartApp() {
+fun StartApp(
+    activityViewModel: MainActivityViewModel
+) {
     PortfolioTheme {
         val appState = rememberApplicationNavState()
 
@@ -45,7 +48,8 @@ fun StartApp() {
                 modifier = Modifier.padding(innerPaddingModifier)
             ) {
                 applicationNavGraph(
-                    upPress = appState::upPress
+                    upPress = appState::upPress,
+                    activityViewModel
                 )
             }
 

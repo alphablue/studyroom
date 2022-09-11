@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
             }
 
             PortfolioTheme {
-                StartApp()
+                StartApp(activityViewModel)
             }
         }
     }

@@ -1,4 +1,5 @@
 import 'package:blocstudy/firebase_ref/references.dart';
+import 'package:blocstudy/screen/login/login_screen.dart';
 import 'package:blocstudy/util/AppLogger.dart';
 import 'package:blocstudy/widgets/dialogs/dialogue_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -69,8 +70,13 @@ class AuthController extends GetxController {
     Get.dialog(Dialogs.questionStartDialogue(onTap: () {
       Get.back();
       /// 로그인 페이지로 이동이 필요함
+      navigationToLoginPage();
     }),
     barrierDismissible: false);
+  }
+
+  void navigationToLoginPage() {
+    Get.toNamed(LoginScreen.routeName);
   }
 
   bool isLoggedIn() {

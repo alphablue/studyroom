@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 const double _mobileScreenPadding = 25.0;
 const double _cardBorderRadius = 10.0;
@@ -11,7 +12,7 @@ class UIParameters {
   static EdgeInsets get mobileScreenPadding => const EdgeInsets.all(_mobileScreenPadding);
 
   /// 다크모드와 라이트 모드를 구분해주는 것
-  static bool isDarkMode(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark;
+  static bool isDarkMode() {
+    return Get.isDarkMode?true:false;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:blocstudy/configs/themes/ui_parameters.dart';
 import 'package:blocstudy/controllers/guestion_paper/question_paper_controller.dart';
 import 'package:blocstudy/screen/home/question_card.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:blocstudy/widgets/content_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,18 +14,21 @@ class HomeScreen extends StatelessWidget {
     QuestionPaperController _questionPaperController = Get.find();
 
     return Scaffold(
-      body: Obx(() => ListView.separated(
-        padding: UIParameters.mobileScreenPadding,
-        shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            return QuestionCard(model: _questionPaperController.allPapers[index]);
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(
-              height: 20,
-            );
-          },
-          itemCount: _questionPaperController.allPapers.length),
-    ));
+      body: ContentArea(
+        addPadding: false,
+        child: Obx(() => ListView.separated(
+          padding: UIParameters.mobileScreenPadding,
+          shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              return QuestionCard(model: _questionPaperController.allPapers[index]);
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return SizedBox(
+                height: 20,
+              );
+            },
+            itemCount: _questionPaperController.allPapers.length),
+    ),
+      ));
   }
 }

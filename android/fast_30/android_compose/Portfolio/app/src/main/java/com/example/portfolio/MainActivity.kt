@@ -25,6 +25,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        activityViewModel.getAddress()
 
         setContent {
             var permissionGrantCheck by remember{ mutableStateOf(false)}

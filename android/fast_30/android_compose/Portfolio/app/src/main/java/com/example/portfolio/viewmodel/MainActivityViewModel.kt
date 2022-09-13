@@ -34,7 +34,6 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    var testAPICallCount = 0
     var splitAddress by mutableStateOf("위치 정보를 찾을 수 없습니다.")
 
     // 위도 경도 데이터를 관찰하는 부분
@@ -72,11 +71,9 @@ class MainActivityViewModel @Inject constructor(
         lng: Double
     ) = onIO {
         try {
-            val reverseData = googleRepository.getReverseGeoCodeData(returnType, lat, lng)
-            _geocodeState = reverseData
+            _geocodeState = googleRepository.getReverseGeoCodeData(returnType, lat, lng)
 
-            testAPICallCount += 1
-            Log.d("MainActivityViewModel", "reverseGeoCode get data :: $testAPICallCount")
+            Log.d("MainActivityViewModel", "reverseGeoCode get data :: ${geocodeState?.results}")
         } catch (e: Exception) {
             Log.d("MainActivityViewModel", "reverseGeoCode error : ${e.message}")
         }
@@ -102,7 +99,5 @@ class MainActivityViewModel @Inject constructor(
         getLocation{
             reverseGeoCodeCallBack(it)
         }
-
-        testAPICallCount += 1
     }
 }

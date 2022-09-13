@@ -1,15 +1,17 @@
 package com.example.portfolio.ui.screen.home
 
 import android.location.Location
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Chip
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ScrollableTabRow
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.example.portfolio.viewmodel.MainActivityViewModel
+import com.google.android.material.color.MaterialColors
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -19,18 +21,32 @@ fun Home(
 ) {
 
     var menuChipSelected by remember{ mutableStateOf(0)}
-    activityViewModel.getAddress()
 
     Column(
         modifier = modifier.fillMaxSize()
     ) {
         Text(text = activityViewModel.splitAddress)
-        ScrollableTabRow(selectedTabIndex = menuChipSelected) {
+        ScrollableTabRow(
+            selectedTabIndex = menuChipSelected,
+            backgroundColor = Color.Transparent,
+            modifier = Modifier.fillMaxWidth(),
+            edgePadding = 12.dp
+        ) {
             val menuList = HomeTabItems.values()
 
             menuList.forEachIndexed { index, homeTabItems ->
-                Chip(onClick = { menuChipSelected = index }) {
-                    Text(homeTabItems.categoryName)
+                FilterChip(
+                    onClick = { menuChipSelected = index },
+                    colors = ChipDefaults.filterChipColors(
+                        selectedBackgroundColor = Color.Green,
+                        backgroundColor = Color.LightGray,
+                    ),
+                    selected = menuChipSelected == index,
+                ) {
+                    Text(
+                        homeTabItems.categoryName,
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
 

@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 final fireStore = FirebaseFirestore.instance;
 final questionPaperRF = fireStore.collection('questionPaper');
+final userRf = fireStore.collection("users");
 
 /// sub collection 을 생성해서 firestore 에 등록하는 방법을 보여주는 것임
 DocumentReference questionRF({

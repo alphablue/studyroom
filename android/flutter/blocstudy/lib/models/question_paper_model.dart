@@ -22,7 +22,7 @@ class QuestionPaperModel {
       : id = json['id'] as String,
         title = json['title'] as String,
         imageUrl = json['image_url'] as String,
-        description = json['Description'] as String,
+        description = json['description'] as String,
         timeSeconds = json['time_seconds'],
         questionCount = 0,
         questions = (json['questions'] as List)
@@ -33,18 +33,18 @@ class QuestionPaperModel {
       : id = json.id,
         title = json['title'],
         imageUrl = json['image_url'],
-        description = json['Description'],
+        description = json['description'],
         timeSeconds = json['time_seconds'],
-        questionCount = json['question_count'] as int,
+        questionCount = json['questions_count'] as int,
         questions = [];
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['image_url'] = this.imageUrl;
-    data['Description'] = this.description;
-    data['time_seconds'] = this.timeSeconds;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['image_url'] = imageUrl;
+    data['Description'] = description;
+    data['time_seconds'] = timeSeconds;
     return data;
   }
 }

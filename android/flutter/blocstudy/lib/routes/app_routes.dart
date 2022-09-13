@@ -1,4 +1,5 @@
 import 'package:blocstudy/controllers/guestion_paper/question_paper_controller.dart';
+import 'package:blocstudy/controllers/zoom_drawaer_controller.dart';
 import 'package:blocstudy/screen/home/home_screen.dart';
 import 'package:blocstudy/screen/splash/splash_screen.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ class AppRoutes{
     GetPage(name: "/introduction", page: () => AppIntroductionScreen()),
     GetPage(name: "/home", page: () => const HomeScreen(), binding: BindingsBuilder(() {
       Get.put(QuestionPaperController());
+      Get.put(MyZoomDrawerController());
     }))
   ];
 }

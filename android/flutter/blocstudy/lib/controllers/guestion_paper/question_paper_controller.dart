@@ -24,14 +24,10 @@ class QuestionPaperController extends GetxController {
 
       QuerySnapshot<Map<String, dynamic>> data = await questionPaperRF.get();
 
-      print(data.docs);
-
       final paperList = data.docs
           .map((paper) => QuestionPaperModel.fromSnapshot(paper))
           .toList();
       allPapers.assignAll(paperList);
-
-      print(allPapers);
 
       for (var paper in paperList) {
         final imgUrl = await Get.find<FirebaseStorageService>().getImage(paper.title);

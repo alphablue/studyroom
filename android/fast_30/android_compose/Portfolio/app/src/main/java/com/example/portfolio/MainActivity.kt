@@ -52,10 +52,10 @@ class MainActivity : ComponentActivity() {
                     }
                     else -> {}
                 }
-            }
 
-            PortfolioTheme {
-                StartApp(activityViewModel)
+                PortfolioTheme {
+                    StartApp(activityViewModel)
+                }
             }
         }
     }

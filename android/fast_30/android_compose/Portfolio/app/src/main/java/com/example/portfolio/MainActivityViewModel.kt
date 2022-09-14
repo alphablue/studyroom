@@ -23,7 +23,7 @@ class MainActivityViewModel @Inject constructor(
     @ApplicationContext context: Context,
     private val googleRepository: GoogleRepository,
     dispatcherProvider: DispatcherProvider
-): BaseViewModel(dispatcherProvider) {
+) : BaseViewModel(dispatcherProvider) {
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
     private val defaultLocationRequestClient = LocationRequest.create().apply {
@@ -31,7 +31,7 @@ class MainActivityViewModel @Inject constructor(
         interval = 5000
     }
 
-    private val locationCallback = object: LocationCallback() {
+    private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(result: LocationResult) {
             _realTimeUserLocation = result.lastLocation
         }
@@ -53,7 +53,11 @@ class MainActivityViewModel @Inject constructor(
         locationRequestClient: LocationRequest = defaultLocationRequestClient,
         locationCallback: LocationCallback = this.locationCallback,
     ) {
-        fusedLocationClient.requestLocationUpdates(locationRequestClient, locationCallback, Looper.getMainLooper())
+        fusedLocationClient.requestLocationUpdates(
+            locationRequestClient,
+            locationCallback,
+            Looper.getMainLooper()
+        )
     }
 
     fun stopLocationUpdate() {
@@ -82,25 +86,18 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun getAddress() {
+    fun reverseGeoCodeCallBack(lastLocation: Location) =
+        lastLocation.let {
+            getReverseGeoCode(lat = it.latitude, lng = it.longitude)
 
-        fun reverseGeoCodeCallBack(lastLocation: Location) =
-            lastLocation.let {
-                getReverseGeoCode(lat = it.latitude, lng = it.longitude)
-
-                geocodeState?.let { addData->
-                    splitAddress = addData.results.first()
-                        .formattedAddress
-                        .split(" ")
-                        .filterIndexed { index, _ ->
-                            index > 1
-                        }
-                        .joinToString(" ")
-                } ?: run { splitAddress = "위치정보 조회중" }
-            }
-
-        getLocation{
-            reverseGeoCodeCallBack(it)
+            geocodeState?.let { addData ->
+                splitAddress = addData.results.first()
+                    .formattedAddress
+                    .split(" ")
+                    .filterIndexed { index, _ ->
+                        index > 1
+                    }
+                    .joinToString(" ")
+            } ?: run { splitAddress = "위치정보 조회중" }
         }
-    }
 }

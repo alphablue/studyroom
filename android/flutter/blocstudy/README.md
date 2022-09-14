@@ -1,16 +1,18 @@
-# blocstudy
+# Firebase Study
 
-A new Flutter project.
+Learn Stack
 
-## Getting Started
+Firebase
+ - firebase storage
+ - firebase auth
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## 기능 및 결론
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. 클라우드 DB 에서 데이터 읽어 보여주기
+ 클라우드에 이미지와 json 데이터들을 저장하고 읽는 기능
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+2. 구글 로그인, 로그아웃 기능
+ 구글 계정의 로그인과 로그아웃이 가능 하다.
+
+![실행화면](./readmedata/image/runApp.gif)

@@ -1,26 +1,25 @@
 package com.example.portfolio.ui.screen.home
 
-import android.location.Location
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.portfolio.viewmodel.MainActivityViewModel
-import com.google.android.material.color.MaterialColors
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.portfolio.MainActivityViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Home(
     modifier: Modifier,
-    activityViewModel: MainActivityViewModel
+    activityViewModel: MainActivityViewModel,
+    homeViewModel: HomeViewModel = viewModel()
 ) {
 
     var menuChipSelected by remember{ mutableStateOf(0)}
+    activityViewModel.getAddress()
 
     Column(
         modifier = modifier.fillMaxSize()

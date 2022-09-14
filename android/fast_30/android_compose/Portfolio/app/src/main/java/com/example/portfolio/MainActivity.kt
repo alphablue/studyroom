@@ -16,7 +16,6 @@ import com.example.portfolio.ui.common.PermissionName
 import com.example.portfolio.ui.screen.util.observeAsState
 import com.example.portfolio.ui.screen.util.permission.PermissionCheck
 import com.example.portfolio.ui.theme.PortfolioTheme
-import com.example.portfolio.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,7 +24,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityViewModel.getAddress()
 
         setContent {
             var permissionGrantCheck by remember{ mutableStateOf(false)}

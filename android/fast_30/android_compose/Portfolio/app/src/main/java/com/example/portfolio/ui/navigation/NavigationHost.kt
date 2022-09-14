@@ -8,7 +8,7 @@ import com.example.portfolio.MainDestinations
 import com.example.portfolio.ui.screen.cart.Cart
 import com.example.portfolio.ui.screen.home.Home
 import com.example.portfolio.ui.screen.profile.Profile
-import com.example.portfolio.viewmodel.MainActivityViewModel
+import com.example.portfolio.MainActivityViewModel
 
 
 fun NavGraphBuilder.addHomeGraph(

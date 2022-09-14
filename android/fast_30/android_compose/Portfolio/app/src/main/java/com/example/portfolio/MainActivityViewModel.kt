@@ -1,4 +1,4 @@
-package com.example.portfolio.viewmodel
+package com.example.portfolio
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,6 +10,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.portfolio.model.googlegeocode.GoogleGeoCode
 import com.example.portfolio.repository.GoogleRepository
+import com.example.portfolio.viewmodel.BaseViewModel
+import com.example.portfolio.viewmodel.DispatcherProvider
+import com.example.portfolio.viewmodel.onIO
 import com.google.android.gms.location.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -93,8 +96,8 @@ class MainActivityViewModel @Inject constructor(
                             index > 1
                         }
                         .joinToString(" ")
-                }
-            } ?: run { splitAddress = "위치정보 조회중" }
+                } ?: run { splitAddress = "위치정보 조회중" }
+            }
 
         getLocation{
             reverseGeoCodeCallBack(it)

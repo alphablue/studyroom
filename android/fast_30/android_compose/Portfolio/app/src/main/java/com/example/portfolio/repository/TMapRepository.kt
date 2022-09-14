@@ -2,6 +2,7 @@ package com.example.portfolio.repository
 
 import android.util.Log
 import com.example.portfolio.di.httpmodule.RetrofitServices
+import com.example.portfolio.di.modules.TMapRetrofitService
 import com.example.portfolio.model.tmap_poi.TmapPOIModel
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -19,7 +20,7 @@ import kotlin.coroutines.suspendCoroutine
 @Module
 @InstallIn(SingletonComponent::class)
 class TMapRepository @Inject constructor(
-    private val retrofit: RetrofitServices
+    @TMapRetrofitService private val retrofit: RetrofitServices
 ){
 
     suspend fun getPOIWithTMAP(

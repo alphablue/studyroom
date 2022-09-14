@@ -2,6 +2,7 @@ package com.example.portfolio.repository
 
 import android.util.Log
 import com.example.portfolio.di.httpmodule.RetrofitServices
+import com.example.portfolio.di.modules.GoogleRetrofitService
 import com.example.portfolio.model.googlegeocode.GoogleGeoCode
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,7 +19,7 @@ import kotlin.coroutines.suspendCoroutine
 @Module
 @InstallIn(SingletonComponent::class)
 class GoogleRepository @Inject constructor(
-    private val retrofit: RetrofitServices
+    @GoogleRetrofitService private val retrofit: RetrofitServices
 ) {
 
     suspend fun getReverseGeoCodeData(

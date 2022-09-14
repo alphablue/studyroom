@@ -29,8 +29,11 @@ class HomeViewModel @Inject constructor(
         val lat = location.latitude
         val lng = location.longitude
 
+        Log.d("HomeViewModel", "getPoi called")
+
         try {
             _poiList.clear()
+            Log.d("HomeViewModel", "getPoi show location data : ${location.toString()}")
 
             category?.let { category ->
                 val resultList = tMapRepository

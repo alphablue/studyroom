@@ -69,16 +69,21 @@ class MainActivityViewModel @Inject constructor(
         fusedLocationClient.lastLocation.addOnCompleteListener {
             callback(it.result)
         }
+        Log.d("mainActivityViewModel", "getLocation Call")
     }
 
 
     fun getReverseGeoCode(
         returnType: String = "json",
         lat: Double,
-        lng: Double
+        lng: Double,
+        callback: (GoogleGeoCode) -> Unit
     ) = onIO {
         try {
-            _geocodeState = googleRepository.getReverseGeoCodeData(returnType, lat, lng)
+            googleRepository.getReverseGeoCodeData(returnType, lat, lng).let {
+                _geocodeState = it
+                callback(it)
+            }
 
             Log.d("MainActivityViewModel", "reverseGeoCode get data :: ${geocodeState?.results}")
         } catch (e: Exception) {
@@ -88,16 +93,14 @@ class MainActivityViewModel @Inject constructor(
 
     fun reverseGeoCodeCallBack(lastLocation: Location) =
         lastLocation.let {
-            getReverseGeoCode(lat = it.latitude, lng = it.longitude)
-
-            geocodeState?.let { addData ->
-                splitAddress = addData.results.first()
+            getReverseGeoCode(lat = it.latitude, lng = it.longitude) { geoCode ->
+                splitAddress = geoCode.results.first()
                     .formattedAddress
                     .split(" ")
                     .filterIndexed { index, _ ->
                         index > 1
                     }
                     .joinToString(" ")
-            } ?: run { splitAddress = "위치정보 조회중" }
+            }
         }
 }

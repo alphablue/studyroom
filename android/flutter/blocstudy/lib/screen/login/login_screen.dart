@@ -1,10 +1,12 @@
 import 'package:blocstudy/configs/themes/app_colors.dart';
+import 'package:blocstudy/controllers/auth_controller.dart';
 import 'package:blocstudy/widgets/common/main_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends GetView<AuthController> {
   const LoginScreen({Key? key}) : super(key: key);
 
   static const String routeName = "/login";
@@ -35,7 +37,7 @@ class LoginScreen extends StatelessWidget {
             ),
             MainButton(
               onTap: () {
-                
+                controller.signInWithGoogle();
               },
               child: Stack(
                 children: [

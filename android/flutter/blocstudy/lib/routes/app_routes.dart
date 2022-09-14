@@ -12,7 +12,7 @@ class AppRoutes {
         GetPage(name: "/", page: () => SplashScreen()),
         GetPage(name: "/introduction", page: () => AppIntroductionScreen()),
         GetPage(
-            name: "/home",
+            name: HomeScreen.routName,
             page: () => const HomeScreen(),
             binding: BindingsBuilder(() {
               Get.put(QuestionPaperController());

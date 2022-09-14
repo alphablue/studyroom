@@ -1,4 +1,5 @@
 import 'package:blocstudy/firebase_ref/references.dart';
+import 'package:blocstudy/screen/home/home_screen.dart';
 import 'package:blocstudy/screen/login/login_screen.dart';
 import 'package:blocstudy/util/AppLogger.dart';
 import 'package:blocstudy/widgets/dialogs/dialogue_widget.dart';
@@ -46,11 +47,17 @@ class AuthController extends GetxController {
 
         await _auth.signInWithCredential(_credential);
         await saveUser(account);
+        navigateToHomePage();
       }
 
     }on Exception catch(error) {
       AppLogger.e(error);
     }
+  }
+
+  User? getUser() {
+    _user.value = _auth.currentUser;
+    return _user.value;
   }
 
   saveUser(GoogleSignInAccount account) {
@@ -59,6 +66,20 @@ class AuthController extends GetxController {
       "name": account.displayName,
       "profilepic": account.photoUrl
     });
+  }
+
+  Future<void> signOut() async{
+    AppLogger.d('Sign out');
+    try {
+      await _auth.signOut();
+      navigateToHomePage();
+    } on FirebaseAuthException catch(e) {
+      AppLogger.e(e);
+    }
+  }
+
+  navigateToHomePage() {
+    Get.offAllNamed(HomeScreen.routName);
   }
 
   void navigateToIntroduction() {

@@ -93,7 +93,7 @@ class _DrawerButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
-        onPressed: () => onPressed,
+        onPressed: onPressed,
         icon: Icon(
           icon,
           size: 15,

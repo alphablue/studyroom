@@ -20,6 +20,7 @@ class MyZoomDrawerController extends GetxController {
   }
 
   void signOut() {
+    print('sign out button');
     Get.find<AuthController>().signOut();
   }
 
@@ -28,10 +29,12 @@ class MyZoomDrawerController extends GetxController {
   }
 
   void website() {
+    // print('website button');
     _launch("https://www.naver.com");
   }
 
   void facebook() {
+    // print('facebook button');
     _launch("https://www.facebook.com");
   }
 

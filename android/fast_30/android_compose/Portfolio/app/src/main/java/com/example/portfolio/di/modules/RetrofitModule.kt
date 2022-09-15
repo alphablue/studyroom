@@ -25,7 +25,7 @@ annotation class TMapRetrofitService
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
     private const val GOOGLE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/"
-    private const val TMAP_BASE_URL = "https://apis.openapi.sk.com/tmap/pois/search/around/"
+    private const val TMAP_BASE_URL = "https://apis.openapi.sk.com/tmap/pois/search/"
 
     @Singleton
     @Provides

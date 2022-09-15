@@ -17,10 +17,10 @@ interface RetrofitServices {
         @Query("key") key: String = GOOGLE_MAPS_API_KEY
     ): Call<GoogleGeoCode>
 
-    @GET("/")
+    @GET("around?")
     fun getPOIWithTMAP(
         @Query("version") version: Int = 1,
-        @Query("count") count: Int = 50,
+        @Query("count") count: Int,
         @Query("categories") searchCategory: String,
         @Query("centerLon") lng: Double,
         @Query("centerLat") lat: Double,

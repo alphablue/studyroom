@@ -9,6 +9,9 @@ plugins {
     //hilt
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+
+    // firebase
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -115,4 +118,10 @@ dependencies {
     // retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
 
+    // firebase
+    implementation platform('com.google.firebase:firebase-bom:30.4.1')
+    implementation "com.google.firebase:firebase-messaging-ktx"
+    implementation "com.google.firebase:firebase-firestore-ktx"
+    implementation "com.google.firebase:firebase-storage-ktx"
+    implementation 'com.google.firebase:firebase-auth-ktx'
 }

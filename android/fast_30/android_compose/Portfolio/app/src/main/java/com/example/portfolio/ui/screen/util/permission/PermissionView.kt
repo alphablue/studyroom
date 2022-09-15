@@ -72,15 +72,16 @@ fun PermissionCheck(
                         requestPermission.launch(it)
                     }
 
-                    val isShowRequestPermissionOk =
-                        permissionName.permissionName.filter {
+                    // 권한 거부중에 상세 설명이 필요한 경우 그 갯수가 0 개 야지만 모든 필수 권한을 허용한 상태이다.
+                    val isShowRequestPermissionAllOk =
+                        permissionName.permissionName.none {
                             ActivityCompat.shouldShowRequestPermissionRationale(
                                 context.findActivity(),
                                 it
                             )
-                        }.size == permissionName.permissionName.size
+                        }
 
-                    if (isShowRequestPermissionOk) {
+                    if (isShowRequestPermissionAllOk) {
                         Log.d("permissionCheck", "권한창 무시 [승인]")
                         grantedCheck(true)
                     } else {

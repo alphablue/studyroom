@@ -17,7 +17,7 @@ interface RetrofitServices {
         @Query("key") key: String = GOOGLE_MAPS_API_KEY
     ): Call<GoogleGeoCode>
 
-    @GET
+    @GET("/")
     fun getPOIWithTMAP(
         @Query("version") version: Int = 1,
         @Query("count") count: Int = 50,

@@ -9,12 +9,23 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Qualifier
 import javax.inject.Singleton
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class GoogleRetrofitService
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class TMapRetrofitService
+
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
     private const val GOOGLE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/"
+    private const val TMAP_BASE_URL = "https://apis.openapi.sk.com/tmap/pois/search/around/"
 
     @Singleton
     @Provides
@@ -26,15 +37,23 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideRetrofitService(okHttpClient: OkHttpClient): Retrofit =
+    @GoogleRetrofitService
+    fun provideGoogleRetrofitService(okHttpClient: OkHttpClient): RetrofitServices =
         Retrofit.Builder()
             .baseUrl(GOOGLE_BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+            .create(RetrofitServices::class.java)
 
     @Singleton
     @Provides
-    fun provideRetrofitServiceClient(retrofit: Retrofit): RetrofitServices =
-        retrofit.create(RetrofitServices::class.java)
+    @TMapRetrofitService
+    fun provideTMapRetrofitService(okHttpClient: OkHttpClient): RetrofitServices =
+        Retrofit.Builder()
+            .baseUrl(TMAP_BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(RetrofitServices::class.java)
 }

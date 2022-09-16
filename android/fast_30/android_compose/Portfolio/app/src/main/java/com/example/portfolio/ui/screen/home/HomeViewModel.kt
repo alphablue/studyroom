@@ -80,5 +80,5 @@ data class NearRestaurantInfo(
     val address: String,
     val lon: Double,
     val lat: Double,
-    val rating: Double = Random.nextDouble(0.0, 5.0)
+    val rating: Float = Random.nextDouble(0.0, 5.0).toFloat()
 )

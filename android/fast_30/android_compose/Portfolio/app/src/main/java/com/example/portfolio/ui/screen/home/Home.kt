@@ -3,23 +3,24 @@ package com.example.portfolio.ui.screen.home
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import androidx.compose.foundation.Image
+import android.widget.RatingBar
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.viewinterop.AndroidViewBinding
+import androidx.core.app.ActivityCompat
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.portfolio.MainActivityViewModel
+import com.example.portfolio.R
+import com.example.portfolio.databinding.StarRatingBarBinding
 import com.example.portfolio.repository.firebasemodule.FirebaseObject
-import dagger.hilt.android.AndroidEntryPoint
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -75,6 +76,7 @@ fun Home(
 
         PoiItem(
             context = LocalContext.current,
+            item = NearRestaurantInfo("test", "test", 0.0, 0.0)
         )
     }
 }
@@ -82,7 +84,8 @@ fun Home(
 @Composable
 fun PoiItem(
     context: Context,
-    modifier: Modifier = Modifier
+    item: NearRestaurantInfo,
+    modifier: Modifier = Modifier,
 ) {
     var defaultUri by remember {
         mutableStateOf<Uri?>(null)
@@ -109,6 +112,20 @@ fun PoiItem(
             contentDescription = "defaultImage"
         )
 
+        Column {
+            Text(item.name)
+            StarRatingBar(rateCount = item.rating)
+        }
+
+    }
+}
+
+@Composable
+fun StarRatingBar(
+    rateCount: Float
+) {
+    AndroidViewBinding(StarRatingBarBinding::inflate) {
+        ratingBar.rating = rateCount
     }
 }
 

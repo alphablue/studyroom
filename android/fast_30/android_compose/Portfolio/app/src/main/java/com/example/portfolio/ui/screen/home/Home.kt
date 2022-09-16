@@ -37,9 +37,11 @@ fun Home(
     }
 
 
-    homeViewModel.poiList.forEach {
-        Log.d("home screen ", it.toString())
-    }
+//    homeViewModel.poiList.forEach {
+//        Log.d("home screen ", it.toString())
+//    }
+
+    Log.d("home", "${homeViewModel.poiList.size}")
 
     Column(
         modifier = modifier.fillMaxSize()

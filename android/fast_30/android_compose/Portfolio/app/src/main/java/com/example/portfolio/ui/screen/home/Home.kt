@@ -5,6 +5,8 @@ import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -84,8 +86,12 @@ fun Home(
             }
         }
 
-        homeViewModel.poiList.forEach {
-            PoiItem(context = LocalContext.current, item = it, defaultUri = defaultUri)
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth().wrapContentHeight()
+        ){
+            items(homeViewModel.poiList) { poiItem ->
+                PoiItem(context = LocalContext.current, item = poiItem, defaultUri = defaultUri)
+            }
         }
 
     }

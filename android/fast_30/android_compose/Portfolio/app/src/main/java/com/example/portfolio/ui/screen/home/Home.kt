@@ -3,24 +3,26 @@ package com.example.portfolio.ui.screen.home
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import android.widget.RatingBar
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.viewinterop.AndroidViewBinding
-import androidx.core.app.ActivityCompat
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.portfolio.MainActivityViewModel
-import com.example.portfolio.R
-import com.example.portfolio.databinding.StarRatingBarBinding
 import com.example.portfolio.repository.firebasemodule.FirebaseObject
+import com.example.portfolio.ui.screen.util.number2Digits
+import com.example.portfolio.ui.theme.gray
+import com.example.portfolio.ui.theme.yellow
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -33,6 +35,10 @@ fun Home(
     var menuChipSelected by remember { mutableStateOf(0) }
     val menuList = HomeTabItems.values()
 
+    var defaultUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
     LaunchedEffect(true) {
         activityViewModel.getLocation { lastLocation ->
 
@@ -43,6 +49,10 @@ fun Home(
                 category = menuList.first().searchPara,
                 count = 200
             )
+        }
+
+        FirebaseObject.getDefaultUrl {
+            defaultUri = it
         }
     }
 
@@ -74,10 +84,10 @@ fun Home(
             }
         }
 
-        PoiItem(
-            context = LocalContext.current,
-            item = NearRestaurantInfo("test", "test", 0.0, 0.0)
-        )
+        homeViewModel.poiList.forEach {
+            PoiItem(context = LocalContext.current, item = it, defaultUri = defaultUri)
+        }
+
     }
 }
 
@@ -86,23 +96,15 @@ fun PoiItem(
     context: Context,
     item: NearRestaurantInfo,
     modifier: Modifier = Modifier,
+    defaultUri: Uri?
 ) {
-    var defaultUri by remember {
-        mutableStateOf<Uri?>(null)
-    }
-
-    FirebaseObject.getDefaultUrl {
-        defaultUri = it
-    }
 
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(80.dp)
+            .height(100.dp)
             .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
-
-
         Log.d("Home poi item", defaultUri.toString())
 
         AsyncImage(
@@ -114,20 +116,51 @@ fun PoiItem(
 
         Column {
             Text(item.name)
-            StarRatingBar(rateCount = item.rating)
-        }
 
+            PoiDetailItem(
+                imageVector = Icons.Filled.Star,
+                description = "rating",
+                contentText = item.rating.number2Digits(),
+                tint = yellow
+            )
+
+            PoiDetailItem(
+                imageVector = Icons.Outlined.Timer,
+                description = "deliveryTimer",
+                contentText = item.deliveryTime
+            )
+
+            Text(text = item.deliveryTip)
+        }
     }
+    Spacer(modifier = Modifier
+        .height(1.dp)
+        .fillMaxWidth()
+        .background(gray))
 }
 
 @Composable
-fun StarRatingBar(
-    rateCount: Float
+fun PoiDetailItem(
+    imageVector: ImageVector,
+    description: String,
+    contentText: String,
+    tint: Color? = null
 ) {
-    AndroidViewBinding(StarRatingBarBinding::inflate) {
-        ratingBar.rating = rateCount
+    Row {
+        tint?.let {
+            Icon(
+                imageVector = imageVector,
+                contentDescription = description,
+                tint = it
+            )
+        } ?: Icon(
+            imageVector = imageVector,
+            contentDescription = description
+        )
+        Text(text = contentText)
     }
 }
+
 
 enum class HomeTabItems(val categoryName: String, val searchPara: String) {
     TOTAL("전체", "식당"),

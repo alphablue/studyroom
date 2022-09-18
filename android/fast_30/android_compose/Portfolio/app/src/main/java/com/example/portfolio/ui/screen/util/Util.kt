@@ -19,3 +19,7 @@ fun Context.findActivity(): Activity {
 
     throw IllegalStateException("no activity")
 }
+
+fun Float.number2Digits(): String {
+    return String.format("%.2f", this)
+}

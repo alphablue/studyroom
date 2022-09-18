@@ -2,6 +2,7 @@ package com.example.portfolio.ui.screen.home
 
 import android.location.Location
 import android.util.Log
+import androidx.compose.material.Text
 import androidx.compose.runtime.mutableStateListOf
 import com.example.portfolio.model.tmap_poi.Poi
 import com.example.portfolio.repository.TMapRepository
@@ -11,6 +12,7 @@ import com.example.portfolio.viewmodel.onIO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlin.random.Random
+import kotlin.random.nextInt
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -80,5 +82,17 @@ data class NearRestaurantInfo(
     val address: String,
     val lon: Double,
     val lat: Double,
-    val rating: Float = Random.nextDouble(0.0, 5.0).toFloat()
+    val rating: Float = Random.nextDouble(0.0, 5.0).toFloat(),
+    val deliveryTime: String = run {
+        val firstTime = Random.nextInt(1..7)
+        val secondTime = Random.nextInt(10..35)
+
+        "${firstTime}분 ~ ${secondTime}분"
+    },
+    val deliveryTip: String = run {
+        val firstTip = Random.nextInt(100..350)
+        val secondTip = Random.nextInt(500..4000)
+
+        "배달팁 ${firstTip}원 ~ ${secondTip}원"
+    }
 )

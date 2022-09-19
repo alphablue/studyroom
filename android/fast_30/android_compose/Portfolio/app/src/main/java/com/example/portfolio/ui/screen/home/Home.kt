@@ -167,7 +167,6 @@ fun PoiDetailItem(
     }
 }
 
-
 enum class HomeTabItems(val categoryName: String, val searchPara: String) {
     TOTAL("전체", "식당"),
     KOREAFOOD("한식", "한식"),

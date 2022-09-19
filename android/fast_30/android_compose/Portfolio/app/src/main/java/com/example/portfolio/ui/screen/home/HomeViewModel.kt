@@ -2,7 +2,6 @@ package com.example.portfolio.ui.screen.home
 
 import android.location.Location
 import android.util.Log
-import androidx.compose.material.Text
 import androidx.compose.runtime.mutableStateListOf
 import com.example.portfolio.model.tmap_poi.Poi
 import com.example.portfolio.repository.TMapRepository

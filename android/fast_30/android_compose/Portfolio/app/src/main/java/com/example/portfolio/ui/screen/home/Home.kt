@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,10 +19,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.portfolio.MainActivityViewModel
+import com.example.portfolio.MainDestinations
 import com.example.portfolio.repository.firebasemodule.FirebaseObject
+import com.example.portfolio.ui.screen.home.detailview.detailRout
 import com.example.portfolio.ui.screen.util.number2Digits
 import com.example.portfolio.ui.theme.gray
 import com.example.portfolio.ui.theme.yellow
@@ -30,6 +34,7 @@ import com.example.portfolio.ui.theme.yellow
 @Composable
 fun Home(
     modifier: Modifier,
+    navController: NavController,
     activityViewModel: MainActivityViewModel,
     homeViewModel: HomeViewModel
 ) {
@@ -90,7 +95,14 @@ fun Home(
             modifier = Modifier.fillMaxWidth().wrapContentHeight()
         ){
             items(homeViewModel.poiList) { poiItem ->
-                PoiItem(context = LocalContext.current, item = poiItem, defaultUri = defaultUri)
+                PoiItem(
+                    context = LocalContext.current,
+                    item = poiItem,
+                    defaultUri = defaultUri,
+                    itemSelect = {
+                        navController.navigate("${MainDestinations.HOME_ROUTE}/$detailRout")
+                    }
+                )
             }
         }
 
@@ -102,7 +114,8 @@ fun PoiItem(
     context: Context,
     item: NearRestaurantInfo,
     modifier: Modifier = Modifier,
-    defaultUri: Uri?
+    defaultUri: Uri?,
+    itemSelect: () -> Unit
 ) {
 
     Row(
@@ -110,6 +123,7 @@ fun PoiItem(
             .fillMaxWidth()
             .height(100.dp)
             .padding(horizontal = 8.dp, vertical = 4.dp)
+            .clickable(onClick = itemSelect)
     ) {
         Log.d("Home poi item", defaultUri.toString())
 

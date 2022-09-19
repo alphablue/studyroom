@@ -48,6 +48,7 @@ fun StartApp(
             ) {
                 applicationNavGraph(
                     upPress = appState::upPress,
+                    controller = appState.navController,
                     activityViewModel
                 )
             }

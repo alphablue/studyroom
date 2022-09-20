@@ -3,6 +3,7 @@ package com.example.portfolio.ui.navigation
 import android.util.Log
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -19,17 +20,17 @@ import com.example.portfolio.ui.screen.home.detailview.detailRout
 
 fun NavGraphBuilder.addHomeGraph(
     modifier: Modifier = Modifier,
-    navController: NavController,
+    itemSelect: (NavBackStackEntry) -> Unit,
     activityViewModel: MainActivityViewModel
 ) {
     composable(Sections.HOME.route) { from ->
         val homeViewModel = hiltViewModel<HomeViewModel>()
         Home(modifier,
-            navController,
+            itemSelect = { itemSelect(from)},
             activityViewModel,
             homeViewModel)
     }
-    composable(Sections.CART.route) { from ->
+    composable(Sections.Cart.route) { from ->
         Cart(modifier)
         Log.d("navigationTest", "cart $from")
     }
@@ -41,14 +42,17 @@ fun NavGraphBuilder.addHomeGraph(
 
 fun NavGraphBuilder.applicationNavGraph(
     upPress: () -> Unit,
-    controller: NavController,
+    itemSelect: (NavBackStackEntry) -> Unit,
     activityViewModel: MainActivityViewModel
 ) {
     navigation(
         route = MainDestinations.HOME_ROUTE,
         startDestination = Sections.HOME.route
     ) {
-        addHomeGraph(activityViewModel = activityViewModel, navController = controller)
+        addHomeGraph(
+            activityViewModel = activityViewModel,
+            itemSelect = itemSelect
+        )
     }
 
     composable(

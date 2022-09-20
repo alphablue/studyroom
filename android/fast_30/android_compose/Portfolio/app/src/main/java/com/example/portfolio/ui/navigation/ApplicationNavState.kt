@@ -12,12 +12,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.Lifecycle
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavDestination
-import androidx.navigation.NavGraph
-import androidx.navigation.NavHostController
+import androidx.navigation.*
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.portfolio.MainDestinations
+import com.example.portfolio.ui.screen.home.detailview.detailRout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -51,12 +50,23 @@ class ApplicationNavState(
     fun navigateToBottomBarRoute(route: String) {
         if(route != currentRoute) {
             navController.navigate(route) {
+                popUpTo(navController.graph.startDestinationId) {
+                    saveState = true
+                }
+
                 launchSingleTop = true
                 restoreState = true
 
                 Log.d("checkBottomBar", "$route , current: $currentRoute")
-                popUpTo(findStartDestination(navController.graph).id) {
-                    saveState = true
+            }
+        }
+    }
+
+    fun navigateToItemDetail(from: NavBackStackEntry) {
+        if(from.lifecycleIsResumed()) {
+            navController.navigate("${MainDestinations.HOME_ROUTE}/$detailRout") {
+                navArgument("test") {
+
                 }
             }
         }
@@ -70,7 +80,7 @@ enum class Sections(
     val route: String
 ) {
     HOME("home", Icons.Outlined.Home, "home/appHome"),
-    CART("cart", Icons.Outlined.ShoppingCart, "home/cart"),
+    Cart("cart", Icons.Outlined.ShoppingCart, "home/cart"),
     PROFILE("profile", Icons.Outlined.Person, "home/profile")
 }
 
@@ -83,7 +93,3 @@ private fun NavBackStackEntry.lifecycleIsResumed() =
 
 private val NavGraph.startDestination: NavDestination?
     get() = findNode(startDestinationId)
-
-private tailrec fun findStartDestination(graph: NavDestination): NavDestination {
-    return if (graph is NavGraph) findStartDestination(graph.startDestination!!) else graph
-}

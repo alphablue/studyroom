@@ -20,7 +20,6 @@ val lightSecondaryBlue = Color(0xff534bae)
 val darkSecondaryBlue = Color(0xff000051)
 
 val textColor = Color(0xffffffff)
-val accentBlue = Color(0xff00bcd4) // 강조색상
 val textPrimaryColor = Color(0xff212121)
 val textSecondaryColor = Color(0xff757575)
 val dividerColor = Color(0xffbdbdbd)

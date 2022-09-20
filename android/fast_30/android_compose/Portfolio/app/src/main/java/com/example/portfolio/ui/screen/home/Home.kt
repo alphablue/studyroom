@@ -34,7 +34,7 @@ import com.example.portfolio.ui.theme.yellow
 @Composable
 fun Home(
     modifier: Modifier,
-    navController: NavController,
+    itemSelect: ()-> Unit,
     activityViewModel: MainActivityViewModel,
     homeViewModel: HomeViewModel
 ) {
@@ -99,9 +99,7 @@ fun Home(
                     context = LocalContext.current,
                     item = poiItem,
                     defaultUri = defaultUri,
-                    itemSelect = {
-                        navController.navigate("${MainDestinations.HOME_ROUTE}/$detailRout")
-                    }
+                    itemSelect = itemSelect
                 )
             }
         }

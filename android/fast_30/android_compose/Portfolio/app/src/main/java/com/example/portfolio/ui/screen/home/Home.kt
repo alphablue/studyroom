@@ -1,6 +1,7 @@
 package com.example.portfolio.ui.screen.home
 
 import android.content.Context
+import android.location.Location
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.background
@@ -28,10 +29,7 @@ import coil.request.ImageRequest
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.repository.firebasemodule.FirebaseObject
 import com.example.portfolio.ui.screen.util.number2Digits
-import com.example.portfolio.ui.theme.gray
-import com.example.portfolio.ui.theme.textColor
-import com.example.portfolio.ui.theme.textPrimaryColor
-import com.example.portfolio.ui.theme.yellow
+import com.example.portfolio.ui.theme.*
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -51,15 +49,23 @@ fun Home(
     }
 
     LaunchedEffect(true) {
-        activityViewModel.getLocation { lastLocation ->
 
-            Log.d("Home screen", lastLocation.toString())
+        activityViewModel.userSettingLocation?.let { lastLocation ->
             activityViewModel.reverseGeoCodeCallBack(lastLocation)
             homeViewModel.getPoiData(
                 location = lastLocation,
                 category = menuList.first().searchPara,
                 count = 200
             )
+        } ?: run {
+            activityViewModel.getLocation { lastLocation ->
+                activityViewModel.reverseGeoCodeCallBack(lastLocation)
+                homeViewModel.getPoiData(
+                    location = lastLocation,
+                    category = menuList.first().searchPara,
+                    count = 200
+                )
+            }
         }
 
         FirebaseObject.getDefaultUrl {
@@ -222,7 +228,7 @@ fun MainAppBar(
         ) {
             Icon(
                 imageVector = Icons.Outlined.ShoppingCart,
-                tint = textPrimaryColor,
+                tint = lightSecondaryBlue,
                 contentDescription = "your shopping cart"
             )
         }

@@ -17,11 +17,10 @@ import com.example.portfolio.databinding.StarRatingBarBinding
 @Composable
 fun StarRatingBar(
     rateCount: Float,
+    modifier: Modifier = Modifier
 ) {
-    Surface {
-        AndroidViewBinding(StarRatingBarBinding::inflate) {
-            ratingBar.rating = rateCount
-        }
+    AndroidViewBinding(StarRatingBarBinding::inflate, modifier = modifier) {
+        ratingBar.rating = rateCount
     }
 }
 
@@ -33,7 +32,7 @@ fun IconTextButton(
     text: String,
     toggleEvent: (Boolean) -> Unit,
 ) {
-    val toggleObserver = remember { MutableInteractionSource()}
+    val toggleObserver = remember { MutableInteractionSource() }
 
     IconToggleButton(
         checked = false,

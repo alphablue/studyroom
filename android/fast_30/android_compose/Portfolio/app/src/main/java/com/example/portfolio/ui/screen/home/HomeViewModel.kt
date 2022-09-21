@@ -1,8 +1,11 @@
 package com.example.portfolio.ui.screen.home
 
 import android.location.Location
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.ui.res.painterResource
+import com.example.portfolio.R
 import com.example.portfolio.model.tmap_poi.Poi
 import com.example.portfolio.repository.TMapRepository
 import com.example.portfolio.viewmodel.BaseViewModel
@@ -68,7 +71,7 @@ class HomeViewModel @Inject constructor(
             val modelLat = modelItem.frontLat.toDouble()
             val modelLon = modelItem.frontLon.toDouble()
 
-            result.add(NearRestaurantInfo(modelItem.id, name, address, lon=modelLon, lat=modelLat))
+            result.add(NearRestaurantInfo(modelItem.id, null, name, address, lon=modelLon, lat=modelLat))
         }
 
         return result
@@ -77,6 +80,7 @@ class HomeViewModel @Inject constructor(
 
 data class NearRestaurantInfo(
     val id: String,
+    val imgUri: Uri? = null,
     val name: String,
     val address: String,
     val lon: Double,

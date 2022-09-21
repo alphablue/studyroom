@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.portfolio.MainActivityViewModel
+import com.example.portfolio.R
 import com.example.portfolio.repository.firebasemodule.FirebaseObject
 import com.example.portfolio.ui.screen.util.number2Digits
 import com.example.portfolio.ui.theme.*
@@ -143,6 +144,7 @@ fun PoiItem(
         AsyncImage(
             model = ImageRequest.Builder(context)
                 .data(defaultUri)
+                .error(R.drawable.roadingimage)
                 .build(),
             contentDescription = "defaultImage"
         )

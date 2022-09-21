@@ -11,24 +11,22 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.portfolio.MainActivityViewModel
-import com.example.portfolio.MainDestinations
 import com.example.portfolio.repository.firebasemodule.FirebaseObject
-import com.example.portfolio.ui.screen.home.detailview.detailRout
 import com.example.portfolio.ui.screen.util.number2Digits
-import com.example.portfolio.ui.theme.gray
-import com.example.portfolio.ui.theme.yellow
+import com.example.portfolio.ui.theme.*
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -66,7 +64,7 @@ fun Home(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        Text(text = activityViewModel.splitAddress)
+        MainAppBar(userAddress = activityViewModel.splitAddress)
         ScrollableTabRow(
             selectedTabIndex = menuChipSelected,
             backgroundColor = Color.Transparent,
@@ -92,7 +90,9 @@ fun Home(
         }
 
         LazyColumn(
-            modifier = Modifier.fillMaxWidth().wrapContentHeight()
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
         ){
             items(homeViewModel.poiList) { poiItem ->
                 PoiItem(
@@ -176,6 +176,33 @@ fun PoiDetailItem(
             contentDescription = description
         )
         Text(text = contentText)
+    }
+}
+
+@Composable
+fun MainAppBar(
+    userAddress: String,
+) {
+    TopAppBar(modifier = Modifier.statusBarsPadding()) {
+        Spacer(modifier = Modifier.weight(0.25f))
+        Text(
+            userAddress,
+            color = textColor,
+            modifier= Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically)
+        )
+
+        IconButton(
+            onClick = { /*TODO*/ },
+            modifier = Modifier.align(Alignment.CenterVertically)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.ShoppingCart,
+                tint = textPrimaryColor,
+                contentDescription = "your shopping cart"
+            )
+        }
     }
 }
 

@@ -21,9 +21,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavBackStackEntry
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.portfolio.MainActivityViewModel
+import com.example.portfolio.model.tmap_poi.Poi
 import com.example.portfolio.repository.firebasemodule.FirebaseObject
 import com.example.portfolio.ui.screen.util.number2Digits
 import com.example.portfolio.ui.theme.*
@@ -32,7 +34,7 @@ import com.example.portfolio.ui.theme.*
 @Composable
 fun Home(
     modifier: Modifier,
-    itemSelect: ()-> Unit,
+    itemSelect: (NearRestaurantInfo)-> Unit,
     activityViewModel: MainActivityViewModel,
     homeViewModel: HomeViewModel
 ) {
@@ -99,7 +101,7 @@ fun Home(
                     context = LocalContext.current,
                     item = poiItem,
                     defaultUri = defaultUri,
-                    itemSelect = itemSelect
+                    itemSelect = { itemSelect(poiItem) }
                 )
             }
         }

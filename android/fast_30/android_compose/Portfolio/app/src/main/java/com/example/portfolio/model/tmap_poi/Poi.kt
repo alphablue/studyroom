@@ -1,5 +1,9 @@
 package com.example.portfolio.model.tmap_poi
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Poi(
     val buildingNo1: String,
     val buildingNo2: String,
@@ -34,4 +38,4 @@ data class Poi(
     val stId: String,
     val telNo: String,
     val upperAddrName: String
-)
+): Parcelable

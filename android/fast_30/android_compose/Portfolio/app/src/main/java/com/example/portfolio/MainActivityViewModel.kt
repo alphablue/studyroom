@@ -9,7 +9,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.portfolio.model.googlegeocode.GoogleGeoCode
+import com.example.portfolio.model.tmap_poi.Poi
 import com.example.portfolio.repository.GoogleRepository
+import com.example.portfolio.ui.screen.home.NearRestaurantInfo
 import com.example.portfolio.viewmodel.BaseViewModel
 import com.example.portfolio.viewmodel.DispatcherProvider
 import com.example.portfolio.viewmodel.onIO
@@ -47,6 +49,9 @@ class MainActivityViewModel @Inject constructor(
     private var _geocodeState by mutableStateOf<GoogleGeoCode?>(null)
     val geocodeState: GoogleGeoCode?
         get() = _geocodeState
+
+    // detail 부분에서 데이터를 받기위한 부분
+    var detailItem by mutableStateOf<NearRestaurantInfo?>(null)
 
     @SuppressLint("MissingPermission")
     fun startLocationUpdate(

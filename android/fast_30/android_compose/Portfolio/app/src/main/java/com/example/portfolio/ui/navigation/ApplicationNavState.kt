@@ -16,6 +16,7 @@ import androidx.navigation.*
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.portfolio.MainDestinations
+import com.example.portfolio.model.tmap_poi.Poi
 import com.example.portfolio.ui.screen.home.detailview.detailRout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -64,11 +65,7 @@ class ApplicationNavState(
 
     fun navigateToItemDetail(from: NavBackStackEntry) {
         if(from.lifecycleIsResumed()) {
-            navController.navigate("${MainDestinations.HOME_ROUTE}/$detailRout") {
-                navArgument("test") {
-
-                }
-            }
+            navController.navigate("${MainDestinations.HOME_ROUTE}/$detailRout")
         }
     }
 

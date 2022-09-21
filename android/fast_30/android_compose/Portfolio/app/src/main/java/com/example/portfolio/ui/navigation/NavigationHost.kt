@@ -25,10 +25,15 @@ fun NavGraphBuilder.addHomeGraph(
 ) {
     composable(Sections.HOME.route) { from ->
         val homeViewModel = hiltViewModel<HomeViewModel>()
-        Home(modifier,
-            itemSelect = { itemSelect(from)},
+        Home(
+            modifier,
+            itemSelect = { poi ->
+                itemSelect(from)
+                activityViewModel.detailItem = poi
+            },
             activityViewModel,
-            homeViewModel)
+            homeViewModel
+        )
     }
     composable(Sections.Cart.route) { from ->
         Cart(modifier)
@@ -57,8 +62,10 @@ fun NavGraphBuilder.applicationNavGraph(
 
     composable(
         route = "${MainDestinations.HOME_ROUTE}/$detailRout"
-    ){
-        ListItemDetailView()
+    ) {
+        ListItemDetailView(
+            activityViewModel
+        )
     }
 }
 

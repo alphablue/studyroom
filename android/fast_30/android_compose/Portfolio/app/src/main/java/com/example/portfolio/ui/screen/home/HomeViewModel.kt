@@ -43,7 +43,6 @@ class HomeViewModel @Inject constructor(
                     .pois
                     .poi
 
-
                 _poiList.addAll(convertPoiData(resultList))
 
             }?: run {
@@ -69,7 +68,7 @@ class HomeViewModel @Inject constructor(
             val modelLat = modelItem.frontLat.toDouble()
             val modelLon = modelItem.frontLon.toDouble()
 
-            result.add(NearRestaurantInfo(name, address, lon=modelLon, lat=modelLat))
+            result.add(NearRestaurantInfo(modelItem.id, name, address, lon=modelLon, lat=modelLat))
         }
 
         return result
@@ -77,6 +76,7 @@ class HomeViewModel @Inject constructor(
 }
 
 data class NearRestaurantInfo(
+    val id: String,
     val name: String,
     val address: String,
     val lon: Double,

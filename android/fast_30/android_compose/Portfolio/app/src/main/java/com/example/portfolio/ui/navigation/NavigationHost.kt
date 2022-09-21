@@ -64,7 +64,8 @@ fun NavGraphBuilder.applicationNavGraph(
         route = "${MainDestinations.HOME_ROUTE}/$detailRout"
     ) {
         ListItemDetailView(
-            activityViewModel
+            activityViewModel,
+            upPress = upPress
         )
     }
 }

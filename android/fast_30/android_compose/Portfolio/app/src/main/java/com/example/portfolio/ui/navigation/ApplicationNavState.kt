@@ -2,24 +2,20 @@ package com.example.portfolio.ui.navigation
 
 import android.util.Log
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.Lifecycle
-import androidx.navigation.*
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.portfolio.MainDestinations
-import com.example.portfolio.model.tmap_poi.Poi
 import com.example.portfolio.ui.screen.home.detailview.detailRout
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -69,6 +65,12 @@ class ApplicationNavState(
         }
     }
 
+    fun navigateToGoogleMap(from: NavBackStackEntry) {
+        if(from.lifecycleIsResumed()) {
+            navController.navigate(MainDestinations.GOOGLE_MAP)
+        }
+    }
+
 }
 
 enum class Sections(
@@ -86,7 +88,3 @@ enum class Sections(
  * */
 private fun NavBackStackEntry.lifecycleIsResumed() =
     this.lifecycle.currentState == Lifecycle.State.RESUMED
-
-
-private val NavGraph.startDestination: NavDestination?
-    get() = findNode(startDestinationId)

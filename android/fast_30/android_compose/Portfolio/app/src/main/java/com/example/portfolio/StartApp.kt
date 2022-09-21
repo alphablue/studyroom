@@ -20,6 +20,7 @@ import com.example.portfolio.ui.theme.PortfolioTheme
 
 object MainDestinations {
     const val HOME_ROUTE = "home"
+    const val GOOGLE_MAP = "GoogleMap"
 }
 
 @Composable
@@ -49,6 +50,7 @@ fun StartApp(
                 applicationNavGraph(
                     upPress = appState::upPress,
                     itemSelect = appState::navigateToItemDetail,
+                    goMap = appState::navigateToGoogleMap,
                     activityViewModel
                 )
             }

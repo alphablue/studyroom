@@ -3,13 +3,10 @@ package com.example.portfolio.ui.screen.map
 import android.content.Context
 import android.location.Location
 import android.location.LocationManager
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.outlined.FilterTiltShift
@@ -17,26 +14,24 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.ui.common.HardwareName
 import com.example.portfolio.ui.common.PermissionName
-import com.example.portfolio.ui.screen.util.observeAsState
 import com.example.portfolio.ui.screen.util.permission.PermissionCheck
-import com.example.portfolio.viewmodel.TestViewModel
+import com.example.portfolio.ui.theme.lightSecondaryBlue
+import com.example.portfolio.ui.theme.textColor
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 
 @Composable
 fun GoogleMapView(
-    testViewModel: TestViewModel = viewModel(),
-    activityViewModel: MainActivityViewModel
+    activityViewModel: MainActivityViewModel,
+    upPress: () -> Unit,
 ) {
     val seoul = LatLng(37.5666805, 126.9784147)
     var myLocation by remember {
@@ -63,7 +58,7 @@ fun GoogleMapView(
 
     val uiSettings = remember {
         MapUiSettings(
-            myLocationButtonEnabled = true,
+            myLocationButtonEnabled = false,
             zoomControlsEnabled = false
         )
     }
@@ -81,25 +76,20 @@ fun GoogleMapView(
     PermissionCheck(
         permissionName = PermissionName.GPS,
         hardwareName = HardwareName.GPS,
-        grantedCheck = { permissionGranted = it })
+        grantedCheck = { permissionGranted = it }
+    )
 
     if (permissionGranted) {
 
-        when (LocalLifecycleOwner.current.lifecycle.observeAsState()) {
-            Lifecycle.Event.ON_START -> {
-                activityViewModel.startLocationUpdate()
-                Log.d("mapView", "ON_START start")
-            }
+        LaunchedEffect(key1 = true) {
+            activityViewModel.getLocation { lastLocation ->
+                myLocation = lastLocation
 
-            Lifecycle.Event.ON_RESUME -> {
-                activityViewModel.startLocationUpdate()
-                Log.d("mapView", "onResume start")
+                cameraPositionState.position = CameraPosition.fromLatLngZoom(
+                    LatLng(lastLocation.latitude, lastLocation.longitude),
+                    20f
+                )
             }
-            Lifecycle.Event.ON_PAUSE -> {
-                activityViewModel.stopLocationUpdate()
-                Log.d("mapView", "onPause start")
-            }
-            else -> {}
         }
 
         Box(modifier = Modifier.fillMaxSize()) {
@@ -127,13 +117,6 @@ fun GoogleMapView(
                 uiSettings = uiSettings,
                 cameraPositionState = cameraPositionState
             ) {
-                Marker(
-                    state = MarkerState(
-                        position = seoul
-                    ),
-                    title = "Singapore",
-                    snippet = "Marker in Singapore"
-                )
 
                 myLocation?.let {
                     Marker(
@@ -143,18 +126,6 @@ fun GoogleMapView(
                         title = "my location",
                         snippet = "lat : ${it.latitude}, log : ${it.longitude}"
                     )
-                }
-
-                if (clickLocation.isNotEmpty()) {
-                    clickLocation.forEach {
-                        Marker(
-                            state = MarkerState(
-                                position = it
-                            ),
-                            title = "clicked position",
-                            snippet = "lat : ${it.latitude}, log : ${it.longitude}"
-                        )
-                    }
                 }
             }
 
@@ -182,7 +153,8 @@ fun GoogleMapView(
             IconButton(
                 modifier = Modifier
                     .size(35.dp)
-                    .align(Alignment.BottomEnd),
+                    .align(Alignment.BottomEnd)
+                    .offset(x = (-24).dp, y = (-60).dp),
                 onClick = {
 //                    activityViewModel.getLocation()
                     activityViewModel.realTimeUserLocation?.let {
@@ -198,10 +170,26 @@ fun GoogleMapView(
                         "click iconButton myLocation: $myLocation",
                         Toast.LENGTH_SHORT
                     ).show()
-                }) {
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Filled.LocationOn,
                     contentDescription = "LocationButton"
+                )
+            }
+
+            TextButton(
+                onClick = { upPress() },
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(horizontal = 12.dp, vertical = 8.dp)
+                    .align(Alignment.BottomCenter),
+                colors = ButtonDefaults.buttonColors(contentColor = lightSecondaryBlue)
+            ) {
+                Text(
+                    text = "이 위치로 설정하기",
+                    color = textColor,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }

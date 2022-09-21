@@ -4,23 +4,24 @@ import android.util.Log
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.MainDestinations
 import com.example.portfolio.ui.screen.cart.Cart
 import com.example.portfolio.ui.screen.home.Home
-import com.example.portfolio.ui.screen.profile.Profile
-import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.ui.screen.home.HomeViewModel
 import com.example.portfolio.ui.screen.home.detailview.ListItemDetailView
 import com.example.portfolio.ui.screen.home.detailview.detailRout
+import com.example.portfolio.ui.screen.map.GoogleMapView
+import com.example.portfolio.ui.screen.profile.Profile
 
 
 fun NavGraphBuilder.addHomeGraph(
     modifier: Modifier = Modifier,
     itemSelect: (NavBackStackEntry) -> Unit,
+    goMap: (NavBackStackEntry) -> Unit,
     activityViewModel: MainActivityViewModel
 ) {
     composable(Sections.HOME.route) { from ->
@@ -31,6 +32,7 @@ fun NavGraphBuilder.addHomeGraph(
                 itemSelect(from)
                 activityViewModel.detailItem = poi
             },
+            goMap = { goMap(from) },
             activityViewModel,
             homeViewModel
         )
@@ -48,6 +50,7 @@ fun NavGraphBuilder.addHomeGraph(
 fun NavGraphBuilder.applicationNavGraph(
     upPress: () -> Unit,
     itemSelect: (NavBackStackEntry) -> Unit,
+    goMap: (NavBackStackEntry) -> Unit,
     activityViewModel: MainActivityViewModel
 ) {
     navigation(
@@ -56,6 +59,7 @@ fun NavGraphBuilder.applicationNavGraph(
     ) {
         addHomeGraph(
             activityViewModel = activityViewModel,
+            goMap = goMap,
             itemSelect = itemSelect
         )
     }
@@ -65,6 +69,15 @@ fun NavGraphBuilder.applicationNavGraph(
     ) {
         ListItemDetailView(
             activityViewModel,
+            upPress = upPress
+        )
+    }
+
+    composable(
+        route = MainDestinations.GOOGLE_MAP
+    ) {
+        GoogleMapView(
+            activityViewModel = activityViewModel,
             upPress = upPress
         )
     }

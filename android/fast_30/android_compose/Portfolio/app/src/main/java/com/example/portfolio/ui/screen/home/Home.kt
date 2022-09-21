@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material.icons.outlined.Timer
@@ -19,22 +20,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavBackStackEntry
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.portfolio.MainActivityViewModel
-import com.example.portfolio.model.tmap_poi.Poi
 import com.example.portfolio.repository.firebasemodule.FirebaseObject
 import com.example.portfolio.ui.screen.util.number2Digits
-import com.example.portfolio.ui.theme.*
+import com.example.portfolio.ui.theme.gray
+import com.example.portfolio.ui.theme.textColor
+import com.example.portfolio.ui.theme.textPrimaryColor
+import com.example.portfolio.ui.theme.yellow
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Home(
     modifier: Modifier,
-    itemSelect: (NearRestaurantInfo)-> Unit,
+    itemSelect: (NearRestaurantInfo) -> Unit,
+    goMap: () -> Unit,
     activityViewModel: MainActivityViewModel,
     homeViewModel: HomeViewModel
 ) {
@@ -66,7 +70,10 @@ fun Home(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        MainAppBar(userAddress = activityViewModel.splitAddress)
+        MainAppBar(
+            userAddress = activityViewModel.splitAddress,
+            goMap = goMap
+        )
         ScrollableTabRow(
             selectedTabIndex = menuChipSelected,
             backgroundColor = Color.Transparent,
@@ -95,7 +102,7 @@ fun Home(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-        ){
+        ) {
             items(homeViewModel.poiList) { poiItem ->
                 PoiItem(
                     context = LocalContext.current,
@@ -153,10 +160,12 @@ fun PoiItem(
             Text(text = item.deliveryTip)
         }
     }
-    Spacer(modifier = Modifier
-        .height(1.dp)
-        .fillMaxWidth()
-        .background(gray))
+    Spacer(
+        modifier = Modifier
+            .height(1.dp)
+            .fillMaxWidth()
+            .background(gray)
+    )
 }
 
 @Composable
@@ -184,16 +193,28 @@ fun PoiDetailItem(
 @Composable
 fun MainAppBar(
     userAddress: String,
+    goMap: () -> Unit
 ) {
     TopAppBar(modifier = Modifier.statusBarsPadding()) {
         Spacer(modifier = Modifier.weight(0.25f))
-        Text(
-            userAddress,
-            color = textColor,
-            modifier= Modifier
+
+        Row(
+            modifier = Modifier
                 .weight(1f)
+                .clickable(onClick = goMap)
                 .align(Alignment.CenterVertically)
-        )
+        ) {
+            Text(
+                userAddress,
+                color = textColor,
+                fontWeight = FontWeight.Bold
+            )
+            Icon(
+                imageVector = Icons.Filled.ArrowDropDown,
+                tint = textColor,
+                contentDescription = "new position button"
+            )
+        }
 
         IconButton(
             onClick = { /*TODO*/ },

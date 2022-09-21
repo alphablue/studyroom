@@ -9,7 +9,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.portfolio.model.googlegeocode.GoogleGeoCode
-import com.example.portfolio.model.tmap_poi.Poi
 import com.example.portfolio.repository.GoogleRepository
 import com.example.portfolio.ui.screen.home.NearRestaurantInfo
 import com.example.portfolio.viewmodel.BaseViewModel
@@ -40,6 +39,7 @@ class MainActivityViewModel @Inject constructor(
     }
 
     var splitAddress by mutableStateOf("위치 정보를 찾을 수 없습니다.")
+    var userSettingLocation: Location? = null
 
     // 위도 경도 데이터를 관찰하는 부분
     private var _realTimeUserLocation by mutableStateOf<Location?>(null)

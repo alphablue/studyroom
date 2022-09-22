@@ -1,18 +1,20 @@
 package com.example.portfolio.repository.firebasemodule
 
 import android.net.Uri
-import androidx.compose.runtime.Composable
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 object FirebaseObject {
-    val fireStoreInstance = Firebase.storage
+    private val fireStorageInstance = Firebase.storage
 
     fun getDefaultUrl(callback: (Uri) -> Unit) {
-        fireStoreInstance.reference
+        fireStorageInstance.reference
             .child("delivery_app/roadingimage.jpg")
             .downloadUrl.addOnSuccessListener {
                 callback(it)
             }
+    }
+
+    fun dbSettingInit() {
     }
 }

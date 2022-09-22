@@ -3,6 +3,7 @@ package com.example.portfolio
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -19,6 +20,7 @@ import com.example.portfolio.ui.common.PermissionName
 import com.example.portfolio.ui.screen.util.observeAsState
 import com.example.portfolio.ui.screen.util.permission.PermissionCheck
 import com.example.portfolio.ui.theme.PortfolioTheme
+import com.google.type.DateTime
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.IllegalStateException
 
@@ -64,3 +66,34 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+data class User(
+    val id: String,
+    val profileImage: Uri,
+    val name: String,
+    val phoneNumber: String
+)
+
+data class Like(
+    val id: String,
+    val restaurantId: String,
+    val restaurantImage: Uri,
+    val restaurantName: String
+)
+
+data class Review(
+    val takePicture: Uri?,
+    val rating: Float,
+    val content: String,
+    val date: DateTime,
+    val userId: String,
+    val restaurantId: String,
+)
+
+data class RestaurantMenu(
+    val restaurantId: String,
+    val image: String,
+    val restaurantName: String,
+    val price: String,
+    val detailContent: String
+)

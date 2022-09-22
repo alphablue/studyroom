@@ -1,12 +1,11 @@
 package com.example.portfolio.ui.screen.home.detailview
 
 import android.net.Uri
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -28,12 +27,19 @@ import com.example.portfolio.ui.common.StarRatingBar
 import com.example.portfolio.ui.screen.home.NearRestaurantInfo
 import com.example.portfolio.ui.theme.lightPrimaryBlue
 import com.example.portfolio.ui.theme.textColor
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.pagerTabIndicatorOffset
+import com.google.accompanist.pager.rememberPagerState
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 const val detailRout = "detail"
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ListItemDetailView(
     sharedViewModel: MainActivityViewModel,
@@ -53,22 +59,24 @@ fun ListItemDetailView(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            ItemDetailViewTopBar(
-                upPress = upPress,
-                restaurantName = detailModel?.name ?: "정보를 받을 수 없습니다."
-            )
-            detailModel?.let { info ->
-                DetailTopView(
-                    imgUrl = info.imgUri,
-                    detailModel = info,
-                    modifier = Modifier.fillMaxWidth()
+                ItemDetailViewTopBar(
+                    upPress = upPress,
+                    restaurantName = detailModel?.name ?: "정보를 받을 수 없습니다."
                 )
 
-                DetailMiddleView(detailModel = info)
+                detailModel?.let { info ->
+                    DetailTopView(
+                        imgUrl = info.imgUri,
+                        detailModel = info,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    DetailMiddleView(detailModel = info)
+                    DetailBottomView()
+                }
             }
         }
     }
-}
 
 @Composable
 fun DetailTopView(
@@ -87,14 +95,13 @@ fun DetailTopView(
 
         AsyncImage(
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
+                .fillMaxSize()
                 .align(Alignment.Center),
             model = ImageRequest
                 .Builder(context)
-                .scale(Scale.FILL)
                 .data(imgUrl)
                 .error(R.drawable.roadingimage)
+                .scale(Scale.FILL)
                 .build(),
             contentDescription = "restaurant Detail Main Image",
 
@@ -103,6 +110,7 @@ fun DetailTopView(
         Column(
             modifier = Modifier
                 .wrapContentSize()
+                .fillMaxWidth(0.55f)
                 .align(Alignment.BottomCenter)
         ) {
             Row(
@@ -110,12 +118,13 @@ fun DetailTopView(
                     .background(
                         color = lightPrimaryBlue.copy(alpha = 0.35f),
                         shape = RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp)
-                    ),
+                    )
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 TextButton(onClick = { /*TODO*/ }) {
-                    Text("전화", fontSize = 15.sp, color = textColor)
+                    Text("전화", fontSize = 18.sp, color = textColor)
                 }
                 Spacer(
                     modifier = Modifier
@@ -123,7 +132,7 @@ fun DetailTopView(
                         .background(color = textColor)
                 )
                 TextButton(onClick = { /*TODO*/ }) {
-                    Text("공유", fontSize = 15.sp, color = textColor)
+                    Text("공유", fontSize = 18.sp, color = textColor)
                 }
                 Spacer(
                     modifier = Modifier
@@ -131,7 +140,7 @@ fun DetailTopView(
                         .background(color = textColor)
                 )
                 TextButton(onClick = { /*TODO*/ }) {
-                    Text("찜", fontSize = 15.sp, color = textColor)
+                    Text("찜", fontSize = 18.sp, color = textColor)
                 }
             }
             Row(
@@ -140,16 +149,18 @@ fun DetailTopView(
                         lightPrimaryBlue.copy(alpha = 0.35f),
                         shape = RoundedCornerShape(bottomStart = 14.dp, bottomEnd = 14.dp)
                     )
+                    .fillMaxWidth()
                     .wrapContentSize(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 StarRatingBar(rateCount = detailModel.rating)
 
                 BadgedBox(badge = { }) {
                     Icon(
                         imageVector = Icons.Outlined.Message,
-                        contentDescription = "review icon"
+                        contentDescription = "review icon",
+                        tint = textColor
                     )
                 }
             }
@@ -195,7 +206,9 @@ fun DetailMiddleView(
                 .wrapContentHeight()
         ) {
             GoogleMap(
-                Modifier.fillMaxWidth(),
+                Modifier
+                    .fillMaxWidth()
+                    .height(100.dp),
                 cameraPositionState = cameraPosition,
                 uiSettings = MapUiSettings(zoomControlsEnabled = false)
             ) {
@@ -263,58 +276,53 @@ fun ItemDetailViewTopBar(
     }
 }
 
+@ExperimentalPagerApi
 @Composable
-fun ItemDetailBottomView() {
-    var selectedTab by remember { mutableStateOf(0) }
-    var selectedTabName by remember { mutableStateOf(DETAIL_MENU_VIEW)}
+fun DetailBottomView() {
+    val tabItems = listOf(DETAIL_MENU_VIEW, DETAIL_REVIEW_VIEW)
 
-    val tabContent = mapOf(
-        DETAIL_MENU_VIEW to DetailMenuView(),
-        DETAIL_REVIEW_VIEW to DetailReviewView()
-    )
+    val viewPagerState = rememberPagerState()
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TabRow(
-            selectedTabIndex = selectedTab,
+            selectedTabIndex = viewPagerState.currentPage,
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
+                .wrapContentHeight(),
+            indicator = { tabPositions ->
+                TabRowDefaults.Indicator(
+                    Modifier.pagerTabIndicatorOffset(
+                        pagerState = viewPagerState,
+                        tabPositions = tabPositions
+                    )
+                )
+            }
         ) {
-            val tabItems = listOf(DETAIL_MENU_VIEW, DETAIL_REVIEW_VIEW)
 
             tabItems.forEachIndexed { index, s ->
-                TextButton(
-                    onClick = {
-                        selectedTab = index
-                        selectedTabName = tabItems[index]
-                              },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = lightPrimaryBlue)
-                ) {
-                    Text(s, color = textColor, fontWeight = FontWeight.Bold, fontSize = 24.sp)
-                }
-
-                if (index != tabItems.lastIndex) {
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .width(1.dp)
-                            .background(textColor)
-                    )
-                }
+                Tab(
+                    text = { Text(s) },
+                    selected = viewPagerState.currentPage == index,
+                    onClick = { coroutineScope.launch { viewPagerState.animateScrollToPage(index) } },
+                )
             }
         }
-
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(10.dp))
-
-        tabContent[selectedTabName]
+        HorizontalPager(
+            count = tabItems.size,
+            state = viewPagerState,
+            modifier = Modifier.fillMaxWidth()
+        ) { page ->
+                when(page) {
+                    0-> DetailMenuView()
+                    1-> DetailReviewView()
+                    else -> {}
+                }
+        }
     }
-
 }

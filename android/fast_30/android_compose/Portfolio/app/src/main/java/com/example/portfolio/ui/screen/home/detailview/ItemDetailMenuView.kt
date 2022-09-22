@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import coil.size.Scale
 import com.example.portfolio.R
 import com.example.portfolio.ui.theme.backgroundColor
 
@@ -29,24 +30,16 @@ fun DetailMenuView() {
 
     val context = LocalContext.current
 
-    LazyColumn(
-        modifier = Modifier.border(
-            width = 1.dp,
-            color = backgroundColor,
-            shape = RoundedCornerShape(8.dp)
-        )
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        userScrollEnabled = false
-    ) {
+    Column{
 
-        items(dumpItems) { detailModel ->
-            Row(modifier = Modifier.fillMaxWidth().height(100.dp)){
+        dumpItems.forEach { detailModel ->
+            Row(modifier = Modifier.fillMaxWidth().height(300.dp)){
                 AsyncImage(
                     model = ImageRequest
                         .Builder(context)
                         .data(detailModel.imgUri)
                         .error(R.drawable.roadingimage)
+                        .scale(Scale.FILL)
                         .build(),
                     contentDescription = "Menu Image",
                     modifier = Modifier.weight(0.25f).fillMaxSize()

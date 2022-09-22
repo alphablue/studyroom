@@ -18,12 +18,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.portfolio"
         minSdk 24
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -75,6 +75,7 @@ dependencies {
 
     // MDC
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.material:material:1.3.0-beta02"
 
     // life cycle
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
@@ -133,4 +134,9 @@ dependencies {
     implementation "com.google.firebase:firebase-firestore-ktx"
     implementation "com.google.firebase:firebase-storage-ktx"
     implementation 'com.google.firebase:firebase-auth-ktx'
+
+    // view pager
+    implementation "com.google.accompanist:accompanist-pager:0.26.3-beta"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.26.3-beta"
+
 }

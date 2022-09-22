@@ -1,11 +1,13 @@
 package com.example.portfolio.ui.screen.home.detailview
 
+import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -14,7 +16,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,6 +26,7 @@ import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.R
 import com.example.portfolio.ui.common.StarRatingBar
 import com.example.portfolio.ui.screen.home.NearRestaurantInfo
+import com.example.portfolio.ui.screen.util.findActivity
 import com.example.portfolio.ui.theme.lightPrimaryBlue
 import com.example.portfolio.ui.theme.textColor
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -34,7 +36,6 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 const val detailRout = "detail"
@@ -46,9 +47,18 @@ fun ListItemDetailView(
     upPress: () -> Unit
 ) {
     var detailModel by remember { mutableStateOf<NearRestaurantInfo?>(null) }
+    var restaurantAddress = ""
 
-    LaunchedEffect(key1 = sharedViewModel) {
+    LaunchedEffect(true) {
         detailModel = sharedViewModel.detailItem
+
+        detailModel?.let {
+            sharedViewModel.getReverseGeoCode(
+                lat = it.lat, lng = it.lon
+            ) { geoCode ->
+                restaurantAddress = sharedViewModel.googleGeoCodeConvert(geoCode)
+            }
+        }
     }
 
     Surface(
@@ -85,6 +95,7 @@ fun DetailTopView(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val activity = context.findActivity()
 
     Box(
         modifier = modifier
@@ -123,7 +134,10 @@ fun DetailTopView(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TextButton(onClick = { /*TODO*/ }) {
+                TextButton(onClick = {
+                    val callIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:010-1343-4646"))
+                    activity.startActivity(callIntent)
+                }) {
                     Text("전화", fontSize = 18.sp, color = textColor)
                 }
                 Spacer(
@@ -131,7 +145,17 @@ fun DetailTopView(
                         .size(width = 1.dp, height = rowHeight)
                         .background(color = textColor)
                 )
-                TextButton(onClick = { /*TODO*/ }) {
+                TextButton(onClick = {
+                    val intent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_SUBJECT, "소제목")
+                        putExtra(Intent.EXTRA_TEXT, "주요내용")
+                    }
+
+                    val sendIntent = Intent.createChooser(intent, "제목")
+
+                    activity.startActivity(sendIntent)
+                }) {
                     Text("공유", fontSize = 18.sp, color = textColor)
                 }
                 Spacer(
@@ -175,7 +199,6 @@ fun DetailMiddleView(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight()
             .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
         Text("배달 시간 : ${detailModel.deliveryTime}")
@@ -192,7 +215,7 @@ fun DetailMiddleView(
         )
 
         val restaurantLocation = LatLng(detailModel.lat, detailModel.lon)
-        val cameraPosition = rememberCameraPositionState() {
+        val cameraPosition = rememberCameraPositionState {
             position =
                 CameraPosition.fromLatLngZoom(restaurantLocation, 15f)
         }
@@ -220,7 +243,8 @@ fun DetailMiddleView(
                 modifier = Modifier.background(
                     lightPrimaryBlue,
                     shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
-                ),
+                )
+                    .height(48.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {

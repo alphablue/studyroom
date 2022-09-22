@@ -20,7 +20,7 @@ import kotlin.random.nextInt
 class HomeViewModel @Inject constructor(
     private val tMapRepository: TMapRepository,
     dispatcherProvider: DispatcherProvider,
-): BaseViewModel(dispatcherProvider) {
+) : BaseViewModel(dispatcherProvider) {
 
     private val _poiList = mutableStateListOf<NearRestaurantInfo>()
     var poiList = _poiList
@@ -48,9 +48,9 @@ class HomeViewModel @Inject constructor(
 
                 _poiList.addAll(convertPoiData(resultList))
 
-            }?: run {
+            } ?: run {
                 val resultList = tMapRepository
-                    .getPOIWithTMAP(lat, lng,count = count)
+                    .getPOIWithTMAP(lat, lng, count = count)
                     .searchPoiInfo
                     .pois
                     .poi
@@ -66,12 +66,22 @@ class HomeViewModel @Inject constructor(
         val result = mutableListOf<NearRestaurantInfo>()
 
         poiData.forEach { modelItem ->
-            val address = "${modelItem.upperAddrName} ${modelItem.roadName} ${modelItem.buildingNo1} ${modelItem.buildingNo2}"
+            val address =
+                "${modelItem.upperAddrName} ${modelItem.roadName} ${modelItem.buildingNo1} ${modelItem.buildingNo2}"
             val name = modelItem.name
             val modelLat = modelItem.frontLat.toDouble()
             val modelLon = modelItem.frontLon.toDouble()
 
-            result.add(NearRestaurantInfo(modelItem.id, null, name, address, lon=modelLon, lat=modelLat))
+            result.add(
+                NearRestaurantInfo(
+                    modelItem.id,
+                    imgUri = null,
+                    name = name,
+                    address = address,
+                    lon = modelLon,
+                    lat = modelLat
+                )
+            )
         }
 
         return result
@@ -81,6 +91,7 @@ class HomeViewModel @Inject constructor(
 data class NearRestaurantInfo(
     val id: String,
     val imgUri: Uri? = null,
+    val callNumber: String = "02-1234-1234",
     val name: String,
     val address: String,
     val lon: Double,

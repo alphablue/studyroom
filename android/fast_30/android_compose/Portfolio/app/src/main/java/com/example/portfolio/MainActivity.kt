@@ -1,5 +1,8 @@
 package com.example.portfolio
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -17,6 +20,7 @@ import com.example.portfolio.ui.screen.util.observeAsState
 import com.example.portfolio.ui.screen.util.permission.PermissionCheck
 import com.example.portfolio.ui.theme.PortfolioTheme
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.IllegalStateException
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

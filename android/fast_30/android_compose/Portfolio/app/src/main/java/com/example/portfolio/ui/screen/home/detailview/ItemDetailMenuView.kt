@@ -55,7 +55,7 @@ fun DetailMenuView() {
     }
 }
 
-data class RestaurantMenu(
+data class RestaurantMenu (
     val imgUri: Uri? = null,
     val menuName: String,
     val menuDetailContent: String,

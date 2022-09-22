@@ -99,13 +99,17 @@ class MainActivityViewModel @Inject constructor(
     fun reverseGeoCodeCallBack(lastLocation: Location) =
         lastLocation.let {
             getReverseGeoCode(lat = it.latitude, lng = it.longitude) { geoCode ->
-                splitAddress = geoCode.results.first()
-                    .formattedAddress
-                    .split(" ")
-                    .filterIndexed { index, _ ->
-                        index > 1
-                    }
-                    .joinToString(" ")
+                splitAddress = googleGeoCodeConvert(geoCode)
             }
         }
+
+    fun googleGeoCodeConvert(geoCode: GoogleGeoCode): String =
+        geoCode.results.first()
+            .formattedAddress
+            .split(" ")
+            .filterIndexed { index, _ ->
+                index > 1
+            }
+            .joinToString(" ")
+
 }

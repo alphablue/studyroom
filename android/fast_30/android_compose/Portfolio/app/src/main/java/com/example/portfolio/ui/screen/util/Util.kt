@@ -24,3 +24,7 @@ fun Context.findActivity(): Activity {
 fun Float.number2Digits(): String {
     return String.format("%.2f", this)
 }
+
+fun Float.number1Digits(): String {
+    return String.format("%.1f", this)
+}

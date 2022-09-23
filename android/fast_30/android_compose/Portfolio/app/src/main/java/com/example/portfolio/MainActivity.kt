@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
+import com.example.portfolio.repository.firebasemodule.FirebaseObject
 import com.example.portfolio.ui.common.HardwareName
 import com.example.portfolio.ui.common.PermissionName
 import com.example.portfolio.ui.screen.util.observeAsState
@@ -23,6 +24,8 @@ import com.example.portfolio.ui.theme.PortfolioTheme
 import com.google.type.DateTime
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.IllegalStateException
+import java.time.LocalDate
+import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -63,6 +66,7 @@ class MainActivity : ComponentActivity() {
                     StartApp(activityViewModel)
                 }
             }
+
         }
     }
 }
@@ -83,17 +87,17 @@ data class Like(
 
 data class Review(
     val takePicture: Uri?,
-    val rating: Float,
+    val rating: String,
     val content: String,
-    val date: DateTime,
+    val date: String,
     val userId: String,
     val restaurantId: String,
 )
 
 data class RestaurantMenu(
     val restaurantId: String,
-    val image: String,
-    val restaurantName: String,
+    val image: Uri,
+    val menuName: String,
     val price: String,
     val detailContent: String
 )

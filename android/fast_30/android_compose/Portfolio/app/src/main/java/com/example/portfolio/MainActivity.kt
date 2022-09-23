@@ -86,7 +86,7 @@ data class Like(
 )
 
 data class Review(
-    val takePicture: Uri?,
+    val takePicture: String,
     val rating: String,
     val content: String,
     val date: String,
@@ -96,7 +96,7 @@ data class Review(
 
 data class RestaurantMenu(
     val restaurantId: String,
-    val image: Uri,
+    val imageUri: String,
     val menuName: String,
     val price: String,
     val detailContent: String

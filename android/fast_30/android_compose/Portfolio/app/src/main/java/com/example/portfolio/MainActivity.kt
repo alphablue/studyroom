@@ -35,12 +35,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            var permissionGrantCheck by remember{ mutableStateOf(false)}
+            var permissionGrantCheck by remember { mutableStateOf(false) }
 
             PermissionCheck(
                 permissionName = PermissionName.GPS,
                 hardwareName = HardwareName.GPS,
-                grantedCheck = { grant -> permissionGrantCheck = grant}
+                grantedCheck = { grant -> permissionGrantCheck = grant }
             )
 
             if (permissionGrantCheck) {
@@ -86,18 +86,18 @@ data class Like(
 )
 
 data class Review(
-    val takePicture: String,
-    val rating: String,
-    val content: String,
-    val date: String,
-    val userId: String,
-    val restaurantId: String,
+    var takePicture: String = "",
+    var rating: String = "",
+    var content: String = "",
+    var date: String = "",
+    var userId: String = "",
+    var restaurantId: String = "",
 )
 
 data class RestaurantMenu(
-    val restaurantId: String,
-    val imageUri: String,
-    val menuName: String,
-    val price: String,
-    val detailContent: String
+    var restaurantId: String? = "",
+    var image: String? = "",
+    var menuName: String? = "",
+    var price: String? = "",
+    var detailContent: String? = ""
 )

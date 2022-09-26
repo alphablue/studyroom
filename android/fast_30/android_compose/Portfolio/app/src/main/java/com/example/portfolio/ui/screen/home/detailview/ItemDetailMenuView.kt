@@ -1,10 +1,12 @@
 package com.example.portfolio.ui.screen.home.detailview
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -23,24 +25,29 @@ const val DETAIL_MENU_VIEW = "메뉴"
 fun DetailMenuView() {
 
     val context = LocalContext.current
-    val menuList = remember{ mutableListOf<RestaurantMenu>()}
+    val menuList = remember { mutableStateListOf<RestaurantMenu>() }
 
     LaunchedEffect(true) {
         FirebaseObject.getTestMenus {
             menuList.addAll(it)
+
         }
     }
 
-    Column{
+    Column {
 
         menuList.forEach { detailModel ->
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)){
+            Log.d("detail_menu", detailModel.toString())
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+            ) {
                 AsyncImage(
                     model = ImageRequest
                         .Builder(context)
-                        .data(detailModel.imageUri)
+                        .data(detailModel.image)
                         .error(R.drawable.roadingimage)
                         .scale(Scale.FILL)
                         .build(),
@@ -49,19 +56,22 @@ fun DetailMenuView() {
                         .weight(0.25f)
                         .fillMaxSize()
                 )
-                Column(modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()) {
-                    Text(detailModel.menuName)
-                    Text(detailModel.detailContent)
-                    Text(detailModel.price)
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                ) {
+                    Text(detailModel.menuName ?: "")
+                    Text(detailModel.detailContent ?: "")
+                    Text(detailModel.price ?: "")
                 }
             }
             Spacer(
                 Modifier
                     .fillMaxWidth()
                     .height(1.dp)
-                    .background(backgroundColor))
+                    .background(backgroundColor)
+            )
         }
     }
 }

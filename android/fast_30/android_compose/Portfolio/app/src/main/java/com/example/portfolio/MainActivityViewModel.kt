@@ -89,8 +89,6 @@ class MainActivityViewModel @Inject constructor(
                 _geocodeState = it
                 callback(it)
             }
-
-            Log.d("MainActivityViewModel", "reverseGeoCode get data :: ${geocodeState?.results}")
         } catch (e: Exception) {
             Log.d("MainActivityViewModel", "reverseGeoCode error : ${e.message}")
         }

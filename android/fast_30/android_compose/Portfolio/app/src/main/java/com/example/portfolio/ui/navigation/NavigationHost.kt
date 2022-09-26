@@ -42,7 +42,7 @@ fun NavGraphBuilder.addHomeGraph(
         Log.d("navigationTest", "cart $from")
     }
     composable(Sections.PROFILE.route) { from ->
-        Profile(modifier)
+        Profile(modifier, activityViewModel)
         Log.d("navigationTest", "profile $from")
     }
 }

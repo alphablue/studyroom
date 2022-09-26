@@ -3,6 +3,8 @@ package com.example.portfolio.repository.firebasemodule
 import android.net.Uri
 import com.example.portfolio.RestaurantMenu
 import com.example.portfolio.Review
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
@@ -48,7 +50,6 @@ object FirebaseObject {
                 callback(it.toObjects())
             }
     }
-
 
 
 //    fun dbSettingInit(context: Context) {

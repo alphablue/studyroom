@@ -14,6 +14,7 @@ import com.example.portfolio.ui.screen.home.NearRestaurantInfo
 import com.example.portfolio.viewmodel.BaseViewModel
 import com.example.portfolio.viewmodel.DispatcherProvider
 import com.example.portfolio.viewmodel.onIO
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.location.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -52,6 +53,9 @@ class MainActivityViewModel @Inject constructor(
 
     // detail 부분에서 데이터를 받기위한 부분
     var detailItem by mutableStateOf<NearRestaurantInfo?>(null)
+
+    // auth check 부분
+    var authCheck by mutableStateOf< GoogleSignInClient?>(null)
 
     @SuppressLint("MissingPermission")
     fun startLocationUpdate(

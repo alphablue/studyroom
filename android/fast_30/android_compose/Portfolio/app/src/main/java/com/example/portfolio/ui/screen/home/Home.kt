@@ -1,9 +1,7 @@
 package com.example.portfolio.ui.screen.home
 
 import android.content.Context
-import android.location.Location
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -30,7 +28,10 @@ import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.R
 import com.example.portfolio.repository.firebasemodule.FirebaseObject
 import com.example.portfolio.ui.screen.util.number2Digits
-import com.example.portfolio.ui.theme.*
+import com.example.portfolio.ui.theme.gray
+import com.example.portfolio.ui.theme.lightSecondaryBlue
+import com.example.portfolio.ui.theme.textColor
+import com.example.portfolio.ui.theme.yellow
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

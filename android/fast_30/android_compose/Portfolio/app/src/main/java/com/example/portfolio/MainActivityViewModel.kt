@@ -8,16 +8,23 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewModelScope
+import com.example.portfolio.BuildConfig.GOOGLE_OAUTH
 import com.example.portfolio.model.googlegeocode.GoogleGeoCode
 import com.example.portfolio.repository.GoogleRepository
 import com.example.portfolio.ui.screen.home.NearRestaurantInfo
 import com.example.portfolio.viewmodel.BaseViewModel
 import com.example.portfolio.viewmodel.DispatcherProvider
 import com.example.portfolio.viewmodel.onIO
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.location.*
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,15 +54,18 @@ class MainActivityViewModel @Inject constructor(
     val realTimeUserLocation: Location?
         get() = _realTimeUserLocation
 
-    private var _geocodeState by mutableStateOf<GoogleGeoCode?>(null)
-    val geocodeState: GoogleGeoCode?
-        get() = _geocodeState
-
     // detail 부분에서 데이터를 받기위한 부분
     var detailItem by mutableStateOf<NearRestaurantInfo?>(null)
 
-    // auth check 부분
-    var authCheck by mutableStateOf< GoogleSignInClient?>(null)
+    // 구글 로그인 작업 부분
+    val loadingState = MutableStateFlow(LoadingState.IDLE)
+    val auth = FirebaseAuth.getInstance()
+    // google sign in options
+    private val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken(GOOGLE_OAUTH)
+        .requestEmail()
+        .build()
+    val googleSignInClient = GoogleSignIn.getClient(context, gso)
 
     @SuppressLint("MissingPermission")
     fun startLocationUpdate(
@@ -90,7 +100,6 @@ class MainActivityViewModel @Inject constructor(
     ) = onIO {
         try {
             googleRepository.getReverseGeoCodeData(returnType, lat, lng).let {
-                _geocodeState = it
                 callback(it)
             }
         } catch (e: Exception) {
@@ -114,4 +123,45 @@ class MainActivityViewModel @Inject constructor(
             }
             .joinToString(" ")
 
+    fun signWithCredential(credential: AuthCredential) = viewModelScope.launch {
+        try {
+            loadingState.emit(LoadingState.LOADING)
+            auth.signInWithCredential(credential)
+                .addOnCompleteListener { task ->
+                    if(task.isSuccessful.not()) {
+                        Log.d("testSignIn", "로그인 실패")
+                    } else {
+                        Log.d("testSignIn", "로그인 성공")
+                    }
+                }
+            loadingState.emit(LoadingState.LOADED)
+        } catch (e: Exception) {
+            loadingState.emit(LoadingState.error(e.localizedMessage))
+        }
+    }
+
+    fun googleSignOut() {
+        googleSignInClient.signOut()
+    }
+}
+
+data class LoadingState constructor(
+    val status: Status,
+    val msg: String? = null
+) {
+    companion object {
+        val LOADED = LoadingState(Status.SUCCESS)
+        val IDLE = LoadingState(Status.IDLE)
+        val LOADING = LoadingState(Status.RUNNING)
+        val LOGGED_IN = LoadingState(Status.LOGGED_IN)
+        fun error(msg: String?) = LoadingState(Status.FAILED, msg)
+    }
+
+    enum class Status {
+        RUNNING,
+        SUCCESS,
+        FAILED,
+        IDLE,
+        LOGGED_IN
+    }
 }

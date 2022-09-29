@@ -14,6 +14,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.portfolio.MainActivityViewModel
+import com.example.portfolio.R
+import com.example.portfolio.User
+import com.example.portfolio.repository.firebasemodule.FirebaseObject
 
 @Composable
 fun Profile(
@@ -44,6 +47,17 @@ fun Profile(
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
+                            val userID = task.result?.user?.uid.toString()
+                            FirebaseObject.addUserId(
+                                userID,
+                                User(
+                                    id = userID,
+                                    profileImage = Uri.parse("android.resource://${context.packageName}/${R.drawable.test_user_01}"),
+                                    name= "로그인 유저 테스트",
+                                    phoneNumber = "010-1010-1200"
+                                )
+                            )
+
                         } else {
                             Toast.makeText(context, "로그인 실패", Toast.LENGTH_SHORT).show()
                         }

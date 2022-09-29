@@ -1,8 +1,10 @@
 package com.example.portfolio.repository.firebasemodule
 
 import android.net.Uri
+import android.util.Log
 import com.example.portfolio.RestaurantMenu
 import com.example.portfolio.Review
+import com.example.portfolio.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -51,6 +53,24 @@ object FirebaseObject {
             }
     }
 
+    fun addUserId(
+        uid: String,
+        user: User
+    ) {
+        val fireStoreInstance = Firebase.firestore
+
+        fireStoreInstance
+            .collection("delivery")
+            .document("users")
+            .collection("user")
+            .document(uid)
+            .set(
+                user
+            )
+            .addOnCompleteListener {
+                Log.d("testSignIn", "SignUp complete")
+            }
+    }
 
 //    fun dbSettingInit(context: Context) {
 //        val fireStoreInstance = Firebase.firestore

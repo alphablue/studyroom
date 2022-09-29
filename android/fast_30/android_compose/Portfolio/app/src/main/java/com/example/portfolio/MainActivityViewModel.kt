@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.portfolio.model.googlegeocode.GoogleGeoCode
 import com.example.portfolio.repository.GoogleRepository
+import com.example.portfolio.repository.firebasemodule.FirebaseObject
 import com.example.portfolio.ui.screen.home.NearRestaurantInfo
 import com.example.portfolio.viewmodel.BaseViewModel
 import com.example.portfolio.viewmodel.DispatcherProvider

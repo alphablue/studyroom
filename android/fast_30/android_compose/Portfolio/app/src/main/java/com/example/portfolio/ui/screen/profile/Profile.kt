@@ -25,7 +25,7 @@ fun Profile(
 ) {
 
     val context = LocalContext.current
-    val auth = FirebaseAuth.getInstance()
+    val auth = sharedViewModel.auth
 
     Column(
         modifier = modifier.fillMaxSize(),

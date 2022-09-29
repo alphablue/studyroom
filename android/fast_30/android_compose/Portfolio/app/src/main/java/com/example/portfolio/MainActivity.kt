@@ -25,6 +25,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val userCheck = activityViewModel.auth.currentUser
 
         setContent {
             var permissionGrantCheck by remember { mutableStateOf(false) }
@@ -58,8 +59,9 @@ class MainActivity : ComponentActivity() {
                     StartApp(activityViewModel)
                 }
             }
-
         }
+
+        activityViewModel.initCheck()
     }
 }
 

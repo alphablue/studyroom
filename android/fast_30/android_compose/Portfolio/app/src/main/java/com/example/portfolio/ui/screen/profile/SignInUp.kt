@@ -1,5 +1,6 @@
 package com.example.portfolio.ui.screen.profile
 
+import android.app.Activity
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,25 +36,34 @@ fun GoogleSignButton(
     modifier: Modifier = Modifier
 ) {
     val launcher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
-            try {
-                Log.d("testSignIn", "로그인 시도 launcher")
-                val account = task.getResult(ApiException::class.java)!!
-                val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
-                sharedViewModel.signWithCredential(credential)
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
 
-            } catch (e: ApiException) {
-                Log.d("testSignIn", "Google sign in failed", e)
-            }
+                Log.d("testSignIn", "activity result")
+
+                val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+
+                Log.d("testSignIn", "${task.result}")
+                try {
+                    Log.d("testSignIn", "로그인 시도 launcher")
+                    val account = task.getResult(ApiException::class.java)!!
+                    val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
+                    sharedViewModel.signWithCredential(credential)
+
+                } catch (e: ApiException) {
+                    Log.d("testSignIn", "Google sign in fail $e")
+                }
         }
 
+    val signClient = sharedViewModel.googleSignInClient
     val scope = rememberCoroutineScope()
 
     Button(
         onClick = {
             scope.launch {
-                launcher.launch(sharedViewModel.googleSignInClient.signInIntent)
+                Log.d("testSignIn", "google sign in button clicked")
+                launcher.launch(signClient.signInIntent)
             }
         },
         modifier = modifier

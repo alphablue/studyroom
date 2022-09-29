@@ -9,7 +9,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
-import com.example.portfolio.BuildConfig.GOOGLE_OAUTH
 import com.example.portfolio.model.googlegeocode.GoogleGeoCode
 import com.example.portfolio.repository.GoogleRepository
 import com.example.portfolio.ui.screen.home.NearRestaurantInfo
@@ -60,12 +59,20 @@ class MainActivityViewModel @Inject constructor(
     // 구글 로그인 작업 부분
     val loadingState = MutableStateFlow(LoadingState.IDLE)
     val auth = FirebaseAuth.getInstance()
+
     // google sign in options
-    private val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken(GOOGLE_OAUTH)
+    private val gso = GoogleSignInOptions
+        .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken(context.getString(R.string.web_client_id))
         .requestEmail()
+        .requestProfile()
+        .requestId()
         .build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
+
+    fun initCheck() {
+        Log.d("testSignIn", "SharedViewModel init :: $gso, $googleSignInClient")
+    }
 
     @SuppressLint("MissingPermission")
     fun startLocationUpdate(
@@ -131,8 +138,18 @@ class MainActivityViewModel @Inject constructor(
                     if(task.isSuccessful.not()) {
                         Log.d("testSignIn", "로그인 실패")
                     } else {
-                        Log.d("testSignIn", "로그인 성공")
+                        val idToken = auth.currentUser?.getIdToken(true)
+                            ?.addOnCompleteListener { tokenTask ->
+                                if(tokenTask.isSuccessful) {
+                                    val token = tokenTask.result.token
+                                    Log.d("testSignIn", "토큰 획득 :: $token")
+                                }
+                            }
+                        Log.d("testSignIn", "로그인 성공:: $idToken")
                     }
+                }
+                .addOnFailureListener { e->
+                    Log.d("testSignIn", "credential 실패 : ${e.message}")
                 }
             loadingState.emit(LoadingState.LOADED)
         } catch (e: Exception) {

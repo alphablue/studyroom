@@ -8,22 +8,16 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.viewModelScope
 import com.example.portfolio.model.googlegeocode.GoogleGeoCode
 import com.example.portfolio.repository.GoogleRepository
 import com.example.portfolio.ui.screen.home.NearRestaurantInfo
 import com.example.portfolio.viewmodel.BaseViewModel
 import com.example.portfolio.viewmodel.DispatcherProvider
 import com.example.portfolio.viewmodel.onIO
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.location.*
-import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -56,23 +50,8 @@ class MainActivityViewModel @Inject constructor(
     // detail 부분에서 데이터를 받기위한 부분
     var detailItem by mutableStateOf<NearRestaurantInfo?>(null)
 
-    // 구글 로그인 작업 부분
-    val loadingState = MutableStateFlow(LoadingState.IDLE)
+    // 로그인을 위한 객체생성
     val auth = FirebaseAuth.getInstance()
-
-    // google sign in options
-    private val gso = GoogleSignInOptions
-        .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken(context.getString(R.string.web_client_id))
-        .requestEmail()
-        .requestProfile()
-        .requestId()
-        .build()
-    val googleSignInClient = GoogleSignIn.getClient(context, gso)
-
-    fun initCheck() {
-        Log.d("testSignIn", "SharedViewModel init :: $gso, $googleSignInClient")
-    }
 
     @SuppressLint("MissingPermission")
     fun startLocationUpdate(
@@ -129,56 +108,4 @@ class MainActivityViewModel @Inject constructor(
                 index > 1
             }
             .joinToString(" ")
-
-    fun signWithCredential(credential: AuthCredential) = viewModelScope.launch {
-        try {
-            loadingState.emit(LoadingState.LOADING)
-            auth.signInWithCredential(credential)
-                .addOnCompleteListener { task ->
-                    if(task.isSuccessful.not()) {
-                        Log.d("testSignIn", "로그인 실패")
-                    } else {
-                        val idToken = auth.currentUser?.getIdToken(true)
-                            ?.addOnCompleteListener { tokenTask ->
-                                if(tokenTask.isSuccessful) {
-                                    val token = tokenTask.result.token
-                                    Log.d("testSignIn", "토큰 획득 :: $token")
-                                }
-                            }
-                        Log.d("testSignIn", "로그인 성공:: $idToken")
-                    }
-                }
-                .addOnFailureListener { e->
-                    Log.d("testSignIn", "credential 실패 : ${e.message}")
-                }
-            loadingState.emit(LoadingState.LOADED)
-        } catch (e: Exception) {
-            loadingState.emit(LoadingState.error(e.localizedMessage))
-        }
-    }
-
-    fun googleSignOut() {
-        googleSignInClient.signOut()
-    }
-}
-
-data class LoadingState constructor(
-    val status: Status,
-    val msg: String? = null
-) {
-    companion object {
-        val LOADED = LoadingState(Status.SUCCESS)
-        val IDLE = LoadingState(Status.IDLE)
-        val LOADING = LoadingState(Status.RUNNING)
-        val LOGGED_IN = LoadingState(Status.LOGGED_IN)
-        fun error(msg: String?) = LoadingState(Status.FAILED, msg)
-    }
-
-    enum class Status {
-        RUNNING,
-        SUCCESS,
-        FAILED,
-        IDLE,
-        LOGGED_IN
-    }
 }

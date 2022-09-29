@@ -9,14 +9,11 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.portfolio.LoadingState
 import com.example.portfolio.MainActivityViewModel
-import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun Profile(
@@ -58,30 +55,17 @@ fun Profile(
 
         Button(
             onClick = {
-                sharedViewModel.googleSignOut()
+                auth.signOut()
             }
         ) {
             Text(text = "로그아웃")
         }
+    /**
+     * TODO
+     * 구글 연동 로그인 기능 버튼 추가
+     * */
+//        GoogleSignButton(sharedViewModel = sharedViewModel)
 
-        GoogleSignButton(sharedViewModel = sharedViewModel)
-
-        val state by sharedViewModel.loadingState.collectAsState()
-        when (state.status) {
-            LoadingState.Status.SUCCESS -> {
-                Text(text = "Success", color = Color.Black)
-            }
-
-            LoadingState.Status.FAILED -> {
-                Text(text = state.msg ?: "Error", color = Color.Black)
-            }
-
-            LoadingState.Status.LOGGED_IN -> {
-                Text(text = "Already Logged In", color = Color.Black)
-            }
-
-            else -> { }
-        }
     }
 }
 

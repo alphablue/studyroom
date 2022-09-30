@@ -36,6 +36,7 @@ class MainActivity : ComponentActivity() {
             )
 
             if (permissionGrantCheck) {
+                activityViewModel.checkLoginState()
 
                 when (LocalLifecycleOwner.current.lifecycle.observeAsState()) {
                     Lifecycle.Event.ON_START -> {

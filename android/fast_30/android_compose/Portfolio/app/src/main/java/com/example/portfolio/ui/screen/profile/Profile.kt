@@ -3,6 +3,7 @@ package com.example.portfolio.ui.screen.profile
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -78,9 +79,11 @@ fun Profile(
                     .fillMaxWidth()
             ) {
                 SettingLayout(onClick = { /*TODO*/ }, name = "알림설정")
+                if(loginState) {
+                    SettingLayout(onClick = { sharedViewModel.signOut() }, name ="로그아웃")
+                    SettingLayout(onClick = { sharedViewModel.userWithdrawal() }, name ="회원탈퇴")
+                }
             }
-
-            Spacer(modifier = Modifier.height(4.dp))
         }
     }
 }
@@ -111,7 +114,8 @@ fun UserBox(
         )
         Text(
             text = userName,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
                 .clickable(onClick = onClick),
             textAlign = TextAlign.Center
         )

@@ -54,22 +54,6 @@ fun LoginPage(
             ) {
                 Text("가입하기")
             }
-        } else {
-            Button(
-                onClick = {
-                    sharedViewModel.signOut()
-                }
-            ) {
-                Text(text = "로그아웃")
-            }
-
-            Button(
-                onClick = {
-                    sharedViewModel.userWithdrawal()
-                }
-            ) {
-                Text("탈퇴하기")
-            }
         }
 
         /**

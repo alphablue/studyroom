@@ -1,7 +1,6 @@
 package com.example.portfolio.ui.screen.profile
 
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -14,9 +13,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.portfolio.MainActivityViewModel
-import com.example.portfolio.R
-import com.example.portfolio.User
-import com.example.portfolio.repository.firebasemodule.FirebaseObject
 
 @Composable
 fun Profile(
@@ -35,45 +31,47 @@ fun Profile(
         var email by remember { mutableStateOf("") }
         var pass by remember { mutableStateOf("") }
 
-
         Column {
             TextField(value = email, onValueChange = { email = it })
             TextField(value = pass, onValueChange = { pass = it })
         }
 
-        Button(
-            onClick = {
-                auth.createUserWithEmailAndPassword(email, pass)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
-                            val userID = task.result?.user?.uid.toString()
-                            FirebaseObject.addUserId(
-                                userID,
-                                User(
-                                    id = userID,
-                                    profileImage = Uri.parse("android.resource://${context.packageName}/${R.drawable.test_user_01}"),
-                                    name= "로그인 유저 테스트",
-                                    phoneNumber = "010-1010-1200"
-                                )
-                            )
-
-                        } else {
-                            Toast.makeText(context, "로그인 실패", Toast.LENGTH_SHORT).show()
-                        }
-                    }
+        if(sharedViewModel.loginState.not()){
+            Button(
+                onClick = {
+                    sharedViewModel.signInWithEmailPassword(email, pass)
+                }
+            ) {
+                Text(text = "로그인")
             }
-        ) {
-            Text("가입하기")
+
+            Button(
+                onClick = {
+                    sharedViewModel.signUpEmailPass(
+                        email, pass
+                    )
+                }
+            ) {
+                Text("가입하기")
+            }
+        } else {
+            Button(
+                onClick = {
+                    sharedViewModel.signOut()
+                }
+            ) {
+                Text(text = "로그아웃")
+            }
+
+            Button(
+                onClick = {
+                    sharedViewModel.userWithdrawal()
+                }
+            ) {
+                Text("탈퇴하기")
+            }
         }
 
-        Button(
-            onClick = {
-                auth.signOut()
-            }
-        ) {
-            Text(text = "로그아웃")
-        }
     /**
      * TODO
      * 구글 연동 로그인 기능 버튼 추가

@@ -53,6 +53,8 @@ class MainActivityViewModel @Inject constructor(
 
     // 로그인을 위한 객체생성
     val auth = FirebaseAuth.getInstance()
+    var loginState by mutableStateOf(false)
+    var userInfo: User? = null
 
     @SuppressLint("MissingPermission")
     fun startLocationUpdate(
@@ -77,7 +79,6 @@ class MainActivityViewModel @Inject constructor(
         }
         Log.d("mainActivityViewModel", "getLocation Call")
     }
-
 
     fun getReverseGeoCode(
         returnType: String = "json",
@@ -109,4 +110,82 @@ class MainActivityViewModel @Inject constructor(
                 index > 1
             }
             .joinToString(" ")
+
+    fun signUpEmailPass(
+        email: String,
+        pass: String
+    ) {
+        auth.createUserWithEmailAndPassword(email, pass)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("testSign", "회원가입 완료")
+
+                    val userID = task.result?.user?.uid.toString()
+                    FirebaseObject.addUserId(
+                        userID,
+                        User(
+                            id = userID,
+                            profileImage = "",
+                            name = "로그인 유저 테스트",
+                            phoneNumber = ""
+                        )
+                    )
+
+                    checkLoginState()
+
+                } else {
+                    Log.d("testSign", "회원가입 실패")
+                }
+            }
+    }
+
+    fun checkLoginState() {
+        loginState = auth.currentUser != null
+
+        if (loginState) {
+            auth.currentUser?.let {
+                FirebaseObject.getUser(it.uid) { userData ->
+                    userInfo = userData
+                }
+            }
+        } else userInfo = null
+    }
+
+    fun signInWithEmailPassword(
+        email: String,
+        password: String
+    ) {
+        auth.signInWithEmailAndPassword(
+            email, password
+        )
+            .addOnSuccessListener {
+                Log.d("testSign", "로그인 성공")
+                checkLoginState()
+            }
+            .addOnFailureListener { e ->
+                Log.d("testSign", "로그인 실패 ${e.message}")
+            }
+    }
+
+    fun userWithdrawal() {
+        val user = auth.currentUser
+
+        val uid = user?.uid
+        uid?.let {
+            FirebaseObject.deleteUserId(it)
+            user.delete()
+                .addOnCompleteListener {
+                    Log.d("testSign", "회원탈퇴 완료")
+                    checkLoginState()
+                }
+                .addOnFailureListener {
+                    Log.d("testSign", "회원탈퇴 실패")
+                }
+        }
+    }
+
+    fun signOut() {
+        auth.signOut()
+        checkLoginState()
+    }
 }

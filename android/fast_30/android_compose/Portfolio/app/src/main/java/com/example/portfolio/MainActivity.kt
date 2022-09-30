@@ -63,10 +63,10 @@ class MainActivity : ComponentActivity() {
 }
 
 data class User(
-    val id: String,
-    val profileImage: Uri,
-    val name: String,
-    val phoneNumber: String
+    val id: String? = "",
+    val profileImage: String? = "",
+    val name: String? = "",
+    val phoneNumber: String? = ""
 )
 
 data class Like(

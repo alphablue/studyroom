@@ -8,6 +8,7 @@ import com.example.portfolio.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -69,6 +70,36 @@ object FirebaseObject {
             )
             .addOnCompleteListener {
                 Log.d("testSignIn", "SignUp complete")
+            }
+    }
+
+    fun deleteUserId(
+        uid: String
+    ){
+        val fireStoreInstance = Firebase.firestore
+
+        fireStoreInstance
+            .collection("delivery")
+            .document("users")
+            .collection("user")
+            .document(uid)
+            .delete()
+    }
+
+    fun getUser(
+        uid: String,
+        callback: (User?) -> Unit
+    ) {
+        val fireStoreInstance = Firebase.firestore
+
+        fireStoreInstance
+            .collection("delivery")
+            .document("users")
+            .collection("user")
+            .document(uid)
+            .get()
+            .addOnSuccessListener {
+                callback(it.toObject<User>())
             }
     }
 

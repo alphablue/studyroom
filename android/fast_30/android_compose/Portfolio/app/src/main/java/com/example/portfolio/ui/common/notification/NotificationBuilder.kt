@@ -13,6 +13,7 @@ import okhttp3.internal.notify
 
 const val CHANNEL_ID = "Test Notification"
 const val CHANNEL_NAME = "test Channel Name"
+const val NOTIFICATION_ID = 10001
 
 class NotificationBuilder(
     val context: Context
@@ -37,11 +38,11 @@ class NotificationBuilder(
             val notificationManager: NotificationManager =
                 context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
-
+            notificationManager.notify(NOTIFICATION_ID, builder.build())
         } else {
             with(NotificationManagerCompat.from(context)) {
                 // notificationId is a unique int for each notification that you must define
-                notify(11313156, builder.build())
+                notify(NOTIFICATION_ID, builder.build())
             }
         }
     }

@@ -5,8 +5,6 @@ import android.util.Log
 import com.example.portfolio.RestaurantMenu
 import com.example.portfolio.Review
 import com.example.portfolio.User
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects

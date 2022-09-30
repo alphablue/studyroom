@@ -54,7 +54,10 @@ class MainActivityViewModel @Inject constructor(
     // 로그인을 위한 객체생성
     val auth = FirebaseAuth.getInstance()
     var loginState by mutableStateOf(false)
-    var userInfo: User? = null
+    var userInfo: User? by mutableStateOf(null)
+
+    // 테스트를 위한 것
+    private val packageName = context.packageName
 
     @SuppressLint("MissingPermission")
     fun startLocationUpdate(
@@ -113,7 +116,7 @@ class MainActivityViewModel @Inject constructor(
 
     fun signUpEmailPass(
         email: String,
-        pass: String
+        pass: String,
     ) {
         auth.createUserWithEmailAndPassword(email, pass)
             .addOnCompleteListener { task ->
@@ -125,9 +128,9 @@ class MainActivityViewModel @Inject constructor(
                         userID,
                         User(
                             id = userID,
-                            profileImage = "",
+                            profileImage = "android.resource://$packageName/${R.drawable.test_user_02}",
                             name = "로그인 유저 테스트",
-                            phoneNumber = ""
+                            phoneNumber = "010-3434-2321"
                         )
                     )
 

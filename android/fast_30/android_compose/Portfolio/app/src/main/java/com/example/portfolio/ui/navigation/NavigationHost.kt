@@ -14,6 +14,7 @@ import com.example.portfolio.ui.screen.home.Home
 import com.example.portfolio.ui.screen.home.HomeViewModel
 import com.example.portfolio.ui.screen.home.detailview.ListItemDetailView
 import com.example.portfolio.ui.screen.home.detailview.detailRout
+import com.example.portfolio.ui.screen.login.LoginPage
 import com.example.portfolio.ui.screen.map.GoogleMapView
 import com.example.portfolio.ui.screen.profile.Profile
 
@@ -22,6 +23,7 @@ fun NavGraphBuilder.addHomeGraph(
     modifier: Modifier = Modifier,
     itemSelect: (NavBackStackEntry) -> Unit,
     goMap: (NavBackStackEntry) -> Unit,
+    goLogin: (NavBackStackEntry) -> Unit,
     activityViewModel: MainActivityViewModel
 ) {
     composable(Sections.HOME.route) { from ->
@@ -42,7 +44,7 @@ fun NavGraphBuilder.addHomeGraph(
         Log.d("navigationTest", "cart $from")
     }
     composable(Sections.PROFILE.route) { from ->
-        Profile(modifier, activityViewModel)
+        Profile(activityViewModel, goLogin = { goLogin(from)})
         Log.d("navigationTest", "profile $from")
     }
 }
@@ -51,6 +53,7 @@ fun NavGraphBuilder.applicationNavGraph(
     upPress: () -> Unit,
     itemSelect: (NavBackStackEntry) -> Unit,
     goMap: (NavBackStackEntry) -> Unit,
+    goLogin: (NavBackStackEntry) -> Unit,
     activityViewModel: MainActivityViewModel
 ) {
     navigation(
@@ -60,6 +63,7 @@ fun NavGraphBuilder.applicationNavGraph(
         addHomeGraph(
             activityViewModel = activityViewModel,
             goMap = goMap,
+            goLogin = goLogin,
             itemSelect = itemSelect
         )
     }
@@ -78,6 +82,15 @@ fun NavGraphBuilder.applicationNavGraph(
     ) {
         GoogleMapView(
             activityViewModel = activityViewModel,
+            upPress = upPress
+        )
+    }
+
+    composable(
+        route = MainDestinations.LOGIN_PAGE
+    ) {
+        LoginPage(
+            sharedViewModel = activityViewModel,
             upPress = upPress
         )
     }

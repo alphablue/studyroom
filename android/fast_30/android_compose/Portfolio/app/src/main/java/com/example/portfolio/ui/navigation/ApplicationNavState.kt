@@ -71,6 +71,11 @@ class ApplicationNavState(
         }
     }
 
+    fun navigateToLoginPage(from: NavBackStackEntry) {
+        if(from.lifecycleIsResumed()) {
+            navController.navigate(MainDestinations.LOGIN_PAGE)
+        }
+    }
 }
 
 enum class Sections(

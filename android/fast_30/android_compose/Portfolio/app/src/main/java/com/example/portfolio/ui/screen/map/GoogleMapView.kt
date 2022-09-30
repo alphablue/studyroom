@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.outlined.FilterTiltShift
 import androidx.compose.runtime.*
@@ -13,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.ui.common.HardwareName
 import com.example.portfolio.ui.common.PermissionName
@@ -83,6 +83,8 @@ fun GoogleMapView(
                 cameraPositionState = cameraPositionState
             )
 
+            MapViewTopBar(upPress = upPress, Modifier.align(Alignment.TopCenter))
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -145,5 +147,28 @@ fun GoogleMapView(
         Box(modifier = Modifier.fillMaxSize()) {
             Text(text = "위치 권한 확인 중 입니다.", modifier = Modifier.align(Alignment.Center))
         }
+    }
+}
+
+@Composable
+fun MapViewTopBar(
+    upPress: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    TopAppBar(modifier = modifier.statusBarsPadding().fillMaxWidth()) {
+        IconButton(onClick = upPress, modifier = Modifier.align(Alignment.Top)) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                tint = textColor,
+                contentDescription = "back"
+            )
+        }
+
+        Text(
+            "위치를 선택해 주세요.",
+            color = textColor,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.align(Alignment.CenterVertically)
+        )
     }
 }

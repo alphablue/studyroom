@@ -21,6 +21,7 @@ import com.example.portfolio.ui.theme.PortfolioTheme
 object MainDestinations {
     const val HOME_ROUTE = "home"
     const val GOOGLE_MAP = "GoogleMap"
+    const val LOGIN_PAGE = "Login"
 }
 
 @Composable
@@ -51,6 +52,7 @@ fun StartApp(
                     upPress = appState::upPress,
                     itemSelect = appState::navigateToItemDetail,
                     goMap = appState::navigateToGoogleMap,
+                    goLogin = appState::navigateToLoginPage,
                     activityViewModel
                 )
             }

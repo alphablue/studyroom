@@ -44,22 +44,12 @@ const val detailRout = "detail"
 @Composable
 fun ListItemDetailView(
     sharedViewModel: MainActivityViewModel,
-    upPress: () -> Unit
+    upPress: () -> Unit,
+    goLogin: () -> Unit
 ) {
-    var detailModel by remember { mutableStateOf<NearRestaurantInfo?>(null) }
+    val detailModel = sharedViewModel.detailItem
+    val loginState = sharedViewModel.loginState
     var restaurantAddress = ""
-
-    LaunchedEffect(true) {
-        detailModel = sharedViewModel.detailItem
-
-        detailModel?.let {
-            sharedViewModel.getReverseGeoCode(
-                lat = it.lat, lng = it.lon
-            ) { geoCode ->
-                restaurantAddress = sharedViewModel.googleGeoCodeConvert(geoCode)
-            }
-        }
-    }
 
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -78,6 +68,8 @@ fun ListItemDetailView(
                     DetailTopView(
                         imgUrl = info.imgUri,
                         detailModel = info,
+                        loginState = loginState,
+                        goLogin = goLogin,
                         modifier = Modifier.fillMaxWidth()
                     )
 
@@ -92,6 +84,8 @@ fun ListItemDetailView(
 fun DetailTopView(
     imgUrl: Uri?,
     detailModel: NearRestaurantInfo,
+    loginState: Boolean,
+    goLogin: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -149,7 +143,7 @@ fun DetailTopView(
                     val intent = Intent(Intent.ACTION_SEND).apply {
                         type = "text/plain"
                         putExtra(Intent.EXTRA_SUBJECT, "소제목")
-                        putExtra(Intent.EXTRA_TEXT, "주요내용")
+                        putExtra(Intent.EXTRA_TEXT, "가게 위치 정보 확인\n ${detailModel.address}")
                     }
 
                     val sendIntent = Intent.createChooser(intent, "제목")
@@ -163,7 +157,11 @@ fun DetailTopView(
                         .size(width = 1.dp, height = rowHeight)
                         .background(color = textColor)
                 )
-                TextButton(onClick = { /*TODO*/ }) {
+                TextButton(onClick = {
+                    if(loginState.not()) {
+                        goLogin()
+                    }
+                }) {
                     Text("찜", fontSize = 18.sp, color = textColor)
                 }
             }

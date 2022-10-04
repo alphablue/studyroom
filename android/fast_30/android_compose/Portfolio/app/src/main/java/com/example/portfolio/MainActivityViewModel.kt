@@ -93,9 +93,7 @@ class MainActivityViewModel @Inject constructor(
         callback: (GoogleGeoCode) -> Unit
     ) = onIO {
         try {
-            googleRepository.getReverseGeoCodeData(returnType, lat, lng).let {
-                callback(it)
-            }
+            callback(googleRepository.getReverseGeoCodeData(returnType, lat, lng))
         } catch (e: Exception) {
             Log.d("MainActivityViewModel", "reverseGeoCode error : ${e.message}")
         }

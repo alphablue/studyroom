@@ -73,13 +73,6 @@ data class User(
     val phoneNumber: String? = ""
 )
 
-data class Like(
-    val id: String,
-    val restaurantId: String,
-    val restaurantImage: Uri,
-    val restaurantName: String
-)
-
 data class Review(
     var takePicture: String = "",
     var rating: String = "",

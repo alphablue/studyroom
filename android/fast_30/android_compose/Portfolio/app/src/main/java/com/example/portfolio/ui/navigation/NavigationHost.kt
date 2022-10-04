@@ -89,7 +89,8 @@ fun NavGraphBuilder.applicationNavGraph(
 
         ListItemDetailView(
             activityViewModel,
-            upPress = upPress
+            upPress = upPress,
+            goLogin = {goLogin(it)}
         )
     }
 

@@ -143,4 +143,12 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager:0.26.3-beta"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.26.3-beta"
 
+    // room
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-paging:2.5.0-alpha03"
+
+    // paging
+    implementation "androidx.paging:paging-compose:1.0.0-alpha16"
+
 }

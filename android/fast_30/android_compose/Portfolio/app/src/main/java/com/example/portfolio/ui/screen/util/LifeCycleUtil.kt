@@ -16,15 +16,13 @@ fun lifeCycleDetector(
     onAny: () -> Unit= {Log.d("lifeCycleDetector", "onAny")},
 ) {
     when(lifecycle) {
-        Lifecycle.Event.ON_CREATE -> {
-            onCreate
-        }
-        Lifecycle.Event.ON_START -> onStart
-        Lifecycle.Event.ON_RESUME -> onResume
-        Lifecycle.Event.ON_PAUSE -> onPause
-        Lifecycle.Event.ON_STOP -> onStop
-        Lifecycle.Event.ON_DESTROY -> onDestroy
-        Lifecycle.Event.ON_ANY -> onAny
+        Lifecycle.Event.ON_CREATE -> onCreate()
+        Lifecycle.Event.ON_START -> onStart()
+        Lifecycle.Event.ON_RESUME -> onResume()
+        Lifecycle.Event.ON_PAUSE -> onPause()
+        Lifecycle.Event.ON_STOP -> onStop()
+        Lifecycle.Event.ON_DESTROY -> onDestroy()
+        Lifecycle.Event.ON_ANY -> onAny()
     }
 }
 

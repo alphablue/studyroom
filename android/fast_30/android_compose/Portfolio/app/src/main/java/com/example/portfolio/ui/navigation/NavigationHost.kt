@@ -6,6 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.MainDestinations
@@ -26,8 +27,12 @@ fun NavGraphBuilder.addHomeGraph(
     goLogin: (NavBackStackEntry) -> Unit,
     activityViewModel: MainActivityViewModel
 ) {
+    val deepLinkUri = "portfolio://test_deep_link"
+
     composable(Sections.HOME.route) { from ->
         val homeViewModel = hiltViewModel<HomeViewModel>()
+        activityViewModel.floatingState = true
+
         Home(
             modifier,
             itemSelect = { poi ->
@@ -39,11 +44,20 @@ fun NavGraphBuilder.addHomeGraph(
             homeViewModel
         )
     }
-    composable(Sections.Cart.route) { from ->
+    composable(
+        Sections.Cart.route,
+        deepLinks = listOf(
+            navDeepLink { uriPattern = deepLinkUri}
+        )
+    ) { from ->
+        activityViewModel.floatingState = false
+
         Cart(modifier)
         Log.d("navigationTest", "cart $from")
     }
     composable(Sections.PROFILE.route) { from ->
+        activityViewModel.floatingState = false
+
         Profile(activityViewModel, goLogin = { goLogin(from)})
         Log.d("navigationTest", "profile $from")
     }
@@ -71,6 +85,8 @@ fun NavGraphBuilder.applicationNavGraph(
     composable(
         route = "${MainDestinations.HOME_ROUTE}/$detailRout"
     ) {
+        activityViewModel.floatingState = false
+
         ListItemDetailView(
             activityViewModel,
             upPress = upPress
@@ -80,6 +96,8 @@ fun NavGraphBuilder.applicationNavGraph(
     composable(
         route = MainDestinations.GOOGLE_MAP
     ) {
+        activityViewModel.floatingState = false
+
         GoogleMapView(
             activityViewModel = activityViewModel,
             upPress = upPress
@@ -89,6 +107,8 @@ fun NavGraphBuilder.applicationNavGraph(
     composable(
         route = MainDestinations.LOGIN_PAGE
     ) {
+        activityViewModel.floatingState = false
+
         LoginPage(
             sharedViewModel = activityViewModel,
             upPress = upPress

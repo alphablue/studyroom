@@ -2,46 +2,70 @@ package com.example.portfolio.ui.common.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
+import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.app.TaskStackBuilder
+import androidx.core.net.toUri
 import com.example.portfolio.R
-import okhttp3.internal.notify
 
-const val CHANNEL_ID = "Test Notification"
-const val CHANNEL_NAME = "test Channel Name"
+const val DELIVERY_CHANNEL_ID = "delivery_notify_channel"
+const val DELIVERY_NOTI_CHANNEL_NAME = "배달알림"
 const val NOTIFICATION_ID = 10001
 
 class NotificationBuilder(
-    val context: Context
+    private val context: Context
 ) {
-    var builder = NotificationCompat.Builder(context, CHANNEL_ID)
-        .setSmallIcon(R.drawable.ic_baseline_emoji_food_beverage_24)
-        .setContentTitle("테스트 알림")
-        .setContentText("알림 테스트용")
-        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
-    fun createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
+    fun createDeliveryNotificationChannel(
+        doNotify: Boolean,
+        notifyTitle: String = "",
+        notifyContent: String = ""
+    ) {
+        val notNestedIntent = TaskStackBuilder.create(context).run {
+            addNextIntentWithParentStack(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    "portfolio://test_deep_link".toUri() // <-- Notice this
+                )
+            )
+            getPendingIntent(1234, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+
+        val builder = NotificationCompat.Builder(context, DELIVERY_CHANNEL_ID)
+            .apply {
+                setSmallIcon(R.drawable.ic_baseline_emoji_food_beverage_24)
+                priority = NotificationCompat.PRIORITY_DEFAULT
+
+                if(doNotify) {
+                    setContentTitle(notifyTitle)
+                    setContentText(notifyContent)
+                    setContentIntent(notNestedIntent)
+                    setAutoCancel(true)
+                }
+            }
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = CHANNEL_NAME
-            val descriptionText = "테스트를 위한 앱 채널입니다."
+            val name = DELIVERY_NOTI_CHANNEL_NAME
+            val descriptionText = "배달 알림을 위한 채널 입니다."
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+            val channel = NotificationChannel(DELIVERY_CHANNEL_ID, name, importance).apply {
                 description = descriptionText
             }
-            // Register the channel with the system
             val notificationManager: NotificationManager =
                 context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
-            notificationManager.notify(NOTIFICATION_ID, builder.build())
+
+            if(doNotify)
+                notificationManager.notify(NOTIFICATION_ID, builder.build())
+
         } else {
             with(NotificationManagerCompat.from(context)) {
-                // notificationId is a unique int for each notification that you must define
                 notify(NOTIFICATION_ID, builder.build())
             }
         }

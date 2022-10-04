@@ -2,21 +2,24 @@ package com.example.portfolio
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.portfolio.ui.common.notification.NotificationBuilder
 import com.example.portfolio.ui.navigation.Sections
 import com.example.portfolio.ui.navigation.applicationNavGraph
 import com.example.portfolio.ui.navigation.rememberApplicationNavState
 import com.example.portfolio.ui.theme.PortfolioTheme
+import com.example.portfolio.ui.theme.textColor
+import com.example.portfolio.ui.theme.textPrimaryColor
 
 object MainDestinations {
     const val HOME_ROUTE = "home"
@@ -30,6 +33,8 @@ fun StartApp(
 ) {
     PortfolioTheme {
         val appState = rememberApplicationNavState()
+        val context = LocalContext.current
+        val noti = NotificationBuilder(context)
 
         Scaffold(
             modifier= Modifier.fillMaxSize(),
@@ -41,6 +46,21 @@ fun StartApp(
                         navigateToRoute = appState::navigateToBottomBarRoute,
                         navController = appState.navController
                     )
+                }
+            },
+            floatingActionButton = {
+
+                if(activityViewModel.floatingState) {
+                    FloatingActionButton(
+                        backgroundColor = MaterialTheme.colors.primary,
+                        shape = RoundedCornerShape(14.dp),
+                        onClick = {
+                            noti.createDeliveryNotificationChannel(
+                                true, "알림 테스트 중", "알림 테스트 내용"
+                            )
+                        }) {
+                        Text(text = "테스트용", color = textColor)
+                    }
                 }
             }
         ) { innerPaddingModifier ->

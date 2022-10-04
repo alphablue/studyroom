@@ -1,6 +1,5 @@
 package com.example.portfolio
 
-import android.app.NotificationManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,11 +11,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.core.app.NotificationManagerCompat
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.Lifecycle
 import com.example.portfolio.ui.common.HardwareName
 import com.example.portfolio.ui.common.PermissionName
-import com.example.portfolio.ui.common.notification.CHANNEL_ID
 import com.example.portfolio.ui.common.notification.NotificationBuilder
 import com.example.portfolio.ui.screen.util.observeAsState
 import com.example.portfolio.ui.screen.util.permission.PermissionCheck
@@ -41,7 +39,7 @@ class MainActivity : ComponentActivity() {
 
             if (permissionGrantCheck) {
                 activityViewModel.checkLoginState()
-                NotificationBuilder(this).createNotificationChannel()
+                NotificationBuilder(this).createDeliveryNotificationChannel(false)
 
                 when (LocalLifecycleOwner.current.lifecycle.observeAsState()) {
                     Lifecycle.Event.ON_START -> {

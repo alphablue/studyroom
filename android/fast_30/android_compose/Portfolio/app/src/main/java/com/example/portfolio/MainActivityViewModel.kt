@@ -56,6 +56,9 @@ class MainActivityViewModel @Inject constructor(
     var loginState by mutableStateOf(false)
     var userInfo: User? by mutableStateOf(null)
 
+    // floating button state
+    var floatingState by mutableStateOf(false)
+
     // 테스트를 위한 것
     private val packageName = context.packageName
 

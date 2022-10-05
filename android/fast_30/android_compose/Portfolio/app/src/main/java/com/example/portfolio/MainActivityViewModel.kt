@@ -8,6 +8,8 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.example.portfolio.localdb.Like
+import com.example.portfolio.localdb.RoomRepository
 import com.example.portfolio.model.googlegeocode.GoogleGeoCode
 import com.example.portfolio.repository.GoogleRepository
 import com.example.portfolio.repository.firebasemodule.FirebaseObject
@@ -19,12 +21,18 @@ import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     @ApplicationContext context: Context,
     private val googleRepository: GoogleRepository,
+    private val roomRepository: RoomRepository,
     dispatcherProvider: DispatcherProvider
 ) : BaseViewModel(dispatcherProvider) {
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
@@ -59,6 +67,8 @@ class MainActivityViewModel @Inject constructor(
     // floating button state
     var floatingState by mutableStateOf(false)
 
+    var userLikeList = mutableListOf<Like>()
+
     // 테스트를 위한 것
     private val packageName = context.packageName
 
@@ -86,7 +96,7 @@ class MainActivityViewModel @Inject constructor(
         Log.d("mainActivityViewModel", "getLocation Call")
     }
 
-    fun getReverseGeoCode(
+    private fun getReverseGeoCode(
         returnType: String = "json",
         lat: Double,
         lng: Double,
@@ -106,7 +116,7 @@ class MainActivityViewModel @Inject constructor(
             }
         }
 
-    fun googleGeoCodeConvert(geoCode: GoogleGeoCode): String =
+    private fun googleGeoCodeConvert(geoCode: GoogleGeoCode): String =
         geoCode.results.first()
             .formattedAddress
             .split(" ")
@@ -191,5 +201,12 @@ class MainActivityViewModel @Inject constructor(
     fun signOut() {
         auth.signOut()
         checkLoginState()
+    }
+
+    fun insertLike(like: Like) = onIO { roomRepository.insertLike(like) }
+    fun deleteLike(like: Like) = onIO { roomRepository.deleteLike(like) }
+    fun getAllLike() = onIO {
+        userLikeList.clear()
+        userLikeList.addAll(roomRepository.getAllLike())
     }
 }

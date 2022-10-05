@@ -146,7 +146,8 @@ dependencies {
     // room
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
-    implementation "androidx.room:room-paging:2.5.0-alpha03"
+    implementation "androidx.room:room-paging:2.4.3"
+    implementation "androidx.room:room-ktx:2.4.3"
 
     // paging
     implementation "androidx.paging:paging-compose:1.0.0-alpha16"

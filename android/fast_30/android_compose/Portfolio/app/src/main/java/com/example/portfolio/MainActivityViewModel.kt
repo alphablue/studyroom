@@ -14,6 +14,7 @@ import com.example.portfolio.model.googlegeocode.GoogleGeoCode
 import com.example.portfolio.repository.GoogleRepository
 import com.example.portfolio.repository.firebasemodule.FirebaseObject
 import com.example.portfolio.ui.screen.home.NearRestaurantInfo
+import com.example.portfolio.ui.screen.util.localRoomLikeKey
 import com.example.portfolio.viewmodel.BaseViewModel
 import com.example.portfolio.viewmodel.DispatcherProvider
 import com.example.portfolio.viewmodel.onIO
@@ -67,7 +68,8 @@ class MainActivityViewModel @Inject constructor(
     // floating button state
     var floatingState by mutableStateOf(false)
 
-    var userLikeList = mutableListOf<Like>()
+    // room state
+    var userLikeMap = mutableMapOf<String, Like>()
 
     // 테스트를 위한 것
     private val packageName = context.packageName
@@ -203,10 +205,20 @@ class MainActivityViewModel @Inject constructor(
         checkLoginState()
     }
 
-    fun insertLike(like: Like) = onIO { roomRepository.insertLike(like) }
-    fun deleteLike(like: Like) = onIO { roomRepository.deleteLike(like) }
+    fun insertLike(key: String, like: Like) = onIO {
+        roomRepository.insertLike(like)
+        userLikeMap[key] = like
+    }
+    fun deleteLike(key: String, like: Like) = onIO {
+        roomRepository.deleteLike(like)
+        userLikeMap.remove(key)
+    }
     fun getAllLike() = onIO {
-        userLikeList.clear()
-        userLikeList.addAll(roomRepository.getAllLike())
+        userLikeMap.clear()
+
+        val allData = roomRepository.getAllLike()
+        allData.forEach {
+            userLikeMap[localRoomLikeKey(it.userId, it.restaurantId)] = it
+        }
     }
 }

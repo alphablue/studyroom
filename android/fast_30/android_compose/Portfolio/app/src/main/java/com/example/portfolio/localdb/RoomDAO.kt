@@ -11,7 +11,7 @@ interface RoomDAO {
     @Insert
     suspend fun insertLike(vararg likes: Like)
 
-    @Delete
+    @Delete()
     suspend fun deleteLike(vararg like: Like)
 
     @Query("SELECT * FROM `Like`")

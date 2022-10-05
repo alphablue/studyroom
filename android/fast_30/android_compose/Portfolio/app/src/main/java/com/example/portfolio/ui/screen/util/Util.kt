@@ -28,3 +28,5 @@ fun Float.number2Digits(): String {
 fun Float.number1Digits(): String {
     return String.format("%.1f", this)
 }
+
+fun localRoomLikeKey(userId: String, resId: String) = "${userId}_$resId"

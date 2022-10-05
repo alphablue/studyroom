@@ -24,9 +24,11 @@ import coil.request.ImageRequest
 import coil.size.Scale
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.R
+import com.example.portfolio.localdb.Like
 import com.example.portfolio.ui.common.StarRatingBar
 import com.example.portfolio.ui.screen.home.NearRestaurantInfo
 import com.example.portfolio.ui.screen.util.findActivity
+import com.example.portfolio.ui.screen.util.localRoomLikeKey
 import com.example.portfolio.ui.theme.lightPrimaryBlue
 import com.example.portfolio.ui.theme.textColor
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -49,7 +51,6 @@ fun ListItemDetailView(
 ) {
     val detailModel = sharedViewModel.detailItem
     val loginState = sharedViewModel.loginState
-    var restaurantAddress = ""
 
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -68,6 +69,7 @@ fun ListItemDetailView(
                     DetailTopView(
                         imgUrl = info.imgUri,
                         detailModel = info,
+                        sharedViewModel = sharedViewModel,
                         loginState = loginState,
                         goLogin = goLogin,
                         modifier = Modifier.fillMaxWidth()
@@ -84,12 +86,21 @@ fun ListItemDetailView(
 fun DetailTopView(
     imgUrl: Uri?,
     detailModel: NearRestaurantInfo,
+    sharedViewModel: MainActivityViewModel,
     loginState: Boolean,
     goLogin: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val activity = context.findActivity()
+    var likeState by remember{ mutableStateOf(false)}
+
+    if(loginState) {
+        sharedViewModel.userInfo?.let {
+            val localKey = localRoomLikeKey(it.id!!, detailModel.id)
+            likeState = sharedViewModel.userLikeMap.containsKey(localKey)
+        }
+    }
 
     Box(
         modifier = modifier
@@ -160,9 +171,35 @@ fun DetailTopView(
                 TextButton(onClick = {
                     if(loginState.not()) {
                         goLogin()
+                    } else {
+
+                        sharedViewModel.userInfo?.let {
+                            val localKey = localRoomLikeKey(it.id!!, detailModel.id)
+                            val queryObj = Like(
+                                userId = it.id,
+                                restaurantId = detailModel.id,
+                                restaurantImage = detailModel.imgUri.toString(),
+                                restaurantName = detailModel.name
+                            )
+
+                            likeState = if(likeState) {
+                                sharedViewModel.deleteLike(localKey, queryObj)
+                                false
+                            } else {
+                                sharedViewModel.insertLike(
+                                    key = localKey,
+                                    queryObj
+                                )
+                                true
+                            }
+
+                        }
                     }
                 }) {
-                    Text("찜", fontSize = 18.sp, color = textColor)
+                    if(likeState)
+                        Text("찜", fontSize = 18.sp, color = textColor)
+                    else
+                        Text("찜 해제", fontSize = 18.sp, color = textColor)
                 }
             }
             Row(
@@ -219,7 +256,6 @@ fun DetailMiddleView(
         }
         val markerPosition =
             rememberMarkerState("restaurantLocation", position = restaurantLocation)
-
 
         Column(
             modifier = Modifier

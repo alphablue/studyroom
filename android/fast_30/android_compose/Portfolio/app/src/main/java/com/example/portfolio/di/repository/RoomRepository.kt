@@ -1,5 +1,7 @@
-package com.example.portfolio.localdb
+package com.example.portfolio.di.repository
 
+import com.example.portfolio.localdb.Like
+import com.example.portfolio.localdb.RoomDAO
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent

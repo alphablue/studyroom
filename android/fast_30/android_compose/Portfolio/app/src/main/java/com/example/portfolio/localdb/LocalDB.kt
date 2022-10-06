@@ -12,6 +12,13 @@ data class Like(
     val restaurantName: String
 )
 
+@Entity
+data class Cart(
+    @PrimaryKey(autoGenerate = true) val diffKey: Int,
+    val userId: String,
+    val resId: String
+)
+
 
 /**
  * TODO

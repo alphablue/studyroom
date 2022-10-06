@@ -1,4 +1,4 @@
-package com.example.portfolio.repository.firebasemodule
+package com.example.portfolio.di.modules.firebasemodule
 
 import android.net.Uri
 import android.util.Log

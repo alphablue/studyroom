@@ -17,7 +17,7 @@ import coil.request.ImageRequest
 import coil.size.Scale
 import com.example.portfolio.R
 import com.example.portfolio.RestaurantMenu
-import com.example.portfolio.repository.firebasemodule.FirebaseObject
+import com.example.portfolio.di.modules.firebasemodule.FirebaseObject
 import com.example.portfolio.ui.common.notification.NotificationBuilder
 import com.example.portfolio.ui.theme.backgroundColor
 
@@ -30,7 +30,7 @@ fun DetailMenuView() {
     val menuList = remember { mutableStateListOf<RestaurantMenu>() }
 
     var dialogState by remember { mutableStateOf(false) }
-    var selectedMenuName by remember { mutableStateOf("") }
+    var selectedIndex by remember { mutableStateOf(-1) }
 
     LaunchedEffect(true) {
         FirebaseObject.getTestMenus {
@@ -39,8 +39,8 @@ fun DetailMenuView() {
     }
 
     Column {
-        menuList.forEach { detailModel ->
-            Log.d("detail_menu", detailModel.toString())
+        menuList.forEachIndexed { index, menuData ->
+            Log.d("detail_menu", menuData.toString())
 
             Row(
                 modifier = Modifier
@@ -48,13 +48,13 @@ fun DetailMenuView() {
                     .height(120.dp)
                     .clickable {
                         dialogState = true
-                        selectedMenuName = detailModel.menuName ?: "오류가 생겼습니다."
+                        selectedIndex = index
                     }
             ) {
                 AsyncImage(
                     model = ImageRequest
                         .Builder(context)
-                        .data(detailModel.image)
+                        .data(menuData.image)
                         .error(R.drawable.roadingimage)
                         .scale(Scale.FILL)
                         .build(),
@@ -68,9 +68,9 @@ fun DetailMenuView() {
                         .weight(1f)
                         .fillMaxHeight()
                 ) {
-                    Text(detailModel.menuName ?: "")
-                    Text(detailModel.detailContent ?: "")
-                    Text(detailModel.price ?: "")
+                    Text(menuData.menuName ?: "")
+                    Text(menuData.detailContent ?: "")
+                    Text(menuData.price ?: "")
                 }
             }
             Spacer(
@@ -85,7 +85,7 @@ fun DetailMenuView() {
     if (dialogState) {
         OrderDialog(
             dialogStateCallBack = { state -> dialogState = state },
-            menuName = selectedMenuName
+            menuName = menuList[selectedIndex].menuName ?: "오류가 발생했습니다."
         ) {
             val notify = NotificationBuilder(context)
             notify.createDeliveryNotificationChannel(
@@ -93,6 +93,9 @@ fun DetailMenuView() {
                 "주문완료",
                 "주문이 접수 되었습니다."
             )
+
+
+
             dialogState = false
         }
     }

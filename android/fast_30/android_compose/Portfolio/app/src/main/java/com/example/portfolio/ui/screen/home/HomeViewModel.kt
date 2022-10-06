@@ -5,7 +5,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import com.example.portfolio.model.tmap_poi.Poi
-import com.example.portfolio.repository.TMapRepository
+import com.example.portfolio.di.repository.TMapRepository
 import com.example.portfolio.viewmodel.BaseViewModel
 import com.example.portfolio.viewmodel.DispatcherProvider
 import com.example.portfolio.viewmodel.onIO

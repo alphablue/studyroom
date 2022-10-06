@@ -1,4 +1,4 @@
-package com.example.portfolio.repository
+package com.example.portfolio.di.repository
 
 import android.util.Log
 import com.example.portfolio.di.httpmodule.RetrofitServices

@@ -26,7 +26,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.R
-import com.example.portfolio.repository.firebasemodule.FirebaseObject
+import com.example.portfolio.di.modules.firebasemodule.FirebaseObject
 import com.example.portfolio.ui.screen.util.number2Digits
 import com.example.portfolio.ui.theme.gray
 import com.example.portfolio.ui.theme.lightSecondaryBlue

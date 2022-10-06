@@ -9,10 +9,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.portfolio.localdb.Like
-import com.example.portfolio.localdb.RoomRepository
+import com.example.portfolio.di.repository.RoomRepository
 import com.example.portfolio.model.googlegeocode.GoogleGeoCode
-import com.example.portfolio.repository.GoogleRepository
-import com.example.portfolio.repository.firebasemodule.FirebaseObject
+import com.example.portfolio.di.repository.GoogleRepository
+import com.example.portfolio.di.modules.firebasemodule.FirebaseObject
 import com.example.portfolio.ui.screen.home.NearRestaurantInfo
 import com.example.portfolio.ui.screen.util.localRoomLikeKey
 import com.example.portfolio.viewmodel.BaseViewModel

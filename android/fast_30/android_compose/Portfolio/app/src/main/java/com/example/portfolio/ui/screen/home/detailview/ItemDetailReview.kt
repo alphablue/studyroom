@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import com.example.portfolio.Review
-import com.example.portfolio.repository.firebasemodule.FirebaseObject
+import com.example.portfolio.di.modules.firebasemodule.FirebaseObject
 
 const val DETAIL_REVIEW_VIEW = "리뷰"
 

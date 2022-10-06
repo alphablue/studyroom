@@ -2,6 +2,7 @@ package com.example.portfolio.ui.screen.home.detailview
 
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,7 +16,9 @@ import androidx.compose.material.icons.outlined.Message
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -229,6 +232,9 @@ fun DetailTopView(
 fun DetailMiddleView(
     detailModel: NearRestaurantInfo
 ) {
+    val clipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -272,23 +278,33 @@ fun DetailMiddleView(
                 )
             }
             Row(
-                modifier = Modifier.background(
-                    lightPrimaryBlue,
-                    shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
-                )
+                modifier = Modifier
+                    .background(
+                        lightPrimaryBlue,
+                        shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
+                    )
                     .height(48.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text(
+                Box(
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { },
-                    fontSize = 15.sp,
-                    text = "주소복사",
-                    color = textColor,
-                    textAlign = TextAlign.Center
-                )
+                        .fillMaxSize()
+                        .clickable
+                        {
+                            clipboardManager.setText(AnnotatedString("${detailModel.address}\n${detailModel.name}"))
+                            Toast.makeText(context, "복사되었습니다.", Toast.LENGTH_SHORT).show()
+                        },
+                ){
+                    Text(
+                        modifier = Modifier.align(alignment = Alignment.Center),
+                        fontSize = 15.sp,
+                        text = "주소복사",
+                        color = textColor,
+                        textAlign = TextAlign.Center,
+                    )
+                }
                 Spacer(
                     modifier = Modifier
                         .fillMaxHeight(1f)

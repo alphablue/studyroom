@@ -1,12 +1,12 @@
 package com.example.portfolio.ui.common
 
 import android.content.Context
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconToggleButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -42,7 +42,5 @@ fun IconTextButton(
             Icon(imageVector = inactiveIcon, contentDescription = "icon")
             Text(text)
         }
-
-
     }
 }

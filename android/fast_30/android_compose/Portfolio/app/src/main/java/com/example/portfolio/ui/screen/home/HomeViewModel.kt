@@ -4,8 +4,6 @@ import android.location.Location
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.ui.res.painterResource
-import com.example.portfolio.R
 import com.example.portfolio.model.tmap_poi.Poi
 import com.example.portfolio.repository.TMapRepository
 import com.example.portfolio.viewmodel.BaseViewModel
@@ -27,19 +25,19 @@ class HomeViewModel @Inject constructor(
 
     fun getPoiData(
         location: Location,
-        category: String?,
+        searchCategory: String?,
         count: Int = 100
     ) = onIO {
         val lat = location.latitude
         val lng = location.longitude
 
-        Log.d("HomeViewModel", "getPoi called")
+        Log.d("HomeViewModel", "getPoi called, $searchCategory")
 
         try {
             _poiList.clear()
             Log.d("HomeViewModel", "getPoi show location data : ${location.toString()}")
 
-            category?.let { category ->
+            searchCategory?.let { category ->
                 val resultList = tMapRepository
                     .getPOIWithTMAP(lat, lng, category, count)
                     .searchPoiInfo

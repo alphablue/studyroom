@@ -27,7 +27,6 @@ import coil.request.ImageRequest
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.R
 import com.example.portfolio.repository.firebasemodule.FirebaseObject
-import com.example.portfolio.ui.common.notification.NotificationBuilder
 import com.example.portfolio.ui.screen.util.number2Digits
 import com.example.portfolio.ui.theme.gray
 import com.example.portfolio.ui.theme.lightSecondaryBlue
@@ -57,7 +56,7 @@ fun Home(
             activityViewModel.reverseGeoCodeCallBack(lastLocation)
             homeViewModel.getPoiData(
                 location = lastLocation,
-                category = menuList.first().searchPara,
+                searchCategory = menuList.first().searchPara,
                 count = 200
             )
         } ?: run {
@@ -65,7 +64,7 @@ fun Home(
                 activityViewModel.reverseGeoCodeCallBack(lastLocation)
                 homeViewModel.getPoiData(
                     location = lastLocation,
-                    category = menuList.first().searchPara,
+                    searchCategory = menuList.first().searchPara,
                     count = 200
                 )
             }
@@ -92,7 +91,24 @@ fun Home(
 
             menuList.forEachIndexed { index, homeTabItems ->
                 FilterChip(
-                    onClick = { menuChipSelected = index },
+                    onClick = {
+                        menuChipSelected = index
+                        activityViewModel.userSettingLocation?.let {
+                            homeViewModel.getPoiData(
+                                it,
+                                homeTabItems.searchPara,
+                                count = 200
+                            )
+                        } ?: run {
+                            activityViewModel.getLocation {
+                                homeViewModel.getPoiData(
+                                    it,
+                                    homeTabItems.searchPara,
+                                    count = 200
+                                )
+                            }
+                        }
+                    },
                     colors = ChipDefaults.filterChipColors(
                         selectedBackgroundColor = Color.Green,
                         backgroundColor = Color.LightGray,

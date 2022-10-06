@@ -1,10 +1,7 @@
 package com.example.portfolio.localdb
 
-import android.content.Context
-import androidx.room.Room
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,23 +12,18 @@ import kotlin.coroutines.suspendCoroutine
 @Module
 @InstallIn(SingletonComponent::class)
 class RoomRepository @Inject constructor(
-    @ApplicationContext context: Context
+    private val roomDAO: RoomDAO
 ) {
-    private val roomDB = Room.databaseBuilder(
-        context,
-        LocalRoomDB::class.java, "LocalDB"
-    ).build()
-
     suspend fun insertLike(
         like: Like
-    ) = withContext(Dispatchers.IO) { roomDB.localDao().insertLike(like) }
+    ) = withContext(Dispatchers.IO) { roomDAO.insertLike(like) }
 
     suspend fun deleteLike(
         like: Like
-    ) = withContext(Dispatchers.IO) {roomDB.localDao().deleteLike(like)}
+    ) = withContext(Dispatchers.IO) {roomDAO.deleteLike(like)}
 
     suspend fun getAllLike(): List<Like> = withContext(Dispatchers.IO) {
-        val getAllList = roomDB.localDao().getAllLike()
+        val getAllList = roomDAO.getAllLike()
         suspendCoroutine {
             it.resume(getAllList)
         }

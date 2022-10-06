@@ -50,7 +50,6 @@ fun ListItemDetailView(
     goLogin: () -> Unit
 ) {
     val detailModel = sharedViewModel.detailItem
-    val loginState = sharedViewModel.loginState
 
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -70,7 +69,6 @@ fun ListItemDetailView(
                         imgUrl = info.imgUri,
                         detailModel = info,
                         sharedViewModel = sharedViewModel,
-                        loginState = loginState,
                         goLogin = goLogin,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -87,12 +85,12 @@ fun DetailTopView(
     imgUrl: Uri?,
     detailModel: NearRestaurantInfo,
     sharedViewModel: MainActivityViewModel,
-    loginState: Boolean,
     goLogin: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val activity = context.findActivity()
+    val loginState = sharedViewModel.loginState
     var likeState by remember{ mutableStateOf(false)}
 
     if(loginState) {
@@ -196,7 +194,7 @@ fun DetailTopView(
                         }
                     }
                 }) {
-                    if(likeState)
+                    if(likeState.not())
                         Text("찜", fontSize = 18.sp, color = textColor)
                     else
                         Text("찜 해제", fontSize = 18.sp, color = textColor)

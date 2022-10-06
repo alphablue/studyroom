@@ -19,7 +19,6 @@ import com.example.portfolio.ui.screen.login.LoginPage
 import com.example.portfolio.ui.screen.map.GoogleMapView
 import com.example.portfolio.ui.screen.profile.Profile
 
-
 fun NavGraphBuilder.addHomeGraph(
     modifier: Modifier = Modifier,
     itemSelect: (NavBackStackEntry) -> Unit,
@@ -47,18 +46,18 @@ fun NavGraphBuilder.addHomeGraph(
     composable(
         Sections.Cart.route,
         deepLinks = listOf(
-            navDeepLink { uriPattern = deepLinkUri}
+            navDeepLink { uriPattern = deepLinkUri }
         )
     ) { from ->
         activityViewModel.floatingState = false
 
-        Cart(modifier)
+        Cart(sharedViewModel = activityViewModel, modifier)
         Log.d("navigationTest", "cart $from")
     }
     composable(Sections.PROFILE.route) { from ->
         activityViewModel.floatingState = false
 
-        Profile(activityViewModel, goLogin = { goLogin(from)})
+        Profile(activityViewModel, goLogin = { goLogin(from) })
         Log.d("navigationTest", "profile $from")
     }
 }
@@ -90,7 +89,7 @@ fun NavGraphBuilder.applicationNavGraph(
         ListItemDetailView(
             activityViewModel,
             upPress = upPress,
-            goLogin = {goLogin(it)}
+            goLogin = { goLogin(it) }
         )
     }
 

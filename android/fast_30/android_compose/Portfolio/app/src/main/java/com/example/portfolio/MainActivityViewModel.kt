@@ -22,12 +22,7 @@ import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
@@ -163,6 +158,7 @@ class MainActivityViewModel @Inject constructor(
                 FirebaseObject.getUser(it.uid) { userData ->
                     userInfo = userData
                 }
+                getAllLike()
             }
         } else userInfo = null
     }
@@ -213,6 +209,7 @@ class MainActivityViewModel @Inject constructor(
         roomRepository.deleteLike(like)
         userLikeMap.remove(key)
     }
+
     fun getAllLike() = onIO {
         userLikeMap.clear()
 

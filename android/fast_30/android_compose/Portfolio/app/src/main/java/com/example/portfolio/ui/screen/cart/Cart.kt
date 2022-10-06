@@ -23,17 +23,20 @@ fun Cart(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if(loginState) {
-            val filterId = "${sharedViewModel.userInfo!!.id} ${sharedViewModel.detailItem!!.id}"
-
-            val itemList = sharedViewModel.userLikeMap.filterKeys { it == filterId }
+            val itemList = sharedViewModel.userLikeMap
                 .toList().map { it.second }
 
-            LazyColumn{
-                items(itemList) { like ->
-                    Text(text = like.restaurantName)
+            if(itemList.isEmpty()){
+                Text(text = "비어 있어요")
+            } else {
+                LazyColumn {
+                    items(itemList) { like ->
+                        Text(text = like.restaurantName)
+                    }
                 }
             }
+        } else {
+            Text(text = "Cart")
         }
-        Text(text = "Cart")
     }
 }

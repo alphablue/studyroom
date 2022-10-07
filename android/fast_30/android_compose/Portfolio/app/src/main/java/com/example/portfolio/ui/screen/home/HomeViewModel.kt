@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import com.example.portfolio.model.tmap_poi.Poi
 import com.example.portfolio.di.repository.TMapRepository
+import com.example.portfolio.model.uidatamodels.NearRestaurantInfo
 import com.example.portfolio.viewmodel.BaseViewModel
 import com.example.portfolio.viewmodel.DispatcherProvider
 import com.example.portfolio.viewmodel.onIO
@@ -85,26 +86,3 @@ class HomeViewModel @Inject constructor(
         return result
     }
 }
-
-data class NearRestaurantInfo(
-    val id: String,
-    val imgUri: Uri? = null,
-    val callNumber: String = "02-1234-1234",
-    val name: String,
-    val address: String,
-    val lon: Double,
-    val lat: Double,
-    val rating: Float = Random.nextDouble(0.0, 5.0).toFloat(),
-    val deliveryTime: String = run {
-        val firstTime = Random.nextInt(1..7)
-        val secondTime = Random.nextInt(10..35)
-
-        "${firstTime}분 ~ ${secondTime}분"
-    },
-    val deliveryTip: String = run {
-        val firstTip = Random.nextInt(100..350)
-        val secondTip = Random.nextInt(500..4000)
-
-        "배달팁 ${firstTip}원 ~ ${secondTip}원"
-    }
-)

@@ -2,9 +2,9 @@ package com.example.portfolio.di.modules.firebasemodule
 
 import android.net.Uri
 import android.util.Log
-import com.example.portfolio.RestaurantMenu
-import com.example.portfolio.Review
-import com.example.portfolio.User
+import com.example.portfolio.model.uidatamodels.RestaurantMenu
+import com.example.portfolio.model.uidatamodels.Review
+import com.example.portfolio.model.uidatamodels.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects

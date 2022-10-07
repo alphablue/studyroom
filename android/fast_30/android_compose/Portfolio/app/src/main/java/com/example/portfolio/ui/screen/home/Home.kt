@@ -27,6 +27,7 @@ import coil.request.ImageRequest
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.R
 import com.example.portfolio.di.modules.firebasemodule.FirebaseObject
+import com.example.portfolio.model.uidatamodels.NearRestaurantInfo
 import com.example.portfolio.ui.screen.util.number2Digits
 import com.example.portfolio.ui.theme.gray
 import com.example.portfolio.ui.theme.lightSecondaryBlue

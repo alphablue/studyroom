@@ -15,22 +15,29 @@ import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
+import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.R
-import com.example.portfolio.RestaurantMenu
 import com.example.portfolio.di.modules.firebasemodule.FirebaseObject
-import com.example.portfolio.ui.common.notification.NotificationBuilder
+import com.example.portfolio.localdb.CartWithOrder
+import com.example.portfolio.model.uidatamodels.RestaurantMenu
+import com.example.portfolio.ui.screen.util.localRoomLikeKey
 import com.example.portfolio.ui.theme.backgroundColor
 
 const val DETAIL_MENU_VIEW = "메뉴"
 
 @Composable
-fun DetailMenuView() {
+fun DetailMenuView(
+    sharedViewModel: MainActivityViewModel,
+    restaurantName: String,
+    goLogin: () -> Unit
+) {
 
     val context = LocalContext.current
     val menuList = remember { mutableStateListOf<RestaurantMenu>() }
 
     var dialogState by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf(-1) }
+    val loginState = sharedViewModel.loginState
 
     LaunchedEffect(true) {
         FirebaseObject.getTestMenus {
@@ -83,20 +90,36 @@ fun DetailMenuView() {
     }
 
     if (dialogState) {
-        OrderDialog(
-            dialogStateCallBack = { state -> dialogState = state },
-            menuName = menuList[selectedIndex].menuName ?: "오류가 발생했습니다."
-        ) {
-            val notify = NotificationBuilder(context)
-            notify.createDeliveryNotificationChannel(
-                true,
-                "주문완료",
-                "주문이 접수 되었습니다."
+
+        if (loginState) {
+            OrderDialog(
+                dialogStateCallBack = { state -> dialogState = state },
+                dialogMainContent = menuList[selectedIndex].menuName ?: "오류가 발생했습니다.",
+                confirmButtonContent = "장바구니담기"
+            ) {
+
+                val userid = sharedViewModel.userInfo?.id ?: "none"
+                val restaurantId = menuList[selectedIndex].restaurantId ?: "none"
+                val key = localRoomLikeKey(userId = userid, restaurantId)
+                val insertObj = CartWithOrder(
+                    userId = userid,
+                    restaurantId = restaurantId,
+                    restaurantName = restaurantName,
+                    menuName = menuList[selectedIndex].menuName ?: "none",
+                    price = menuList[selectedIndex].price ?: "none"
+                )
+
+                sharedViewModel.insertCart(key, insertObj)
+
+                dialogState = false
+            }
+        } else {
+            OrderDialog(
+                dialogStateCallBack = { state -> dialogState = state },
+                confirmButtonContent = "로그인하기",
+                dialogMainContent = "로그인이 필요합니다.",
+                confirmEvent = goLogin
             )
-
-
-
-            dialogState = false
         }
     }
 }
@@ -104,14 +127,15 @@ fun DetailMenuView() {
 @Composable
 fun OrderDialog(
     dialogStateCallBack: (Boolean) -> Unit,
-    menuName: String,
+    dialogMainContent: String = "",
+    confirmButtonContent: String = "승인",
     confirmEvent: () -> Unit
 ) {
     AlertDialog(
         onDismissRequest = { dialogStateCallBack(false) },
         confirmButton = {
             Button(onClick = confirmEvent) {
-                Text("주문하기")
+                Text(confirmButtonContent)
             }
         },
         dismissButton = {
@@ -119,7 +143,7 @@ fun OrderDialog(
                 Text("취소")
             }
         },
-        text = { Text(" '${menuName}' 주문하기") },
+        text = { Text(dialogMainContent) },
         properties = DialogProperties(dismissOnClickOutside = false)
     )
 }

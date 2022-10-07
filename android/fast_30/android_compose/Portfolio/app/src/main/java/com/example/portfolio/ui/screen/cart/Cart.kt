@@ -2,6 +2,7 @@ package com.example.portfolio.ui.screen.cart
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,15 +24,30 @@ fun Cart(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if(loginState) {
-            val itemList = sharedViewModel.userLikeMap
-                .toList().map { it.second }
+//            val itemList = sharedViewModel.userLikeMap
+//                .toList().map { it.second }
+//
+//            if(itemList.isEmpty()){
+//                Text(text = "비어 있어요")
+//            } else {
+//                LazyColumn {
+//                    items(itemList) { like ->
+//                        Text(text = like.restaurantName)
+//                    }
+//                }
+//            }
+            val userid = sharedViewModel.userInfo?.id ?: "none"
+            val cartKeyItems = sharedViewModel.userCartMap.filterKeys { userid in it }
+                .map { it.value }
 
-            if(itemList.isEmpty()){
-                Text(text = "비어 있어요")
+            if(cartKeyItems.isEmpty()) {
+                Text(text = "장바구니가 비어있어요")
             } else {
                 LazyColumn {
-                    items(itemList) { like ->
-                        Text(text = like.restaurantName)
+                    items(cartKeyItems) { cartItem ->
+                        Row{
+                            Text("${cartItem.restaurantName}, ${cartItem.menuName}, ${cartItem.price}")
+                        }
                     }
                 }
             }

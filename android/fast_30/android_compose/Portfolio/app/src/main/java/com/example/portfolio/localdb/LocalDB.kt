@@ -1,8 +1,6 @@
 package com.example.portfolio.localdb
 
-import android.net.Uri
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
 @Entity(primaryKeys = ["userId", "restaurantId"])
 data class Like(
@@ -12,11 +10,13 @@ data class Like(
     val restaurantName: String
 )
 
-@Entity
-data class Cart(
-    @PrimaryKey(autoGenerate = true) val diffKey: Int,
-    val userId: String,
-    val resId: String
+@Entity(primaryKeys = ["userId", "restaurantId"])
+data class CartWithOrder(
+    val userId: String = "",
+    val restaurantId: String = "",
+    val restaurantName: String ="",
+    val menuName: String = "",
+    val price: String =""
 )
 
 

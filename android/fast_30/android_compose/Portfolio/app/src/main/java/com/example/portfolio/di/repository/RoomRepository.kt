@@ -1,5 +1,6 @@
 package com.example.portfolio.di.repository
 
+import com.example.portfolio.localdb.CartWithOrder
 import com.example.portfolio.localdb.Like
 import com.example.portfolio.localdb.RoomDAO
 import dagger.Module
@@ -31,4 +32,18 @@ class RoomRepository @Inject constructor(
         }
     }
 
+    suspend fun insertCartWithOrder(
+        cart: CartWithOrder
+    ) = withContext(Dispatchers.IO) { roomDAO.insertCart(cart) }
+
+    suspend fun deleteCartWithOrder(
+        cart: CartWithOrder
+    ) = withContext(Dispatchers.IO) {roomDAO.deleteCart(cart)}
+
+    suspend fun getAllCartWithOrder(): List<CartWithOrder> = withContext(Dispatchers.IO) {
+        val getAllList = roomDAO.getAllCarts()
+        suspendCoroutine {
+            it.resume(getAllList)
+        }
+    }
 }

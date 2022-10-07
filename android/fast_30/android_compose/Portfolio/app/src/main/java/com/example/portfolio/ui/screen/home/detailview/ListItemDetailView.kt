@@ -28,8 +28,8 @@ import coil.size.Scale
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.R
 import com.example.portfolio.localdb.Like
+import com.example.portfolio.model.uidatamodels.NearRestaurantInfo
 import com.example.portfolio.ui.common.StarRatingBar
-import com.example.portfolio.ui.screen.home.NearRestaurantInfo
 import com.example.portfolio.ui.screen.util.findActivity
 import com.example.portfolio.ui.screen.util.localRoomLikeKey
 import com.example.portfolio.ui.theme.lightPrimaryBlue
@@ -53,6 +53,7 @@ fun ListItemDetailView(
     goLogin: () -> Unit
 ) {
     val detailModel = sharedViewModel.detailItem
+    val restaurantName = detailModel?.name ?: "정보를 받을 수 없습니다."
 
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -64,7 +65,7 @@ fun ListItemDetailView(
         ) {
                 ItemDetailViewTopBar(
                     upPress = upPress,
-                    restaurantName = detailModel?.name ?: "정보를 받을 수 없습니다."
+                    restaurantName = restaurantName
                 )
 
                 detailModel?.let { info ->
@@ -77,7 +78,7 @@ fun ListItemDetailView(
                     )
 
                     DetailMiddleView(detailModel = info)
-                    DetailBottomView()
+                    DetailBottomView(sharedViewModel, restaurantName, goLogin)
                 }
             }
         }
@@ -350,7 +351,11 @@ fun ItemDetailViewTopBar(
 
 @ExperimentalPagerApi
 @Composable
-fun DetailBottomView() {
+fun DetailBottomView(
+    sharedViewModel: MainActivityViewModel,
+    restaurantName: String,
+    goLogin: () -> Unit
+) {
     val tabItems = listOf(DETAIL_MENU_VIEW, DETAIL_REVIEW_VIEW)
 
     val viewPagerState = rememberPagerState()
@@ -391,7 +396,11 @@ fun DetailBottomView() {
             modifier = Modifier.fillMaxWidth()
         ) { page ->
                 when(page) {
-                    0-> DetailMenuView()
+                    0-> DetailMenuView(
+                        sharedViewModel,
+                        restaurantName,
+                        goLogin
+                    )
                     1-> DetailReviewView()
                     else -> {}
                 }

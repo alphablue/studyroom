@@ -5,15 +5,18 @@ import android.content.Context
 import android.location.Location
 import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.example.portfolio.localdb.Like
-import com.example.portfolio.di.repository.RoomRepository
-import com.example.portfolio.model.googlegeocode.GoogleGeoCode
-import com.example.portfolio.di.repository.GoogleRepository
 import com.example.portfolio.di.modules.firebasemodule.FirebaseObject
-import com.example.portfolio.ui.screen.home.NearRestaurantInfo
+import com.example.portfolio.di.repository.GoogleRepository
+import com.example.portfolio.di.repository.RoomRepository
+import com.example.portfolio.localdb.CartWithOrder
+import com.example.portfolio.localdb.Like
+import com.example.portfolio.model.googlegeocode.GoogleGeoCode
+import com.example.portfolio.model.uidatamodels.NearRestaurantInfo
+import com.example.portfolio.model.uidatamodels.User
 import com.example.portfolio.ui.screen.util.localRoomLikeKey
 import com.example.portfolio.viewmodel.BaseViewModel
 import com.example.portfolio.viewmodel.DispatcherProvider
@@ -65,6 +68,9 @@ class MainActivityViewModel @Inject constructor(
 
     // room state
     var userLikeMap = mutableMapOf<String, Like>()
+
+    // 특정 대상의 카트가 아닌 모두를 가져오기 때문에 유저별로 구분할 필요가 있음
+    var userCartMap = mutableMapOf<String, CartWithOrder>()
 
     // 테스트를 위한 것
     private val packageName = context.packageName
@@ -159,13 +165,16 @@ class MainActivityViewModel @Inject constructor(
                     userInfo = userData
                 }
                 getAllLike()
+                getAllCarts()
             }
         } else userInfo = null
     }
 
     fun signInWithEmailPassword(
         email: String,
-        password: String
+        password: String,
+        successCallback: () -> Unit,
+        failCallback: () -> Unit
     ) {
         auth.signInWithEmailAndPassword(
             email, password
@@ -173,9 +182,11 @@ class MainActivityViewModel @Inject constructor(
             .addOnSuccessListener {
                 Log.d("testSign", "로그인 성공")
                 checkLoginState()
+                successCallback()
             }
             .addOnFailureListener { e ->
                 Log.d("testSign", "로그인 실패 ${e.message}")
+                failCallback()
             }
     }
 
@@ -216,6 +227,25 @@ class MainActivityViewModel @Inject constructor(
         val allData = roomRepository.getAllLike()
         allData.forEach {
             userLikeMap[localRoomLikeKey(it.userId, it.restaurantId)] = it
+        }
+    }
+
+    fun insertCart(key: String, cart: CartWithOrder) = onIO {
+        userCartMap[key] = cart
+        roomRepository.insertCartWithOrder(cart)
+    }
+
+    fun deleteCart(key: String, cart: CartWithOrder) = onIO {
+        userCartMap.remove(key)
+        roomRepository.deleteCartWithOrder(cart)
+    }
+
+    fun getAllCarts() = onIO {
+        userCartMap.clear()
+
+        val allData = roomRepository.getAllCartWithOrder()
+        allData.forEach {
+            userCartMap[localRoomLikeKey(it.userId, it.restaurantId)] = it
         }
     }
 }

@@ -4,11 +4,12 @@ MVVM 아키텍처를 기반으로 Compose 를 사용해 간단한 배달앱의 �
 
 ### [기술 명세서]
 언어 : kotlin
+구조 : MVVM (model, view, view model)
 
-아키텍처 :
+ACC :
 - hilt (DI, dependency injection)
 - navigation
-- MVVM (model, view, view model)
+- viewModel
 
 프레임 워크 & 라이브러리 :
 - retrofit
@@ -17,7 +18,8 @@ MVVM 아키텍처를 기반으로 Compose 를 사용해 간단한 배달앱의 �
 - google map
 - tmap
 - Gson
-- MDC (material design sources)
+- MDC (Material Design Sources)
+- room (Database)
 
 ### [현재완료된 기능 목록]
 1. 구글 맵 상에 중앙 좌표값 가져오기
@@ -28,7 +30,8 @@ MVVM 아키텍처를 기반으로 Compose 를 사용해 간단한 배달앱의 �
 
 ### [앞으로 추가할 기능]
 - [ ] 배달 후기 작성
-- [ ] 찜 기능
+- [x] 찜 기능
 - [ ] 사진 활영
-- [ ] 로그인, 로그아웃
+- [x] 로그인, 로그아웃 (room 활용)
+- [x] 알림과 딥링크
 - [ ] 장바구니

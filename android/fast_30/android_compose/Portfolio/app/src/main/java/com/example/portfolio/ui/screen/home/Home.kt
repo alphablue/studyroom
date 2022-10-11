@@ -266,7 +266,7 @@ fun MainAppBar(
                 if (loginState) {
                     if(cartCount != 0){
                         Badge(
-                            modifier = Modifier.offset(x = (-5).dp, y = 5.dp)
+                            modifier = Modifier.offset(x = (-7).dp, y = 7.dp)
                         ) { Text(text = cartCount.toString()) }
                     }
                 }

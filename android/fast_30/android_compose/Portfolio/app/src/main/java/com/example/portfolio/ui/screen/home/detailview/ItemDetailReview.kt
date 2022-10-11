@@ -1,5 +1,6 @@
 package com.example.portfolio.ui.screen.home.detailview
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,5 +20,9 @@ fun DetailReviewView() {
         }
     }
 
-    Text("review")
+    Column {
+        reviewData.forEach {
+            Text(it.content)
+        }
+    }
 }

@@ -2,9 +2,12 @@ package com.example.portfolio.ui.navigation
 
 import android.util.Log
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.ShoppingCart
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
@@ -84,8 +87,8 @@ enum class Sections(
     val route: String
 ) {
     HOME("home", Icons.Outlined.Home, "home/appHome"),
-    Cart("cart", Icons.Outlined.ShoppingCart, "home/cart"),
-    PROFILE("profile", Icons.Outlined.Person, "home/profile")
+    Like("like", Icons.Rounded.Favorite, "home/like"),
+    PROFILE("profile", Icons.Rounded.Person, "home/profile")
 }
 
 /**

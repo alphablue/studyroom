@@ -16,7 +16,7 @@ import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.ui.screen.util.localRoomLikeKey
 
 @Composable
-fun Cart(
+fun Like(
     sharedViewModel: MainActivityViewModel,
     modifier: Modifier
 ) {
@@ -62,7 +62,7 @@ fun Cart(
                 }
             }
         } else {
-            Text(text = "Cart")
+            Text(text = "Like")
         }
     }
 }

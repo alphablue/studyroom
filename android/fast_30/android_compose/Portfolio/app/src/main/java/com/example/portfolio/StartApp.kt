@@ -25,6 +25,7 @@ object MainDestinations {
     const val HOME_ROUTE = "home"
     const val GOOGLE_MAP = "GoogleMap"
     const val LOGIN_PAGE = "Login"
+    const val CART_PAGE = "Cart"
 }
 
 @Composable
@@ -73,6 +74,7 @@ fun StartApp(
                     itemSelect = appState::navigateToItemDetail,
                     goMap = appState::navigateToGoogleMap,
                     goLogin = appState::navigateToLoginPage,
+                    goCart = appState::navigateToCart,
                     activityViewModel
                 )
             }
@@ -105,7 +107,8 @@ fun ApplicationBottomBar(
                 selected = currentDestination?.hierarchy?.any{it.route == screen.route} == true,
                 onClick = {
                     Log.d("checkCurrentRoute","${currentDestination?.hierarchy?.any { it.route == screen.route } == true}")
-                    navigateToRoute(screen.route) },
+                    navigateToRoute(screen.route)
+                          },
                 icon = {
                     Icon(imageVector = screen.icon,
                     contentDescription = screen.title)

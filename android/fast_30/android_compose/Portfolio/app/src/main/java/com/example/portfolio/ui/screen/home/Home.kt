@@ -40,6 +40,7 @@ fun Home(
     modifier: Modifier,
     itemSelect: (NearRestaurantInfo) -> Unit,
     goMap: () -> Unit,
+    goCart: () -> Unit,
     activityViewModel: MainActivityViewModel,
     homeViewModel: HomeViewModel
 ) {
@@ -80,8 +81,10 @@ fun Home(
         modifier = modifier.fillMaxSize()
     ) {
         MainAppBar(
+            sharedViewModel = activityViewModel,
             userAddress = activityViewModel.splitAddress,
-            goMap = goMap
+            goMap = goMap,
+            goCart = goCart
         )
         ScrollableTabRow(
             selectedTabIndex = menuChipSelected,
@@ -216,10 +219,22 @@ fun PoiDetailItem(
 
 @Composable
 fun MainAppBar(
+    sharedViewModel: MainActivityViewModel,
     userAddress: String,
-    goMap: () -> Unit
+    goMap: () -> Unit,
+    goCart: () -> Unit
 ) {
-    TopAppBar(modifier = Modifier.statusBarsPadding()) {
+    val userId = sharedViewModel.userInfo?.id ?: "none"
+    val cartCount = sharedViewModel.userCartMap
+        .filterKeys { userId in it }
+        .map { it.value }
+        .size
+    val loginState = sharedViewModel.loginState
+
+    TopAppBar(
+        modifier = Modifier.statusBarsPadding(),
+        contentPadding = PaddingValues(horizontal = 10.dp)
+    ) {
         Spacer(modifier = Modifier.weight(0.25f))
 
         Row(
@@ -240,11 +255,22 @@ fun MainAppBar(
             )
         }
 
-        IconButton(
-            onClick = { /*TODO*/ },
-            modifier = Modifier.align(Alignment.CenterVertically)
+        BadgedBox(
+            modifier = Modifier.align(Alignment.CenterVertically),
+            badge = {
+                if (loginState) {
+                    if(cartCount != 0){
+                        Badge(
+                            modifier = Modifier.offset(x = (-5).dp, y = 5.dp)
+                        ) { Text(text = cartCount.toString()) }
+                    }
+                }
+            }
         ) {
             Icon(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clickable(onClick = goCart),
                 imageVector = Icons.Outlined.ShoppingCart,
                 tint = lightSecondaryBlue,
                 contentDescription = "your shopping cart"

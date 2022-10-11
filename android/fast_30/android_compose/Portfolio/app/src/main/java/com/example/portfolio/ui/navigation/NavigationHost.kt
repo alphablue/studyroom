@@ -10,6 +10,7 @@ import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.MainDestinations
+import com.example.portfolio.ui.screen.cart.Cart
 import com.example.portfolio.ui.screen.like.Like
 import com.example.portfolio.ui.screen.home.Home
 import com.example.portfolio.ui.screen.home.HomeViewModel
@@ -24,6 +25,7 @@ fun NavGraphBuilder.addHomeGraph(
     itemSelect: (NavBackStackEntry) -> Unit,
     goMap: (NavBackStackEntry) -> Unit,
     goLogin: (NavBackStackEntry) -> Unit,
+    goCart: (NavBackStackEntry) -> Unit,
     activityViewModel: MainActivityViewModel
 ) {
     val deepLinkUri = "portfolio://test_deep_link"
@@ -39,6 +41,7 @@ fun NavGraphBuilder.addHomeGraph(
                 activityViewModel.detailItem = poi
             },
             goMap = { goMap(from) },
+            goCart = {goCart(from)},
             activityViewModel,
             homeViewModel
         )
@@ -67,6 +70,7 @@ fun NavGraphBuilder.applicationNavGraph(
     itemSelect: (NavBackStackEntry) -> Unit,
     goMap: (NavBackStackEntry) -> Unit,
     goLogin: (NavBackStackEntry) -> Unit,
+    goCart: (NavBackStackEntry) -> Unit,
     activityViewModel: MainActivityViewModel
 ) {
     navigation(
@@ -77,6 +81,7 @@ fun NavGraphBuilder.applicationNavGraph(
             activityViewModel = activityViewModel,
             goMap = goMap,
             goLogin = goLogin,
+            goCart = goCart,
             itemSelect = itemSelect
         )
     }
@@ -110,6 +115,17 @@ fun NavGraphBuilder.applicationNavGraph(
         activityViewModel.floatingState = false
 
         LoginPage(
+            sharedViewModel = activityViewModel,
+            upPress = upPress
+        )
+    }
+
+    composable(
+        route = MainDestinations.CART_PAGE
+    ) {
+        activityViewModel.floatingState = false
+
+        Cart(
             sharedViewModel = activityViewModel,
             upPress = upPress
         )

@@ -295,7 +295,9 @@ fun DetailMiddleView(
                         .clickable
                         {
                             clipboardManager.setText(AnnotatedString("${detailModel.address}\n${detailModel.name}"))
-                            Toast.makeText(context, "복사되었습니다.", Toast.LENGTH_SHORT).show()
+                            Toast
+                                .makeText(context, "복사되었습니다.", Toast.LENGTH_SHORT)
+                                .show()
                         },
                 ){
                     Text(
@@ -331,7 +333,10 @@ fun ItemDetailViewTopBar(
     upPress: () -> Unit,
     restaurantName: String
 ) {
-    TopAppBar(modifier = Modifier.statusBarsPadding()) {
+    TopAppBar(
+        modifier = Modifier.statusBarsPadding(),
+    ) {
+
         IconButton(onClick = upPress, modifier = Modifier.align(Alignment.Top)) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,

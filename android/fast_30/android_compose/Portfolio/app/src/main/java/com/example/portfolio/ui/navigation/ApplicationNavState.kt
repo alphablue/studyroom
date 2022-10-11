@@ -79,6 +79,12 @@ class ApplicationNavState(
             navController.navigate(MainDestinations.LOGIN_PAGE)
         }
     }
+
+    fun navigateToCart(from: NavBackStackEntry) {
+        if(from.lifecycleIsResumed()) {
+            navController.navigate(MainDestinations.CART_PAGE)
+        }
+    }
 }
 
 enum class Sections(

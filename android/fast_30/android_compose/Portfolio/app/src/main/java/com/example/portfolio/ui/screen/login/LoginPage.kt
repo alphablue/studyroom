@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import com.example.portfolio.MainActivityViewModel
+import com.example.portfolio.ui.common.SimpleTitleTopBar
 import com.example.portfolio.ui.theme.textColor
 
 @Composable
@@ -33,7 +34,7 @@ fun LoginPage(
         var email by remember { mutableStateOf("") }
         var pass by remember { mutableStateOf("") }
 
-        LoginPageTopBar(upPress, "")
+        SimpleTitleTopBar(upPress, "로그인")
 
         Column {
             TextField(value = email, onValueChange = { email = it })
@@ -75,30 +76,5 @@ fun LoginPage(
          * */
 //        GoogleSignButton(sharedViewModel = sharedViewModel)
 
-    }
-}
-
-@Composable
-fun LoginPageTopBar(
-    upPress: () -> Unit,
-    title: String,
-) {
-    TopAppBar(modifier = Modifier
-        .statusBarsPadding()
-        .fillMaxWidth()) {
-        IconButton(onClick = upPress, modifier = Modifier.align(Alignment.Top)) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                tint = textColor,
-                contentDescription = "back"
-            )
-        }
-
-        Text(
-            title,
-            color = textColor,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.align(Alignment.CenterVertically)
-        )
     }
 }

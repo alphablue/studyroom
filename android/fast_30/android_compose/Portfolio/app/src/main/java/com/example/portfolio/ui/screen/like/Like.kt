@@ -50,30 +50,6 @@ fun Like(
                     }
                 }
             }
-
-//            val cartKeyItems = sharedViewModel.userCartMap.filterKeys { userid in it }
-//                .map { it.value }
-//
-//            if(cartKeyItems.isEmpty()) {
-//                Text(text = "장바구니가 비어있어요")
-//            } else {
-//                LazyColumn {
-//                    items(cartKeyItems) { cartItem ->
-//                        Row{
-//                            Text("${cartItem.restaurantName}, ${cartItem.menuName}, ${cartItem.price}")
-//                            IconButton(onClick = {
-//                                val key = localRoomLikeKey(cartItem.userId, cartItem.restaurantId)
-//                                sharedViewModel.deleteCart(key, cartItem)
-//                            }) {
-//                                Icon(imageVector = Icons.Filled.Delete, "cartDelete")
-//                            }
-//                        }
-//                        Spacer(modifier = Modifier.height(4.dp))
-//                    }
-//                }
-//            }
-//        } else {
-//            Text(text = "Like")
         }
     }
 }

@@ -7,6 +7,7 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.portfolio.di.modules.firebasemodule.FirebaseObject
@@ -20,11 +21,13 @@ import com.example.portfolio.model.uidatamodels.User
 import com.example.portfolio.ui.screen.util.localRoomLikeKey
 import com.example.portfolio.viewmodel.BaseViewModel
 import com.example.portfolio.viewmodel.DispatcherProvider
+import com.example.portfolio.viewmodel.onDefault
 import com.example.portfolio.viewmodel.onIO
 import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 @HiltViewModel
@@ -70,7 +73,7 @@ class MainActivityViewModel @Inject constructor(
     var userLikeMap = mutableMapOf<String, Like>()
 
     // 특정 대상의 카트가 아닌 모두를 가져오기 때문에 유저별로 구분할 필요가 있음
-    var userCartMap = mutableMapOf<String, CartWithOrder>()
+    val userCartMap = mutableStateMapOf<String, CartWithOrder>()
 
     // 테스트를 위한 것
     private val packageName = context.packageName

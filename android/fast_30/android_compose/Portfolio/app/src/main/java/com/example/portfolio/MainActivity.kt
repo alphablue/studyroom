@@ -26,6 +26,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // snapshot의 초기화를 위해 미리 불러오는 부분, viewmodel 안에서 초기 데이터 체크를
+        // 위한 부분으로 state value 들을 읽는데 충돌이 없도록 한 방법이다.
+        activityViewModel
+
         setContent {
             var permissionGrantCheck by remember { mutableStateOf(false) }
 

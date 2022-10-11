@@ -1,16 +1,19 @@
 package com.example.portfolio.ui.screen.cart
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.example.portfolio.MainActivityViewModel
+import com.example.portfolio.ui.screen.util.localRoomLikeKey
 
 @Composable
 fun Cart(
@@ -47,7 +50,14 @@ fun Cart(
                     items(cartKeyItems) { cartItem ->
                         Row{
                             Text("${cartItem.restaurantName}, ${cartItem.menuName}, ${cartItem.price}")
+                            IconButton(onClick = {
+                                val key = localRoomLikeKey(cartItem.userId, cartItem.restaurantId)
+                                sharedViewModel.deleteCart(key, cartItem)
+                            }) {
+                                Icon(imageVector = Icons.Filled.Delete, "cartDelete")
+                            }
                         }
+                        Spacer(modifier = Modifier.height(4.dp))
                     }
                 }
             }

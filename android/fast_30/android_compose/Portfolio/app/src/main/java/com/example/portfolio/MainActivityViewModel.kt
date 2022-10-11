@@ -59,7 +59,7 @@ class MainActivityViewModel @Inject constructor(
     var detailItem by mutableStateOf<NearRestaurantInfo?>(null)
 
     // 로그인을 위한 객체생성
-    val auth = FirebaseAuth.getInstance()
+    private val auth = FirebaseAuth.getInstance()
     var loginState by mutableStateOf(false)
     var userInfo: User? by mutableStateOf(null)
 
@@ -221,7 +221,7 @@ class MainActivityViewModel @Inject constructor(
         userLikeMap.remove(key)
     }
 
-    fun getAllLike() = onIO {
+    private fun getAllLike() = onIO {
         userLikeMap.clear()
 
         val allData = roomRepository.getAllLike()
@@ -240,7 +240,7 @@ class MainActivityViewModel @Inject constructor(
         roomRepository.deleteCartWithOrder(cart)
     }
 
-    fun getAllCarts() = onIO {
+    private fun getAllCarts() = onIO {
         userCartMap.clear()
 
         val allData = roomRepository.getAllCartWithOrder()

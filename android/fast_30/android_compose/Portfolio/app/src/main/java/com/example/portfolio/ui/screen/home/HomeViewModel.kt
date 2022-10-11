@@ -1,19 +1,16 @@
 package com.example.portfolio.ui.screen.home
 
 import android.location.Location
-import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
-import com.example.portfolio.model.tmap_poi.Poi
 import com.example.portfolio.di.repository.TMapRepository
+import com.example.portfolio.model.tmap_poi.Poi
 import com.example.portfolio.model.uidatamodels.NearRestaurantInfo
 import com.example.portfolio.viewmodel.BaseViewModel
 import com.example.portfolio.viewmodel.DispatcherProvider
 import com.example.portfolio.viewmodel.onIO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlin.random.Random
-import kotlin.random.nextInt
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -36,7 +33,7 @@ class HomeViewModel @Inject constructor(
 
         try {
             _poiList.clear()
-            Log.d("HomeViewModel", "getPoi show location data : ${location.toString()}")
+            Log.d("HomeViewModel", "getPoi show location data : $location")
 
             searchCategory?.let { category ->
                 val resultList = tMapRepository

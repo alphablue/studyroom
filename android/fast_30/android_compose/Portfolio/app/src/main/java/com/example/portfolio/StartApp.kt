@@ -37,9 +37,9 @@ fun StartApp(
         val noti = NotificationBuilder(context)
 
         Scaffold(
-            modifier= Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             bottomBar = {
-                if(appState.shouldShowBottomBar) {
+                if (appState.shouldShowBottomBar) {
                     ApplicationBottomBar(
                         tabs = appState.bottomBarTabs,
                         currentRoute = appState.currentRoute!!,
@@ -51,7 +51,7 @@ fun StartApp(
             },
             floatingActionButton = {
 
-                if(activityViewModel.floatingState) {
+                if (activityViewModel.floatingState) {
                     FloatingActionButton(
                         backgroundColor = MaterialTheme.colors.primary,
                         shape = RoundedCornerShape(14.dp),
@@ -65,7 +65,8 @@ fun StartApp(
                 }
             }
         ) { innerPaddingModifier ->
-            NavHost(navController = appState.navController,
+            NavHost(
+                navController = appState.navController,
                 startDestination = MainDestinations.HOME_ROUTE,
                 modifier = Modifier.padding(innerPaddingModifier)
             ) {
@@ -101,43 +102,47 @@ fun ApplicationBottomBar(
 
     val paddingValues = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
-    var dialogState by remember { mutableStateOf(false)}
+    var dialogState by remember { mutableStateOf(false) }
 
     BottomNavigation(
         modifier = Modifier.padding(bottom = paddingValues),
     ) {
-        tabs.forEachIndexed { index, screen ->
+        tabs.forEach { screen ->
             BottomNavigationItem(
-                selected = currentDestination?.hierarchy?.any{it.route == screen.route} == true,
+                selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                 onClick = {
-                    Log.d("checkCurrentRoute","${currentDestination?.hierarchy?.any { it.route == screen.route } == true}, where my route? :: $currentRoute")
-                    if(index == 1) {
-                        if(loginState){
+                    Log.d(
+                        "checkCurrentRoute",
+                        "${currentDestination?.hierarchy?.any { it.route == screen.route } == true}, where my route? :: $currentRoute")
+                    if (screen.title == Sections.Like.title) {
+                        if (loginState) {
                             navigateToRoute(screen.route)
-                        } else{
+                        } else {
                             dialogState = true
                         }
                     } else {
                         navigateToRoute(screen.route)
                     }
 
-                          },
+                },
                 icon = {
-                    Icon(imageVector = screen.icon,
-                    contentDescription = screen.title)
+                    Icon(
+                        imageVector = screen.icon,
+                        contentDescription = screen.title
+                    )
                 }
             )
         }
     }
 
-    if(dialogState) {
+    if (dialogState) {
         OrderDialog(
-            dialogStateCallBack = {dialogState = it},
+            dialogStateCallBack = { dialogState = it },
             dialogMainContent = "로그인이 필요합니다.",
             confirmButtonContent = "로그인"
         ) {
             dialogState = false
-            navController.navigate("Login")
+            navController.navigate(MainDestinations.LOGIN_PAGE)
         }
     }
 }

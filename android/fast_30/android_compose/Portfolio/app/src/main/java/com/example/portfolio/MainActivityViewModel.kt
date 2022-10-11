@@ -5,7 +5,6 @@ import android.content.Context
 import android.location.Location
 import android.os.Looper
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -21,13 +20,11 @@ import com.example.portfolio.model.uidatamodels.User
 import com.example.portfolio.ui.screen.util.localRoomLikeKey
 import com.example.portfolio.viewmodel.BaseViewModel
 import com.example.portfolio.viewmodel.DispatcherProvider
-import com.example.portfolio.viewmodel.onDefault
 import com.example.portfolio.viewmodel.onIO
 import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 @HiltViewModel

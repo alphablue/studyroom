@@ -42,10 +42,12 @@ fun NavGraphBuilder.addHomeGraph(
             },
             goMap = { goMap(from) },
             goCart = {goCart(from)},
+            goLogin = { goLogin(from)},
             activityViewModel,
             homeViewModel
         )
     }
+
     composable(
         Sections.Like.route,
         deepLinks = listOf(
@@ -57,6 +59,7 @@ fun NavGraphBuilder.addHomeGraph(
         Like(sharedViewModel = activityViewModel, modifier)
         Log.d("navigationTest", "cart $from")
     }
+
     composable(Sections.PROFILE.route) { from ->
         activityViewModel.floatingState = false
 

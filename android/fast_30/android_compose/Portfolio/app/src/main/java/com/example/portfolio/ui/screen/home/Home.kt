@@ -28,6 +28,7 @@ import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.R
 import com.example.portfolio.di.modules.firebasemodule.FirebaseObject
 import com.example.portfolio.model.uidatamodels.NearRestaurantInfo
+import com.example.portfolio.ui.screen.home.detailview.OrderDialog
 import com.example.portfolio.ui.screen.util.number2Digits
 import com.example.portfolio.ui.theme.gray
 import com.example.portfolio.ui.theme.lightSecondaryBlue
@@ -41,6 +42,7 @@ fun Home(
     itemSelect: (NearRestaurantInfo) -> Unit,
     goMap: () -> Unit,
     goCart: () -> Unit,
+    goLogin: () -> Unit,
     activityViewModel: MainActivityViewModel,
     homeViewModel: HomeViewModel
 ) {
@@ -84,7 +86,8 @@ fun Home(
             sharedViewModel = activityViewModel,
             userAddress = activityViewModel.splitAddress,
             goMap = goMap,
-            goCart = goCart
+            goCart = goCart,
+            goLogin = goLogin
         )
         ScrollableTabRow(
             selectedTabIndex = menuChipSelected,
@@ -222,7 +225,8 @@ fun MainAppBar(
     sharedViewModel: MainActivityViewModel,
     userAddress: String,
     goMap: () -> Unit,
-    goCart: () -> Unit
+    goCart: () -> Unit,
+    goLogin: () -> Unit
 ) {
     val userId = sharedViewModel.userInfo?.id ?: "none"
     val cartCount = sharedViewModel.userCartMap
@@ -230,6 +234,7 @@ fun MainAppBar(
         .map { it.value }
         .size
     val loginState = sharedViewModel.loginState
+    var dialogState by remember { mutableStateOf(false)}
 
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
@@ -270,11 +275,29 @@ fun MainAppBar(
             Icon(
                 modifier = Modifier
                     .padding(8.dp)
-                    .clickable(onClick = goCart),
+                    .clickable
+                    {
+                        if (loginState) {
+                            goCart()
+                        } else {
+                            dialogState = true
+                        }
+                    },
                 imageVector = Icons.Outlined.ShoppingCart,
                 tint = lightSecondaryBlue,
                 contentDescription = "your shopping cart"
             )
+        }
+    }
+
+    if(dialogState) {
+        OrderDialog(
+            dialogStateCallBack = {state -> dialogState = state},
+            dialogMainContent = "로그인이 필요합니다.",
+            confirmButtonContent = "로그인 하기"
+        ) {
+            dialogState = false
+            goLogin()
         }
     }
 }

@@ -10,7 +10,7 @@ import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.MainDestinations
-import com.example.portfolio.ui.screen.cart.Like
+import com.example.portfolio.ui.screen.like.Like
 import com.example.portfolio.ui.screen.home.Home
 import com.example.portfolio.ui.screen.home.HomeViewModel
 import com.example.portfolio.ui.screen.home.detailview.ListItemDetailView

@@ -70,7 +70,7 @@ class MainActivityViewModel @Inject constructor(
     var floatingState by mutableStateOf(false)
 
     // room state
-    var userLikeMap = mutableMapOf<String, Like>()
+    var userLikeMap = mutableStateMapOf<String, Like>()
 
     // 특정 대상의 카트가 아닌 모두를 가져오기 때문에 유저별로 구분할 필요가 있음
     val userCartMap = mutableStateMapOf<String, CartWithOrder>()

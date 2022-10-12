@@ -63,7 +63,13 @@ fun LoginPage(
             Button(
                 onClick = {
                     sharedViewModel.signUpEmailPass(
-                        email, pass
+                        email, pass,
+                        successCallback = {
+                            Toast.makeText(context, "회원가입이 완료 되었습니다.", Toast.LENGTH_SHORT).show()
+                        },
+                        failCallback = {
+                            Toast.makeText(context, "회원가입 실패 다시시도 해 주세요.", Toast.LENGTH_SHORT).show()
+                        }
                     )
                 }
             ) {

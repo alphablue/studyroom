@@ -2,8 +2,9 @@ package com.example.portfolio.di.modules.firebasemodule
 
 import android.net.Uri
 import android.util.Log
+import com.example.portfolio.model.uidatamodels.DisPlayReview
 import com.example.portfolio.model.uidatamodels.RestaurantMenu
-import com.example.portfolio.model.uidatamodels.Review
+import com.example.portfolio.model.uidatamodels.GetReview
 import com.example.portfolio.model.uidatamodels.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -37,7 +38,7 @@ object FirebaseObject {
             }
     }
 
-    fun getTestReview(callback: (List<Review>) -> Unit) {
+    fun getTestReview(callback: (List<DisPlayReview>) -> Unit) {
         val fireStoreInstance = Firebase.firestore
 
         fireStoreInstance
@@ -47,8 +48,20 @@ object FirebaseObject {
             .document("test")
             .collection("testId")
             .get()
-            .addOnSuccessListener {
-                callback(it.toObjects())
+            .addOnSuccessListener { results ->
+                val resultTypeGetReview = results.toObjects<GetReview>()
+
+                resultTypeGetReview.forEach { getReviewData ->
+                    Log.d("testFirebase", "get test review data ok")
+
+                    getUser(getReviewData.userId){ userInfo ->
+                        Log.d("testFirebase", "get user data of review running")
+                        userInfo?.let { userData ->
+                            Log.d("testFirebase", "get user data of review ok")
+                            callback(listOf(DisPlayReview(getReviewData, userData)))
+                        }
+                    }
+                }
             }
     }
 
@@ -67,7 +80,7 @@ object FirebaseObject {
                 user
             )
             .addOnCompleteListener {
-                Log.d("testSignIn", "SignUp complete")
+                Log.d("testFirebase", "SignUp complete")
             }
     }
 

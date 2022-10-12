@@ -131,6 +131,8 @@ class MainActivityViewModel @Inject constructor(
     fun signUpEmailPass(
         email: String,
         pass: String,
+        successCallback: () -> Unit,
+        failCallback: () -> Unit
     ) {
         auth.createUserWithEmailAndPassword(email, pass)
             .addOnCompleteListener { task ->
@@ -149,9 +151,11 @@ class MainActivityViewModel @Inject constructor(
                     )
 
                     checkLoginState()
+                    successCallback()
 
                 } else {
                     Log.d("testSign", "회원가입 실패")
+                    failCallback()
                 }
             }
     }
@@ -201,8 +205,8 @@ class MainActivityViewModel @Inject constructor(
                     Log.d("testSign", "회원탈퇴 완료")
                     checkLoginState()
                 }
-                .addOnFailureListener {
-                    Log.d("testSign", "회원탈퇴 실패")
+                .addOnFailureListener { ect ->
+                    Log.d("testSign", "회원탈퇴 실패 : e(${ect.message})")
                 }
         }
     }

@@ -152,4 +152,13 @@ dependencies {
     // paging
     implementation "androidx.paging:paging-compose:1.0.0-alpha16"
 
+    // cameraX
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-extensions:${camerax_version}"
+    implementation "androidx.camera:camera-view:${camerax_version}"
+    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
+
+    // accompanist
+    implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
+
 }

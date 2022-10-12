@@ -5,6 +5,8 @@ buildscript {
         nav_version = '2.5.1'
         hilt_version = '2.43.2'
         room_version = "2.4.3"
+        camerax_version = "1.2.0-beta02"
+        accompanist_version = "0.26.5-rc"
     }
 
     dependencies {

@@ -5,10 +5,12 @@ import android.content.pm.PackageManager
 
 enum class HardwareName(val packageManager: ArrayList<String>) {
     GPS(arrayListOf(PackageManager.FEATURE_LOCATION_GPS, PackageManager.FEATURE_LOCATION_NETWORK)),
-    CAMERA(arrayListOf(PackageManager.FEATURE_CAMERA, PackageManager.FEATURE_CAMERA_FRONT))
+    CAMERA(arrayListOf(PackageManager.FEATURE_CAMERA, PackageManager.FEATURE_CAMERA_FRONT)),
+    MEDIA(arrayListOf())
 }
 
 enum class PermissionName(val permissionName: ArrayList<String>) {
     GPS(arrayListOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)),
-    CAMERA(arrayListOf(Manifest.permission.CAMERA))
+    CAMERA(arrayListOf(Manifest.permission.CAMERA)),
+    MEDIA(arrayListOf(Manifest.permission.ACCESS_MEDIA_LOCATION))
 }

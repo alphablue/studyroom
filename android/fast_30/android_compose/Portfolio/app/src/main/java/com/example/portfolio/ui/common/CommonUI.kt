@@ -1,6 +1,7 @@
 package com.example.portfolio.ui.common
 
 import android.content.Context
+import android.net.Uri
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.viewinterop.AndroidViewBinding
 import com.example.portfolio.databinding.StarRatingBarBinding
 import com.example.portfolio.ui.theme.textColor
+
+val EMPTY_IMAGE_URI: Uri = Uri.parse("file://dev/null")
 
 @Composable
 fun StarRatingBar(

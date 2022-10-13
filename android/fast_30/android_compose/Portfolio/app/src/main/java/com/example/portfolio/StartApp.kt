@@ -35,6 +35,7 @@ fun StartApp(
         val appState = rememberApplicationNavState()
         val context = LocalContext.current
         val noti = NotificationBuilder(context)
+        var dialogState by remember { mutableStateOf(false)}
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -51,16 +52,33 @@ fun StartApp(
             },
             floatingActionButton = {
 
-                if (activityViewModel.floatingState) {
-                    FloatingActionButton(
-                        backgroundColor = MaterialTheme.colors.primary,
-                        shape = RoundedCornerShape(14.dp),
-                        onClick = {
-                            noti.createDeliveryNotificationChannel(
-                                true, "알림 테스트 중", "알림 테스트 내용"
-                            )
-                        }) {
-                        Text(text = "테스트용", color = textColor)
+                when(activityViewModel.floatingState) {
+                    FloatingState.NONE -> {}
+                    FloatingState.ORDER -> {
+                        FloatingActionButton(
+                            backgroundColor = MaterialTheme.colors.primary,
+                            shape = RoundedCornerShape(14.dp),
+                            onClick = {
+                                noti.createDeliveryNotificationChannel(
+                                    true, "알림 테스트 중", "알림 테스트 내용"
+                                )
+                            }) {
+                            Text(text = "테스트용", color = textColor)
+                        }
+                    }
+                    FloatingState.REVIEW -> {
+                        FloatingActionButton(
+                            backgroundColor = MaterialTheme.colors.primary,
+                            shape = RoundedCornerShape(14.dp),
+                            onClick = {
+                                if(activityViewModel.loginState) {
+                                    appState.navController.navigate("")
+                                } else {
+                                    dialogState = true
+                                }
+                            }) {
+                            Text(text = "리뷰쓰기", color = textColor)
+                        }
                     }
                 }
             }
@@ -79,7 +97,20 @@ fun StartApp(
                     activityViewModel
                 )
             }
+        }
 
+        if(dialogState){
+            OrderDialog(
+                dialogStateCallBack = { state -> dialogState = state },
+                confirmButtonContent = "로그인하기",
+                dialogMainContent = "로그인이 필요합니다.",
+                confirmEvent = {
+                    appState.navController.navigate(
+                        MainDestinations.LOGIN_PAGE
+                    )
+                    dialogState = false
+                }
+            )
         }
     }
 }

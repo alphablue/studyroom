@@ -64,7 +64,7 @@ class MainActivityViewModel @Inject constructor(
     var userInfo: User? by mutableStateOf(null)
 
     // floating button state
-    var floatingState by mutableStateOf(false)
+    var floatingState by mutableStateOf<FloatingState>(FloatingState.NONE)
 
     // room state
     var userLikeMap = mutableStateMapOf<String, Like>()
@@ -252,4 +252,10 @@ class MainActivityViewModel @Inject constructor(
             userCartMap[localRoomLikeKey(it.userId, it.restaurantId)] = it
         }
     }
+}
+
+enum class FloatingState{
+    NONE,
+    ORDER,
+    REVIEW
 }

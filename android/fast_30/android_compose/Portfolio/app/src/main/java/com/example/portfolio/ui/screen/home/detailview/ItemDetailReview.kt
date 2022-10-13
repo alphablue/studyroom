@@ -59,20 +59,17 @@ fun DetailReviewView(
         }
     }
 
-//    Column {
-//        for ((reviewInfo, userInfo) in getReviewData) {
-//            DrawReview(
-//                userNickName = userInfo.name,
-//                userProfileImg = userInfo.profileImage,
-//                ratingValue = reviewInfo.rating.toFloat(),
-//                reviewDate = reviewInfo.date,
-//                contentText = reviewInfo.content
-//            )
-//        }
-//    }
-    CameraView(
-        upPress = upPress
-    )
+    Column {
+        for ((reviewInfo, userInfo) in getReviewData) {
+            DrawReview(
+                userNickName = userInfo.name,
+                userProfileImg = userInfo.profileImage,
+                ratingValue = reviewInfo.rating.toFloat(),
+                reviewDate = reviewInfo.date,
+                contentText = reviewInfo.content
+            )
+        }
+    }
 }
 
 @Composable

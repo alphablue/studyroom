@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
+import com.example.portfolio.FloatingState
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.MainDestinations
 import com.example.portfolio.ui.screen.cart.Cart
@@ -16,6 +17,8 @@ import com.example.portfolio.ui.screen.home.Home
 import com.example.portfolio.ui.screen.home.HomeViewModel
 import com.example.portfolio.ui.screen.home.detailview.ListItemDetailView
 import com.example.portfolio.ui.screen.home.detailview.detailRout
+import com.example.portfolio.ui.screen.home.detailview.review.WriteReview
+import com.example.portfolio.ui.screen.home.detailview.review.reviewRoute
 import com.example.portfolio.ui.screen.login.LoginPage
 import com.example.portfolio.ui.screen.map.GoogleMapView
 import com.example.portfolio.ui.screen.profile.Profile
@@ -32,7 +35,7 @@ fun NavGraphBuilder.addHomeGraph(
 
     composable(Sections.HOME.route) { from ->
         val homeViewModel = hiltViewModel<HomeViewModel>()
-        activityViewModel.floatingState = true
+        activityViewModel.floatingState = FloatingState.ORDER
 
         Home(
             modifier,
@@ -54,17 +57,25 @@ fun NavGraphBuilder.addHomeGraph(
             navDeepLink { uriPattern = deepLinkUri }
         )
     ) { from ->
-        activityViewModel.floatingState = false
+        activityViewModel.floatingState = FloatingState.NONE
 
         Like(sharedViewModel = activityViewModel, modifier)
         Log.d("navigationTest", "cart $from")
     }
 
     composable(Sections.PROFILE.route) { from ->
-        activityViewModel.floatingState = false
+        activityViewModel.floatingState = FloatingState.NONE
 
         Profile(activityViewModel, goLogin = { goLogin(from) })
         Log.d("navigationTest", "profile $from")
+    }
+
+    composable(
+        route = "${MainDestinations.HOME_ROUTE}/$detailRout/$reviewRoute"
+    ) {
+        activityViewModel.floatingState = FloatingState.NONE
+
+        WriteReview()
     }
 }
 
@@ -92,7 +103,7 @@ fun NavGraphBuilder.applicationNavGraph(
     composable(
         route = "${MainDestinations.HOME_ROUTE}/$detailRout"
     ) {
-        activityViewModel.floatingState = false
+        activityViewModel.floatingState = FloatingState.REVIEW
 
         ListItemDetailView(
             activityViewModel,
@@ -104,7 +115,7 @@ fun NavGraphBuilder.applicationNavGraph(
     composable(
         route = MainDestinations.GOOGLE_MAP
     ) {
-        activityViewModel.floatingState = false
+        activityViewModel.floatingState = FloatingState.NONE
 
         GoogleMapView(
             activityViewModel = activityViewModel,
@@ -115,7 +126,7 @@ fun NavGraphBuilder.applicationNavGraph(
     composable(
         route = MainDestinations.LOGIN_PAGE
     ) {
-        activityViewModel.floatingState = false
+        activityViewModel.floatingState = FloatingState.NONE
 
         LoginPage(
             sharedViewModel = activityViewModel,
@@ -126,7 +137,7 @@ fun NavGraphBuilder.applicationNavGraph(
     composable(
         route = MainDestinations.CART_PAGE
     ) {
-        activityViewModel.floatingState = false
+        activityViewModel.floatingState = FloatingState.NONE
 
         Cart(
             sharedViewModel = activityViewModel,

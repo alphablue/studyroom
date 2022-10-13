@@ -60,7 +60,7 @@ fun PermissionCheck(
         ) {
             Log.d("permissionCheck", "하드웨어 체크 [가능]")
 
-            // 권한 거부중에 상세 설명이 필요한 경우 그 갯수가 0 개 야지만 모든 필수 권한을 허용한 상태이다.
+            // 권한 거부중에 상세 설명이 필요한 경우 그 갯수가 0일 때 모든 필수 권한을 허용한 상태이다.
             val isShowRequestPermissionAllOk =
                 permissionName.permissionName.none {
                     val check = ActivityCompat.shouldShowRequestPermissionRationale(

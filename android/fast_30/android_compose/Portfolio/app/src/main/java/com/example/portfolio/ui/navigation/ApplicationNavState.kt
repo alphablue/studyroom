@@ -16,6 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.portfolio.MainDestinations
 import com.example.portfolio.ui.screen.home.detailview.detailRout
+import com.example.portfolio.ui.screen.home.detailview.review.reviewRoute
 
 
 @Composable
@@ -80,6 +81,12 @@ class ApplicationNavState(
     fun navigateToCart(from: NavBackStackEntry) {
         if(from.lifecycleIsResumed()) {
             navController.navigate(MainDestinations.CART_PAGE)
+        }
+    }
+
+    fun navigateToReview(from: NavBackStackEntry) {
+        if(from.lifecycleIsResumed()) {
+            navController.navigate("${MainDestinations.HOME_ROUTE}/$detailRout/$reviewRoute")
         }
     }
 }

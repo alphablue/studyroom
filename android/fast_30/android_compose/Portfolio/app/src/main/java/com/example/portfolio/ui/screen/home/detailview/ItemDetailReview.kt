@@ -14,10 +14,15 @@ import androidx.camera.core.ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY
 import androidx.camera.core.Preview
 import androidx.camera.core.UseCase
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DriveFileRenameOutline
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,7 +54,7 @@ const val DETAIL_REVIEW_VIEW = "리뷰"
 
 @Composable
 fun DetailReviewView(
-    upPress: () -> Unit
+    goReview: () -> Unit
 ) {
     val getReviewData = remember { mutableStateListOf<DisPlayReview>() }
 
@@ -60,6 +65,18 @@ fun DetailReviewView(
     }
 
     Column {
+        Row(
+            modifier = Modifier.clickable {
+                goReview()
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.DriveFileRenameOutline,
+                contentDescription = "writeReview"
+            )
+            Text(text = "리뷰쓰기")
+        }
+
         for ((reviewInfo, userInfo) in getReviewData) {
             DrawReview(
                 userNickName = userInfo.name,
@@ -79,7 +96,7 @@ fun DrawReview(
     ratingValue: Float,
     reviewDate: String,
     takePictureData: String? = null,
-    contentText: String
+    contentText: String,
 ) {
     val context = LocalContext.current
 
@@ -91,6 +108,7 @@ fun DrawReview(
         Row(
             modifier = Modifier.wrapContentHeight()
         ) {
+
             AsyncImage(
                 model = ImageRequest.Builder(context)
                     .data(userProfileImg)
@@ -120,15 +138,15 @@ fun CameraView(
 ) {
     val context = LocalContext.current
 
-    var cameraPermissionCheck by remember{ mutableStateOf(false)}
+    var cameraPermissionCheck by remember { mutableStateOf(false) }
 
     PermissionCheck(
         permissionName = PermissionName.CAMERA,
         hardwareName = HardwareName.CAMERA,
-        grantedCheck = { state -> cameraPermissionCheck = state}
+        grantedCheck = { state -> cameraPermissionCheck = state }
     )
 
-    if(cameraPermissionCheck) {
+    if (cameraPermissionCheck) {
         MainContent(upPress = upPress)
     } else {
         PermissionDialog(
@@ -163,7 +181,7 @@ fun CameraCapture(
     Box(modifier = modifier) {
         val context = LocalContext.current
         val lifecycleOwner = LocalLifecycleOwner.current
-        var previewUseCase by remember { mutableStateOf<UseCase>(Preview.Builder().build())}
+        var previewUseCase by remember { mutableStateOf<UseCase>(Preview.Builder().build()) }
 
         CameraPreview(
             modifier = Modifier.fillMaxSize(),
@@ -179,7 +197,7 @@ fun CameraCapture(
                 .align(Alignment.BottomCenter),
             onClick = {
                 coroutineScope.launch {
-                    imageCaptureUseCase.takePicture(context.executor).let{
+                    imageCaptureUseCase.takePicture(context.executor).let {
                         onImageFile(it)
                     }
                 }
@@ -196,7 +214,7 @@ fun CameraCapture(
                 cameraProvider.bindToLifecycle(
                     lifecycleOwner, cameraSelector, previewUseCase, imageCaptureUseCase
                 )
-            } catch(ex: Exception) {
+            } catch (ex: Exception) {
                 Log.d("CameraPreview", "Use case binding failed", ex)
             }
         }
@@ -237,7 +255,7 @@ fun MainContent(
     upPress: () -> Unit
 ) {
     val emptyImageUri = Uri.parse("file://dev/null")
-    var imageUri by remember { mutableStateOf(emptyImageUri)}
+    var imageUri by remember { mutableStateOf(emptyImageUri) }
     var showGallerySelect by remember {
         mutableStateOf(false)
     }
@@ -261,9 +279,9 @@ fun MainContent(
         }
     } else {
 
-        if(showGallerySelect) {
+        if (showGallerySelect) {
             GallerySelect(
-                onImageUri = {uri ->
+                onImageUri = { uri ->
                     showGallerySelect = false
                     imageUri = uri
                 },
@@ -306,16 +324,16 @@ fun GallerySelect(
             onImageUri(uri ?: EMPTY_IMAGE_URI)
         }
     )
-    var permissionCheck by remember { mutableStateOf(false)}
+    var permissionCheck by remember { mutableStateOf(false) }
 
     @Composable
-    fun LaunchGallery(){
+    fun LaunchGallery() {
         SideEffect {
             launcher.launch("image/*")
         }
     }
 
-    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         PermissionCheck(
             permissionName = PermissionName.MEDIA,
             hardwareName = HardwareName.MEDIA,
@@ -324,9 +342,9 @@ fun GallerySelect(
             }
         )
 
-        if(permissionCheck.not()) {
+        if (permissionCheck.not()) {
             PermissionDialog(
-                onDismissClickEvent = {  },
+                onDismissClickEvent = { },
                 confirmButtonEvent = {
                     val settingIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                     val uri = Uri.fromParts("package", context.packageName, null)

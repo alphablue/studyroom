@@ -66,20 +66,6 @@ fun StartApp(
                             Text(text = "테스트용", color = textColor)
                         }
                     }
-                    FloatingState.REVIEW -> {
-                        FloatingActionButton(
-                            backgroundColor = MaterialTheme.colors.primary,
-                            shape = RoundedCornerShape(14.dp),
-                            onClick = {
-                                if(activityViewModel.loginState) {
-                                    appState.navController.navigate("")
-                                } else {
-                                    dialogState = true
-                                }
-                            }) {
-                            Text(text = "리뷰쓰기", color = textColor)
-                        }
-                    }
                 }
             }
         ) { innerPaddingModifier ->
@@ -94,6 +80,7 @@ fun StartApp(
                     goMap = appState::navigateToGoogleMap,
                     goLogin = appState::navigateToLoginPage,
                     goCart = appState::navigateToCart,
+                    goReview = appState::navigateToReview,
                     activityViewModel
                 )
             }

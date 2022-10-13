@@ -256,6 +256,5 @@ class MainActivityViewModel @Inject constructor(
 
 enum class FloatingState{
     NONE,
-    ORDER,
-    REVIEW
+    ORDER
 }

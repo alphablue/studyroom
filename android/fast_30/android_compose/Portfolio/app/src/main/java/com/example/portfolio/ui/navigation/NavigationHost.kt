@@ -85,6 +85,7 @@ fun NavGraphBuilder.applicationNavGraph(
     goMap: (NavBackStackEntry) -> Unit,
     goLogin: (NavBackStackEntry) -> Unit,
     goCart: (NavBackStackEntry) -> Unit,
+    goReview: (NavBackStackEntry) -> Unit,
     activityViewModel: MainActivityViewModel
 ) {
     navigation(
@@ -103,12 +104,13 @@ fun NavGraphBuilder.applicationNavGraph(
     composable(
         route = "${MainDestinations.HOME_ROUTE}/$detailRout"
     ) {
-        activityViewModel.floatingState = FloatingState.REVIEW
+        activityViewModel.floatingState = FloatingState.NONE
 
         ListItemDetailView(
             activityViewModel,
             upPress = upPress,
-            goLogin = { goLogin(it) }
+            goLogin = { goLogin(it) },
+            goReview = { goReview(it) }
         )
     }
 

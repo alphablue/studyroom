@@ -50,7 +50,8 @@ const val detailRout = "detail"
 fun ListItemDetailView(
     sharedViewModel: MainActivityViewModel,
     upPress: () -> Unit,
-    goLogin: () -> Unit
+    goLogin: () -> Unit,
+    goReview: () -> Unit
 ) {
     val detailModel = sharedViewModel.detailItem
     val restaurantName = detailModel?.name ?: "정보를 받을 수 없습니다."
@@ -78,7 +79,7 @@ fun ListItemDetailView(
                     )
 
                     DetailMiddleView(detailModel = info)
-                    DetailBottomView(sharedViewModel, restaurantName, goLogin, upPress)
+                    DetailBottomView(sharedViewModel, restaurantName, goLogin, goReview)
                 }
             }
         }
@@ -360,7 +361,7 @@ fun DetailBottomView(
     sharedViewModel: MainActivityViewModel,
     restaurantName: String,
     goLogin: () -> Unit,
-    upPress: () -> Unit
+    goReview: () -> Unit,
 ) {
     val tabItems = listOf(DETAIL_MENU_VIEW, DETAIL_REVIEW_VIEW)
 
@@ -408,7 +409,7 @@ fun DetailBottomView(
                         goLogin
                     )
                     1-> DetailReviewView(
-                        upPress
+                        goReview
                     )
                     else -> {}
                 }

@@ -78,7 +78,7 @@ fun ListItemDetailView(
                     )
 
                     DetailMiddleView(detailModel = info)
-                    DetailBottomView(sharedViewModel, restaurantName, goLogin)
+                    DetailBottomView(sharedViewModel, restaurantName, goLogin, upPress)
                 }
             }
         }
@@ -99,7 +99,7 @@ fun DetailTopView(
 
     if(loginState) {
         sharedViewModel.userInfo?.let {
-            val localKey = localRoomLikeKey(it.id!!, detailModel.id)
+            val localKey = localRoomLikeKey(it.id, detailModel.id)
             likeState = sharedViewModel.userLikeMap.containsKey(localKey)
         }
     }
@@ -176,7 +176,7 @@ fun DetailTopView(
                     } else {
 
                         sharedViewModel.userInfo?.let {
-                            val localKey = localRoomLikeKey(it.id!!, detailModel.id)
+                            val localKey = localRoomLikeKey(it.id, detailModel.id)
                             val queryObj = Like(
                                 userId = it.id,
                                 restaurantId = detailModel.id,
@@ -359,7 +359,8 @@ fun ItemDetailViewTopBar(
 fun DetailBottomView(
     sharedViewModel: MainActivityViewModel,
     restaurantName: String,
-    goLogin: () -> Unit
+    goLogin: () -> Unit,
+    upPress: () -> Unit
 ) {
     val tabItems = listOf(DETAIL_MENU_VIEW, DETAIL_REVIEW_VIEW)
 
@@ -406,7 +407,9 @@ fun DetailBottomView(
                         restaurantName,
                         goLogin
                     )
-                    1-> DetailReviewView()
+                    1-> DetailReviewView(
+                        upPress
+                    )
                     else -> {}
                 }
         }

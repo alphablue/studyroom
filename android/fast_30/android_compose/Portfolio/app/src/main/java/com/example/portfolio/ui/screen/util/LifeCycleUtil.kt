@@ -26,6 +26,23 @@ fun lifeCycleDetector(
     }
 }
 
+fun lifeCycleDetectorState(
+    lifecycle: Lifecycle.State,
+    onCreate: () -> Unit = { Log.d("lifeCycleDetector", "onCreate")},
+    onStart: () -> Unit = {Log.d("lifeCycleDetector", "onStart")},
+    onResume: () -> Unit= {Log.d("lifeCycleDetector", "onResume")},
+    onPause: () -> Unit= {Log.d("lifeCycleDetector", "initialized")},
+    onDestroy: () -> Unit= {Log.d("lifeCycleDetector", "onDestroy")},
+) {
+    when(lifecycle) {
+        Lifecycle.State.CREATED -> onCreate()
+        Lifecycle.State.STARTED -> onStart()
+        Lifecycle.State.RESUMED -> onResume()
+        Lifecycle.State.INITIALIZED -> onPause()
+        Lifecycle.State.DESTROYED -> onDestroy()
+    }
+}
+
 @Composable
 fun Lifecycle.observeAsState(): Lifecycle.Event {
     var state by remember {
@@ -34,10 +51,12 @@ fun Lifecycle.observeAsState(): Lifecycle.Event {
 
     DisposableEffect(this) {
         val observer = LifecycleEventObserver { _, event ->
+            Log.d("lifeCycleCheck", "lifecycle observer :: $event")
             state = event
         }
         this@observeAsState.addObserver(observer)
         onDispose {
+            Log.d("lifeCycleCheck", "lifecycle observer dispose")
             this@observeAsState.removeObserver(observer)
         }
     }

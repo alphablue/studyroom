@@ -97,5 +97,7 @@ enum class Sections(
 /**
  * State 가 Resume 이면 이미 클릭된 상태인 것
  * */
-private fun NavBackStackEntry.lifecycleIsResumed() =
-    this.lifecycle.currentState == Lifecycle.State.RESUMED
+private fun NavBackStackEntry.lifecycleIsResumed(): Boolean {
+    Log.d("lifeCycleCheck", "lifecycle resumed check :: ${this.lifecycle.currentState}")
+    return this.lifecycle.currentState == Lifecycle.State.RESUMED
+}

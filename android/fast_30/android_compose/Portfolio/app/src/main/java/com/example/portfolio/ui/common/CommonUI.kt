@@ -3,10 +3,7 @@ package com.example.portfolio.ui.common
 import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -70,10 +67,13 @@ fun IconTextButton(
 fun SimpleTitleTopBar(
     upPress: () -> Unit,
     title: String,
+    workingOption: @Composable () -> Unit = {}
 ) {
-    TopAppBar(modifier = Modifier
+    TopAppBar(
+        modifier = Modifier
         .statusBarsPadding()
-        .fillMaxWidth()) {
+        .fillMaxWidth(),
+    ) {
         IconButton(onClick = upPress, modifier = Modifier.align(Alignment.Top)) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
@@ -88,5 +88,13 @@ fun SimpleTitleTopBar(
             textAlign = TextAlign.Center,
             modifier = Modifier.align(Alignment.CenterVertically)
         )
+
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Box(modifier = Modifier.align(Alignment.CenterEnd)){
+                workingOption
+            }
+        }
     }
 }

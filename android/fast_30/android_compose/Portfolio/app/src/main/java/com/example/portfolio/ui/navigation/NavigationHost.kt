@@ -86,6 +86,7 @@ fun NavGraphBuilder.addHomeGraph(
 
         WriteReview(
             goCamera = { goRoute(from, navCameraRoute) },
+            upPress = upPress,
             getUriOfrPreviousStack = getUriOfrPreviousStack
         )
     }

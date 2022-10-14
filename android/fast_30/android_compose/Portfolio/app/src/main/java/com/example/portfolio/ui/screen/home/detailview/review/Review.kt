@@ -1,18 +1,14 @@
 package com.example.portfolio.ui.screen.home.detailview.review
 
 import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Image
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.portfolio.R
 import com.example.portfolio.ui.common.BigStarRatingBarIndicator
-import com.example.portfolio.ui.common.StarRatingBar
+import com.example.portfolio.ui.common.SimpleTitleTopBar
 
 const val reviewRoute = "review"
 
@@ -30,13 +26,14 @@ const val reviewRoute = "review"
 @Composable
 fun WriteReview(
     goCamera: () -> Unit,
+    upPress: () -> Unit,
     getUriOfrPreviousStack:(String, (Uri) -> Unit) -> Unit,
 ) {
     var reviewContentValue by remember { mutableStateOf("") }
     var ratingValue by remember { mutableStateOf(0f) }
     var uriState by remember { mutableStateOf<Uri?>(null)}
 
-    getUriOfrPreviousStack("captureUri") { uriState = it }
+    getUriOfrPreviousStack(captureUriKey) { uriState = it }
 
     Surface {
         Column(
@@ -45,6 +42,8 @@ fun WriteReview(
                 .imeNestedScroll()
                 .imePadding()
         ) {
+            SimpleTitleTopBar(upPress = upPress, title = "리뷰 작성")
+
             Row(
                 modifier = Modifier
                     .border(width = 1.dp, color = Black)

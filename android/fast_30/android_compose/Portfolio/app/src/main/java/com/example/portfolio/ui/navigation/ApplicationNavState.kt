@@ -1,5 +1,6 @@
 package com.example.portfolio.ui.navigation
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
@@ -7,6 +8,7 @@ import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.Lifecycle
@@ -93,6 +95,27 @@ class ApplicationNavState(
     fun navigateToRoute(from: NavBackStackEntry, route: String) {
         if(from.lifecycleIsResumed()){
             navController.navigate(route)
+        }
+    }
+
+    fun addUriOfBackStack(key: String, value: Uri) {
+        navController.previousBackStackEntry
+            ?.savedStateHandle
+            ?.set(key, value)
+        navController.navigateUp()
+    }
+
+    fun getUriOfrPreviousStack(key: String, callback: (Uri) -> Unit) {
+        val previousData = navController.currentBackStackEntry
+            ?.savedStateHandle
+            ?.getLiveData<Uri>(key)
+
+        previousData?.value?.let {
+            callback(it)
+
+            navController.currentBackStackEntry
+                ?.savedStateHandle
+                ?.remove<Uri>(key)
         }
     }
 }

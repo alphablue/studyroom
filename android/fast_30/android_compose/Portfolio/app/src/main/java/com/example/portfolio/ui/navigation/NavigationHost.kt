@@ -1,5 +1,6 @@
 package com.example.portfolio.ui.navigation
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -33,6 +34,8 @@ fun NavGraphBuilder.addHomeGraph(
     goCart: (NavBackStackEntry) -> Unit,
     goRoute: (NavBackStackEntry, String) -> Unit,
     upPress: () -> Unit,
+    addUriOfBackStack: (String, Uri) -> Unit,
+    getUriOfrPreviousStack: (String, (Uri) -> Unit) -> Unit,
     activityViewModel: MainActivityViewModel
 ) {
     val deepLinkUri = "portfolio://test_deep_link"
@@ -51,7 +54,7 @@ fun NavGraphBuilder.addHomeGraph(
             },
             goMap = { goMap(from) },
             goCart = { goCart(from) },
-            goLogin = { goLogin(from)},
+            goLogin = { goLogin(from) },
             activityViewModel,
             homeViewModel
         )
@@ -81,14 +84,17 @@ fun NavGraphBuilder.addHomeGraph(
     ) { from ->
         activityViewModel.floatingState = FloatingState.NONE
 
-        WriteReview(goCamera = { goRoute(from, navCameraRoute) })
+        WriteReview(
+            goCamera = { goRoute(from, navCameraRoute) },
+            getUriOfrPreviousStack = getUriOfrPreviousStack
+        )
     }
 
     composable(
         route = navCameraRoute
     ) {
         activityViewModel.floatingState = FloatingState.NONE
-        CameraView(upPress = upPress)
+        CameraView(upPress = upPress, addUriOfBackStack= addUriOfBackStack)
     }
 }
 
@@ -100,6 +106,8 @@ fun NavGraphBuilder.applicationNavGraph(
     goCart: (NavBackStackEntry) -> Unit,
     goReview: (NavBackStackEntry) -> Unit,
     goRoute: (NavBackStackEntry, String) -> Unit,
+    addUriOfBackStack: (String, Uri) -> Unit,
+    getUriOfrPreviousStack: (String, (Uri) -> Unit) -> Unit,
     activityViewModel: MainActivityViewModel
 ) {
     navigation(
@@ -113,6 +121,8 @@ fun NavGraphBuilder.applicationNavGraph(
             goCart = goCart,
             goRoute = goRoute,
             upPress = upPress,
+            addUriOfBackStack = addUriOfBackStack,
+            getUriOfrPreviousStack = getUriOfrPreviousStack,
             itemSelect = itemSelect
         )
     }

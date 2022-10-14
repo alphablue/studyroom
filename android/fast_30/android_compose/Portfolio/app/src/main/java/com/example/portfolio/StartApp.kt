@@ -82,6 +82,8 @@ fun StartApp(
                     goCart = appState::navigateToCart,
                     goReview = appState::navigateToReview,
                     goRoute = appState::navigateToRoute,
+                    addUriOfBackStack = appState::addUriOfBackStack,
+                    getUriOfrPreviousStack = appState::getUriOfrPreviousStack,
                     activityViewModel
                 )
             }

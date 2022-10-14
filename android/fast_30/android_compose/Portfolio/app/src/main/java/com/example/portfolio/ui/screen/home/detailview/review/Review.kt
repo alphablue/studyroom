@@ -1,5 +1,6 @@
 package com.example.portfolio.ui.screen.home.detailview.review
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import com.example.portfolio.R
 import com.example.portfolio.ui.common.BigStarRatingBarIndicator
 import com.example.portfolio.ui.common.StarRatingBar
 
@@ -26,10 +29,14 @@ const val reviewRoute = "review"
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun WriteReview(
-    goCamera: () -> Unit
+    goCamera: () -> Unit,
+    getUriOfrPreviousStack:(String, (Uri) -> Unit) -> Unit,
 ) {
     var reviewContentValue by remember { mutableStateOf("") }
     var ratingValue by remember { mutableStateOf(0f) }
+    var uriState by remember { mutableStateOf<Uri?>(null)}
+
+    getUriOfrPreviousStack("captureUri") { uriState = it }
 
     Surface {
         Column(
@@ -46,11 +53,11 @@ fun WriteReview(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                Image(
+                AsyncImage(
                     modifier = Modifier
                         .size(60.dp)
                         .clickable { goCamera() },
-                    imageVector = Icons.Rounded.Image,
+                    model = uriState ?: R.drawable.ic_photo_camera,
                     contentDescription = "사진 찍기"
                 )
                 BigStarRatingBarIndicator(

@@ -11,10 +11,7 @@ import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.core.UseCase
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -38,10 +35,12 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 const val cameraRoute = "cameraView"
+const val captureUriKey = "captureUri"
 
 @Composable
 fun CameraView(
-    upPress: () -> Unit
+    upPress: () -> Unit,
+    addUriOfBackStack: (String, Uri) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -61,7 +60,7 @@ fun CameraView(
     )
 
     if (cameraPermissionCheck) {
-        MainContent(upPress = upPress)
+        MainContent(upPress = upPress, addUriOfBackStack = addUriOfBackStack)
     }
 }
 
@@ -156,7 +155,8 @@ fun CameraPreview(
 @Composable
 fun MainContent(
     modifier: Modifier = Modifier,
-    upPress: () -> Unit
+    upPress: () -> Unit,
+    addUriOfBackStack: (String, Uri) -> Unit
 ) {
     val emptyImageUri = Uri.parse("file://dev/null")
     var imageUri by remember { mutableStateOf(emptyImageUri) }
@@ -172,14 +172,25 @@ fun MainContent(
                 contentDescription = "capture image"
             )
 
-            Button(
+
+            Row(
                 modifier = Modifier.align(Alignment.BottomCenter),
-                onClick = {
-                    imageUri = emptyImageUri
-                }
             ) {
-                Text(text = "Remove image")
+                Button(
+                    onClick = {
+                        imageUri = emptyImageUri
+                    }
+                ) {
+                    Text(text = "다시찍기")
+                }
+
+                Button(onClick = {
+                    addUriOfBackStack("captureUri", imageUri)
+                }) {
+                    Text("선택완료")
+                }
             }
+
         }
     } else {
 

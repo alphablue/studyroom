@@ -17,7 +17,9 @@ import com.example.portfolio.ui.screen.home.Home
 import com.example.portfolio.ui.screen.home.HomeViewModel
 import com.example.portfolio.ui.screen.home.detailview.ListItemDetailView
 import com.example.portfolio.ui.screen.home.detailview.detailRout
+import com.example.portfolio.ui.screen.home.detailview.review.CameraView
 import com.example.portfolio.ui.screen.home.detailview.review.WriteReview
+import com.example.portfolio.ui.screen.home.detailview.review.cameraRoute
 import com.example.portfolio.ui.screen.home.detailview.review.reviewRoute
 import com.example.portfolio.ui.screen.login.LoginPage
 import com.example.portfolio.ui.screen.map.GoogleMapView
@@ -29,9 +31,13 @@ fun NavGraphBuilder.addHomeGraph(
     goMap: (NavBackStackEntry) -> Unit,
     goLogin: (NavBackStackEntry) -> Unit,
     goCart: (NavBackStackEntry) -> Unit,
+    goRoute: (NavBackStackEntry, String) -> Unit,
+    upPress: () -> Unit,
     activityViewModel: MainActivityViewModel
 ) {
     val deepLinkUri = "portfolio://test_deep_link"
+    val navReviewRoute = "${MainDestinations.HOME_ROUTE}/$detailRout/$reviewRoute"
+    val navCameraRoute = "$navReviewRoute/$cameraRoute"
 
     composable(Sections.HOME.route) { from ->
         val homeViewModel = hiltViewModel<HomeViewModel>()
@@ -44,7 +50,7 @@ fun NavGraphBuilder.addHomeGraph(
                 activityViewModel.detailItem = poi
             },
             goMap = { goMap(from) },
-            goCart = {goCart(from)},
+            goCart = { goCart(from) },
             goLogin = { goLogin(from)},
             activityViewModel,
             homeViewModel
@@ -71,11 +77,18 @@ fun NavGraphBuilder.addHomeGraph(
     }
 
     composable(
-        route = "${MainDestinations.HOME_ROUTE}/$detailRout/$reviewRoute"
-    ) {
+        route = navReviewRoute
+    ) { from ->
         activityViewModel.floatingState = FloatingState.NONE
 
-        WriteReview()
+        WriteReview(goCamera = { goRoute(from, navCameraRoute) })
+    }
+
+    composable(
+        route = navCameraRoute
+    ) {
+        activityViewModel.floatingState = FloatingState.NONE
+        CameraView(upPress = upPress)
     }
 }
 
@@ -86,6 +99,7 @@ fun NavGraphBuilder.applicationNavGraph(
     goLogin: (NavBackStackEntry) -> Unit,
     goCart: (NavBackStackEntry) -> Unit,
     goReview: (NavBackStackEntry) -> Unit,
+    goRoute: (NavBackStackEntry, String) -> Unit,
     activityViewModel: MainActivityViewModel
 ) {
     navigation(
@@ -97,6 +111,8 @@ fun NavGraphBuilder.applicationNavGraph(
             goMap = goMap,
             goLogin = goLogin,
             goCart = goCart,
+            goRoute = goRoute,
+            upPress = upPress,
             itemSelect = itemSelect
         )
     }

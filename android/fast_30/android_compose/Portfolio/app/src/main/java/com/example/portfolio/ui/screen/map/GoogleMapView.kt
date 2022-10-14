@@ -11,12 +11,14 @@ import androidx.compose.material.icons.outlined.FilterTiltShift
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.ui.common.HardwareName
 import com.example.portfolio.ui.common.PermissionName
+import com.example.portfolio.ui.screen.util.goToAppDetailSetting
 import com.example.portfolio.ui.screen.util.permission.PermissionCheck
 import com.example.portfolio.ui.theme.lightSecondaryBlue
 import com.example.portfolio.ui.theme.textColor
@@ -55,11 +57,17 @@ fun GoogleMapView(
     }
 
     var permissionGranted by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     PermissionCheck(
         permissionName = PermissionName.GPS,
         hardwareName = HardwareName.GPS,
-        grantedCheck = { permissionGranted = it }
+        grantedCheck = { permissionGranted = it },
+        onDismissClickEvent = {},
+        confirmButtonEvent = { goToAppDetailSetting(context = context)},
+        dismissButtonEvent = {
+            upPress()
+        }
     )
 
     if (permissionGranted) {
@@ -142,10 +150,6 @@ fun GoogleMapView(
                     fontWeight = FontWeight.Bold
                 )
             }
-        }
-    } else {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Text(text = "위치 권한 확인 중 입니다.", modifier = Modifier.align(Alignment.Center))
         }
     }
 }

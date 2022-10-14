@@ -3,19 +3,17 @@ package com.example.portfolio.ui.screen.util
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import android.util.Log
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.lang.IllegalStateException
 import java.util.concurrent.Executor
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -79,3 +77,14 @@ fun Float.number1Digits(): String {
 }
 
 fun localRoomLikeKey(userId: String, resId: String) = "${userId}_$resId"
+
+fun goToAppDetailSetting(context: Context) {
+    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(
+        Uri.fromParts(
+            "package",
+            context.packageName,
+            null
+        )
+    )
+    context.startActivity(intent)
+}

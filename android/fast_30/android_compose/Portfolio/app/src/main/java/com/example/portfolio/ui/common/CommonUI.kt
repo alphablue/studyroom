@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.viewinterop.AndroidViewBinding
+import com.example.portfolio.databinding.BigStarRatingBarBinding
 import com.example.portfolio.databinding.StarRatingBarBinding
 import com.example.portfolio.ui.theme.textColor
 
@@ -29,6 +30,18 @@ fun StarRatingBar(
 ) {
     AndroidViewBinding(StarRatingBarBinding::inflate, modifier = modifier) {
         ratingBar.rating = rateCount
+    }
+}
+
+@Composable
+fun BigStarRatingBarIndicator(
+    modifier: Modifier = Modifier,
+    changedCallback: (Float) -> Unit
+) {
+    AndroidViewBinding(factory = BigStarRatingBarBinding::inflate, modifier = modifier) {
+        bigRatingBar.setOnRatingBarChangeListener { ratingBar, fl, b ->
+            changedCallback(fl)
+        }
     }
 }
 

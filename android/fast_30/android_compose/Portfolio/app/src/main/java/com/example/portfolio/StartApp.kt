@@ -81,6 +81,7 @@ fun StartApp(
                     goLogin = appState::navigateToLoginPage,
                     goCart = appState::navigateToCart,
                     goReview = appState::navigateToReview,
+                    goRoute = appState::navigateToRoute,
                     activityViewModel
                 )
             }

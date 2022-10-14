@@ -89,6 +89,12 @@ class ApplicationNavState(
             navController.navigate("${MainDestinations.HOME_ROUTE}/$detailRout/$reviewRoute")
         }
     }
+
+    fun navigateToRoute(from: NavBackStackEntry, route: String) {
+        if(from.lifecycleIsResumed()){
+            navController.navigate(route)
+        }
+    }
 }
 
 enum class Sections(

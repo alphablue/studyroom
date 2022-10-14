@@ -1,9 +1,6 @@
 package com.example.portfolio.ui.screen.util.permission
 
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
-import android.provider.Settings
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,20 +14,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.example.portfolio.ui.common.HardwareName
 import com.example.portfolio.ui.common.PermissionName
 import com.example.portfolio.ui.screen.util.findActivity
-import com.example.portfolio.ui.screen.util.lifeCycleDetector
 import com.example.portfolio.ui.screen.util.lifeCycleDetectorState
-import com.example.portfolio.ui.screen.util.observeAsState
 
 @Composable
 fun PermissionCheck(
     permissionName: PermissionName,
     hardwareName: HardwareName,
-    grantedCheck: (Boolean) -> Unit
+    grantedCheck: (Boolean) -> Unit,
+    onDismissClickEvent: () -> Unit = {},
+    confirmButtonEvent: () -> Unit,
+    dismissButtonEvent: () -> Unit
 ) {
     val context = LocalContext.current
     var alertDialogState by remember {
@@ -112,20 +109,9 @@ fun PermissionCheck(
     Surface(Modifier.fillMaxSize()) {
         if (!alertDialogState) {
             PermissionDialog(
-                onDismissClickEvent = { },
-                confirmButtonEvent = {
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(
-                        Uri.fromParts(
-                            "package",
-                            context.packageName,
-                            null
-                        )
-                    )
-                    context.startActivity(intent)
-                },
-                dismissButtonEvent = {
-                    context.findActivity().finish()
-                }
+                onDismissClickEvent = onDismissClickEvent,
+                confirmButtonEvent = confirmButtonEvent,
+                dismissButtonEvent = dismissButtonEvent
             )
         }
     }

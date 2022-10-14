@@ -26,7 +26,9 @@ const val DETAIL_REVIEW_VIEW = "리뷰"
 
 @Composable
 fun DetailReviewView(
-    goReview: () -> Unit
+    goReview: () -> Unit,
+    loginState: Boolean,
+    callBackDialogState: (Boolean) -> Unit
 ) {
     val getReviewData = remember { mutableStateListOf<DisPlayReview>() }
 
@@ -39,7 +41,11 @@ fun DetailReviewView(
     Column {
         Row(
             modifier = Modifier.clickable {
-                goReview()
+                if(loginState) {
+                    goReview()
+                } else {
+                    callBackDialogState(true)
+                }
             }
         ) {
             Icon(

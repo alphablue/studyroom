@@ -55,6 +55,7 @@ fun ListItemDetailView(
 ) {
     val detailModel = sharedViewModel.detailItem
     val restaurantName = detailModel?.name ?: "정보를 받을 수 없습니다."
+    var dialogState by remember { mutableStateOf(false) }
 
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -64,41 +65,59 @@ fun ListItemDetailView(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-                ItemDetailViewTopBar(
-                    upPress = upPress,
-                    restaurantName = restaurantName
+            ItemDetailViewTopBar(
+                upPress = upPress,
+                restaurantName = restaurantName
+            )
+
+            detailModel?.let { info ->
+                DetailTopView(
+                    imgUrl = info.imgUri,
+                    detailModel = info,
+                    sharedViewModel = sharedViewModel,
+                    callBackDialogState = { dialogState = it },
+                    modifier = Modifier.fillMaxWidth()
                 )
 
-                detailModel?.let { info ->
-                    DetailTopView(
-                        imgUrl = info.imgUri,
-                        detailModel = info,
-                        sharedViewModel = sharedViewModel,
-                        goLogin = goLogin,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-                    DetailMiddleView(detailModel = info)
-                    DetailBottomView(sharedViewModel, restaurantName, goLogin, goReview)
-                }
+                DetailMiddleView(detailModel = info)
+                DetailBottomView(
+                    sharedViewModel,
+                    restaurantName,
+                    goLogin,
+                    goReview,
+                    callBackDialogState = { dialogState = it },
+                )
             }
         }
     }
+
+    if (dialogState) {
+        OrderDialog(
+            dialogStateCallBack = { dialogState = it },
+            dialogMainContent = "로그인이 필요합니다.",
+            confirmButtonContent = "로그인",
+            confirmEvent = {
+                dialogState = false
+                goLogin()
+            }
+        )
+    }
+}
 
 @Composable
 fun DetailTopView(
     imgUrl: Uri?,
     detailModel: NearRestaurantInfo,
     sharedViewModel: MainActivityViewModel,
-    goLogin: () -> Unit,
+    callBackDialogState: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val activity = context.findActivity()
     val loginState = sharedViewModel.loginState
-    var likeState by remember{ mutableStateOf(false)}
+    var likeState by remember { mutableStateOf(false) }
 
-    if(loginState) {
+    if (loginState) {
         sharedViewModel.userInfo?.let {
             val localKey = localRoomLikeKey(it.id, detailModel.id)
             likeState = sharedViewModel.userLikeMap.containsKey(localKey)
@@ -172,8 +191,8 @@ fun DetailTopView(
                         .background(color = textColor)
                 )
                 TextButton(onClick = {
-                    if(loginState.not()) {
-                        goLogin()
+                    if (loginState.not()) {
+                        callBackDialogState(true)
                     } else {
 
                         sharedViewModel.userInfo?.let {
@@ -185,7 +204,7 @@ fun DetailTopView(
                                 restaurantName = detailModel.name
                             )
 
-                            likeState = if(likeState) {
+                            likeState = if (likeState) {
                                 sharedViewModel.deleteLike(localKey, queryObj)
                                 false
                             } else {
@@ -199,7 +218,7 @@ fun DetailTopView(
                         }
                     }
                 }) {
-                    if(likeState.not())
+                    if (likeState.not())
                         Text("찜", fontSize = 18.sp, color = textColor)
                     else
                         Text("찜 해제", fontSize = 18.sp, color = textColor)
@@ -300,7 +319,7 @@ fun DetailMiddleView(
                                 .makeText(context, "복사되었습니다.", Toast.LENGTH_SHORT)
                                 .show()
                         },
-                ){
+                ) {
                     Text(
                         modifier = Modifier.align(alignment = Alignment.Center),
                         fontSize = 15.sp,
@@ -362,11 +381,13 @@ fun DetailBottomView(
     restaurantName: String,
     goLogin: () -> Unit,
     goReview: () -> Unit,
+    callBackDialogState: (Boolean) -> Unit
 ) {
     val tabItems = listOf(DETAIL_MENU_VIEW, DETAIL_REVIEW_VIEW)
 
     val viewPagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
+    val loginState = sharedViewModel.loginState
 
     Column(
         modifier = Modifier
@@ -402,17 +423,19 @@ fun DetailBottomView(
             state = viewPagerState,
             modifier = Modifier.fillMaxWidth()
         ) { page ->
-                when(page) {
-                    0-> DetailMenuView(
-                        sharedViewModel,
-                        restaurantName,
-                        goLogin
-                    )
-                    1-> DetailReviewView(
-                        goReview
-                    )
-                    else -> {}
-                }
+            when (page) {
+                0 -> DetailMenuView(
+                    sharedViewModel,
+                    restaurantName,
+                    goLogin
+                )
+                1 -> DetailReviewView(
+                    goReview,
+                    loginState,
+                    callBackDialogState
+                )
+                else -> {}
+            }
         }
     }
 }

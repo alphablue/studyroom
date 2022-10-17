@@ -60,6 +60,7 @@ fun WriteReview(
                     FirebaseObject.addUserReview(
                         restaurantId = resId,
                         fileUri = uriState,
+                        userId = userInfo.id,
                         getReview = GetReview(
                             rating = ratingValue.toString(),
                             content = reviewContentValue,

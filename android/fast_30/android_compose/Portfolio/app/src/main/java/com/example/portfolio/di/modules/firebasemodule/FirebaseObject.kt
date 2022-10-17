@@ -96,6 +96,7 @@ object FirebaseObject {
     fun addUserReview(
         restaurantId: String,
         fileUri: Uri?,
+        userId: String,
         getReview: GetReview,
         completeCallback: () -> Unit,
         failCallBack: () -> Unit
@@ -122,7 +123,8 @@ object FirebaseObject {
                         fireStoreInstance.collection("delivery")
                             .document("reviews")
                             .collection(restaurantId)
-                            .add(getReview.copy(takePicture = task.result.toString()))
+                            .document(userId)
+                            .set(getReview.copy(takePicture = task.result.toString()))
                             .addOnCompleteListener {
                                 completeCallback()
                             }
@@ -133,7 +135,8 @@ object FirebaseObject {
             fireStoreInstance.collection("delivery")
                 .document("reviews")
                 .collection(restaurantId)
-                .add(getReview)
+                .document(userId)
+                .set(getReview)
                 .addOnCompleteListener {
                     completeCallback()
                 }

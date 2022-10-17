@@ -4,11 +4,8 @@ import android.net.Uri
 import android.util.Log
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavGraphBuilder
+import androidx.navigation.*
 import androidx.navigation.compose.composable
-import androidx.navigation.navDeepLink
-import androidx.navigation.navigation
 import com.example.portfolio.FloatingState
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.MainDestinations
@@ -28,7 +25,6 @@ import com.example.portfolio.ui.screen.profile.Profile
 
 fun NavGraphBuilder.addHomeGraph(
     modifier: Modifier = Modifier,
-    itemSelect: (NavBackStackEntry) -> Unit,
     goMap: (NavBackStackEntry) -> Unit,
     goLogin: (NavBackStackEntry) -> Unit,
     goCart: (NavBackStackEntry) -> Unit,
@@ -39,7 +35,7 @@ fun NavGraphBuilder.addHomeGraph(
     activityViewModel: MainActivityViewModel
 ) {
     val deepLinkUri = "portfolio://test_deep_link"
-    val navReviewRoute = "${MainDestinations.HOME_ROUTE}/$detailRout/$reviewRoute"
+    val navReviewRoute = "${MainDestinations.HOME_ROUTE}/{resId}/$reviewRoute"
     val navCameraRoute = "$navReviewRoute/$cameraRoute"
 
     composable(Sections.HOME.route) { from ->
@@ -49,7 +45,7 @@ fun NavGraphBuilder.addHomeGraph(
         Home(
             modifier,
             itemSelect = { poi ->
-                itemSelect(from)
+                goRoute(from, "${MainDestinations.HOME_ROUTE}/${poi.id}")
                 activityViewModel.detailItem = poi
             },
             goMap = { goMap(from) },
@@ -80,19 +76,26 @@ fun NavGraphBuilder.addHomeGraph(
     }
 
     composable(
-        route = navReviewRoute
+        route = navReviewRoute,
+        arguments = listOf(navArgument("resId") {
+            type = NavType.StringType
+        })
     ) { from ->
         activityViewModel.floatingState = FloatingState.NONE
 
         WriteReview(
             goCamera = { goRoute(from, navCameraRoute) },
             upPress = upPress,
-            getUriOfrPreviousStack = getUriOfrPreviousStack
+            getUriOfrPreviousStack = getUriOfrPreviousStack,
+            sharedViewModel = activityViewModel
         )
     }
 
     composable(
-        route = navCameraRoute
+        route = navCameraRoute,
+        arguments = listOf(navArgument("resId"){
+            type = NavType.StringType
+        })
     ) {
         activityViewModel.floatingState = FloatingState.NONE
         CameraView(upPress = upPress, addUriOfBackStack= addUriOfBackStack)
@@ -101,7 +104,6 @@ fun NavGraphBuilder.addHomeGraph(
 
 fun NavGraphBuilder.applicationNavGraph(
     upPress: () -> Unit,
-    itemSelect: (NavBackStackEntry) -> Unit,
     goMap: (NavBackStackEntry) -> Unit,
     goLogin: (NavBackStackEntry) -> Unit,
     goCart: (NavBackStackEntry) -> Unit,
@@ -124,12 +126,14 @@ fun NavGraphBuilder.applicationNavGraph(
             upPress = upPress,
             addUriOfBackStack = addUriOfBackStack,
             getUriOfrPreviousStack = getUriOfrPreviousStack,
-            itemSelect = itemSelect
         )
     }
 
     composable(
-        route = "${MainDestinations.HOME_ROUTE}/$detailRout"
+        route = "${MainDestinations.HOME_ROUTE}/{resId}",
+        arguments = listOf(navArgument("resId"){
+            type = NavType.StringType
+        })
     ) {
         activityViewModel.floatingState = FloatingState.NONE
 

@@ -93,7 +93,7 @@ fun SimpleTitleTopBar(
             modifier = Modifier.fillMaxSize()
         ) {
             Box(modifier = Modifier.align(Alignment.CenterEnd)){
-                workingOption
+                workingOption()
             }
         }
     }

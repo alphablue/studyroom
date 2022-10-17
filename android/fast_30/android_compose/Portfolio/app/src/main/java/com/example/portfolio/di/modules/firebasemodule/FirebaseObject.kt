@@ -65,6 +65,23 @@ object FirebaseObject {
             }
     }
 
+    fun addUserReview(
+        restaurantId: String,
+        getReview: GetReview,
+        completeCallback: ()->Unit,
+        failCallBack: () -> Unit
+    ) {
+        val fireStoreInstance = Firebase.firestore
+
+        fireStoreInstance.collection("delivery")
+            .document("reviews")
+            .collection("review")
+            .document(restaurantId)
+            .set(getReview)
+            .addOnCanceledListener { completeCallback() }
+            .addOnFailureListener { failCallBack() }
+    }
+
     fun addUserId(
         uid: String,
         user: User

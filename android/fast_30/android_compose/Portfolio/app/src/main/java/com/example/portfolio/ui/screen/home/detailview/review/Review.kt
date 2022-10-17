@@ -16,7 +16,9 @@ import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.R
+import com.example.portfolio.model.uidatamodels.User
 import com.example.portfolio.ui.common.BigStarRatingBarIndicator
 import com.example.portfolio.ui.common.SimpleTitleTopBar
 
@@ -28,10 +30,12 @@ fun WriteReview(
     goCamera: () -> Unit,
     upPress: () -> Unit,
     getUriOfrPreviousStack:(String, (Uri) -> Unit) -> Unit,
+    sharedViewModel: MainActivityViewModel
 ) {
     var reviewContentValue by remember { mutableStateOf("") }
     var ratingValue by remember { mutableStateOf(0f) }
     var uriState by remember { mutableStateOf<Uri?>(null)}
+    var userInfo = sharedViewModel.userInfo ?: User()
 
     getUriOfrPreviousStack(captureUriKey) { uriState = it }
 
@@ -42,7 +46,9 @@ fun WriteReview(
                 .imeNestedScroll()
                 .imePadding()
         ) {
-            SimpleTitleTopBar(upPress = upPress, title = "리뷰 작성")
+            SimpleTitleTopBar(upPress = upPress, title = "리뷰 작성") {
+                Text("글쓰기")
+            }
 
             Row(
                 modifier = Modifier

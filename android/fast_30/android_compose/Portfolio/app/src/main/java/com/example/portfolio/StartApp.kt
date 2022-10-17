@@ -76,7 +76,6 @@ fun StartApp(
             ) {
                 applicationNavGraph(
                     upPress = appState::upPress,
-                    itemSelect = appState::navigateToItemDetail,
                     goMap = appState::navigateToGoogleMap,
                     goLogin = appState::navigateToLoginPage,
                     goCart = appState::navigateToCart,

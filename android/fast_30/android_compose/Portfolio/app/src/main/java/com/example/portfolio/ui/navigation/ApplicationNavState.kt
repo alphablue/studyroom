@@ -62,12 +62,6 @@ class ApplicationNavState(
         }
     }
 
-    fun navigateToItemDetail(from: NavBackStackEntry) {
-        if(from.lifecycleIsResumed()) {
-            navController.navigate("${MainDestinations.HOME_ROUTE}/$detailRout")
-        }
-    }
-
     fun navigateToGoogleMap(from: NavBackStackEntry) {
         if(from.lifecycleIsResumed()) {
             navController.navigate(MainDestinations.GOOGLE_MAP)

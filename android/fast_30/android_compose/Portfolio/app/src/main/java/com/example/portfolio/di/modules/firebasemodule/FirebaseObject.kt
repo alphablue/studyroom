@@ -3,14 +3,15 @@ package com.example.portfolio.di.modules.firebasemodule
 import android.net.Uri
 import android.util.Log
 import com.example.portfolio.model.uidatamodels.DisPlayReview
-import com.example.portfolio.model.uidatamodels.RestaurantMenu
 import com.example.portfolio.model.uidatamodels.GetReview
+import com.example.portfolio.model.uidatamodels.RestaurantMenu
 import com.example.portfolio.model.uidatamodels.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import java.util.*
 
 object FirebaseObject {
     private val fireStorageInstance = Firebase.storage
@@ -54,7 +55,7 @@ object FirebaseObject {
                 resultTypeGetReview.forEach { getReviewData ->
                     Log.d("testFirebase", "get test review data ok")
 
-                    getUser(getReviewData.userId){ userInfo ->
+                    getUser(getReviewData.userId) { userInfo ->
                         Log.d("testFirebase", "get user data of review running")
                         userInfo?.let { userData ->
                             Log.d("testFirebase", "get user data of review ok")
@@ -67,19 +68,52 @@ object FirebaseObject {
 
     fun addUserReview(
         restaurantId: String,
+        fileUri: Uri?,
         getReview: GetReview,
-        completeCallback: ()->Unit,
+        completeCallback: () -> Unit,
         failCallBack: () -> Unit
     ) {
         val fireStoreInstance = Firebase.firestore
 
-        fireStoreInstance.collection("delivery")
-            .document("reviews")
-            .collection("review")
-            .document(restaurantId)
-            .set(getReview)
-            .addOnCanceledListener { completeCallback() }
-            .addOnFailureListener { failCallBack() }
+        val randomUid = UUID.randomUUID().toString()
+        val storageRef =
+            fireStorageInstance.reference.child("delivery_app/reviews/$restaurantId/$randomUid.jpg")
+
+        fileUri?.let {
+            storageRef
+                .putFile(it)
+                .continueWithTask { task ->
+                    if (!task.isSuccessful) {
+                        task.exception?.let { e ->
+                            throw e
+                        }
+                    }
+                    storageRef.downloadUrl
+                }
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        fireStoreInstance.collection("delivery")
+                            .document("reviews")
+                            .collection("review")
+                            .document(restaurantId)
+                            .set(getReview.copy(takePicture = task.result.toString()))
+                            .addOnCompleteListener {
+                                completeCallback()
+                            }
+                            .addOnFailureListener { failCallBack() }
+                    }
+                }
+        } ?: run {
+            fireStoreInstance.collection("delivery")
+                .document("reviews")
+                .collection("review")
+                .document(restaurantId)
+                .set(getReview)
+                .addOnCompleteListener {
+                    completeCallback()
+                }
+                .addOnFailureListener { failCallBack() }
+        }
     }
 
     fun addUserId(
@@ -103,7 +137,7 @@ object FirebaseObject {
 
     fun deleteUserId(
         uid: String
-    ){
+    ) {
         val fireStoreInstance = Firebase.firestore
 
         fireStoreInstance

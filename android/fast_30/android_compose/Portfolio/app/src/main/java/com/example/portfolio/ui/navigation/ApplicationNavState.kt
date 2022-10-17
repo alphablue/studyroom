@@ -8,7 +8,6 @@ import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.Lifecycle
@@ -17,9 +16,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.portfolio.MainDestinations
-import com.example.portfolio.ui.screen.home.detailview.detailRout
-import com.example.portfolio.ui.screen.home.detailview.review.reviewRoute
-
 
 @Composable
 fun rememberApplicationNavState(
@@ -77,12 +73,6 @@ class ApplicationNavState(
     fun navigateToCart(from: NavBackStackEntry) {
         if(from.lifecycleIsResumed()) {
             navController.navigate(MainDestinations.CART_PAGE)
-        }
-    }
-
-    fun navigateToReview(from: NavBackStackEntry) {
-        if(from.lifecycleIsResumed()) {
-            navController.navigate("${MainDestinations.HOME_ROUTE}/$detailRout/$reviewRoute")
         }
     }
 

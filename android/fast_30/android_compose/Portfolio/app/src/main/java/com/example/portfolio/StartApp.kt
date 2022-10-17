@@ -79,7 +79,6 @@ fun StartApp(
                     goMap = appState::navigateToGoogleMap,
                     goLogin = appState::navigateToLoginPage,
                     goCart = appState::navigateToCart,
-                    goReview = appState::navigateToReview,
                     goRoute = appState::navigateToRoute,
                     addUriOfBackStack = appState::addUriOfBackStack,
                     getUriOfrPreviousStack = appState::getUriOfrPreviousStack,

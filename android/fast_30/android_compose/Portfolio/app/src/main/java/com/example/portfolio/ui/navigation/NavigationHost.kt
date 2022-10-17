@@ -142,6 +142,7 @@ fun NavGraphBuilder.applicationNavGraph(
         val resId = from.arguments?.getString("resId") ?: ""
 
         ListItemDetailView(
+            selectedResId= resId,
             activityViewModel,
             upPress = upPress,
             goLogin = { goLogin(from) },

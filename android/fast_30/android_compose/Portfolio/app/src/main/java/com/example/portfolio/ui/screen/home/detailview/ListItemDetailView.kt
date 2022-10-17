@@ -43,11 +43,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import kotlinx.coroutines.launch
 
-const val detailRout = "detail"
-
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ListItemDetailView(
+    selectedResId: String,
     sharedViewModel: MainActivityViewModel,
     upPress: () -> Unit,
     goLogin: () -> Unit,
@@ -81,6 +80,7 @@ fun ListItemDetailView(
 
                 DetailMiddleView(detailModel = info)
                 DetailBottomView(
+                    selectedResId= selectedResId,
                     sharedViewModel,
                     restaurantName,
                     goLogin,
@@ -377,6 +377,7 @@ fun ItemDetailViewTopBar(
 @ExperimentalPagerApi
 @Composable
 fun DetailBottomView(
+    selectedResId: String,
     sharedViewModel: MainActivityViewModel,
     restaurantName: String,
     goLogin: () -> Unit,
@@ -430,6 +431,7 @@ fun DetailBottomView(
                     goLogin
                 )
                 1 -> DetailReviewView(
+                    selectedResId= selectedResId,
                     goReview,
                     loginState,
                     callBackDialogState

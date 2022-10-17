@@ -26,15 +26,21 @@ const val DETAIL_REVIEW_VIEW = "리뷰"
 
 @Composable
 fun DetailReviewView(
+    selectedResId: String,
     goReview: () -> Unit,
     loginState: Boolean,
     callBackDialogState: (Boolean) -> Unit
 ) {
     val getReviewData = remember { mutableStateListOf<DisPlayReview>() }
+    val getResReviews = remember { mutableStateListOf<DisPlayReview>()}
 
     LaunchedEffect(true) {
         FirebaseObject.getTestReview {
             getReviewData.addAll(it)
+        }
+
+        FirebaseObject.getReviewWithResId(selectedResId) {
+            getResReviews.addAll(it)
         }
     }
 
@@ -53,6 +59,16 @@ fun DetailReviewView(
                 contentDescription = "writeReview"
             )
             Text(text = "리뷰쓰기")
+        }
+
+        for((reviewInfo, userInfo) in getResReviews) {
+            DrawReview(
+                userNickName = userInfo.name,
+                userProfileImg = userInfo.profileImage,
+                ratingValue = reviewInfo.rating.toFloat(),
+                reviewDate = reviewInfo.date,
+                contentText = reviewInfo.content
+            )
         }
 
         for ((reviewInfo, userInfo) in getReviewData) {

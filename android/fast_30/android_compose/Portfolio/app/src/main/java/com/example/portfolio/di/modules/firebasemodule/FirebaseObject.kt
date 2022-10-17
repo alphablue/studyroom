@@ -66,6 +66,33 @@ object FirebaseObject {
             }
     }
 
+    fun getReviewWithResId(
+        resId: String,
+        callback: (List<DisPlayReview>) -> Unit) {
+        val fireStoreInstance = Firebase.firestore
+
+        fireStoreInstance
+            .collection("delivery")
+            .document("reviews")
+            .collection(resId)
+            .get()
+            .addOnSuccessListener { results ->
+                val resultTypeGetReview = results.toObjects<GetReview>()
+
+                resultTypeGetReview.forEach { getReviewData ->
+                    Log.d("testFirebase", "get restaurant review data ok")
+
+                    getUser(getReviewData.userId) { userInfo ->
+                        Log.d("testFirebase", "get user data of review running")
+                        userInfo?.let { userData ->
+                            Log.d("testFirebase", "get user data of review ok")
+                            callback(listOf(DisPlayReview(getReviewData, userData)))
+                        }
+                    }
+                }
+            }
+    }
+
     fun addUserReview(
         restaurantId: String,
         fileUri: Uri?,
@@ -94,9 +121,8 @@ object FirebaseObject {
                     if (task.isSuccessful) {
                         fireStoreInstance.collection("delivery")
                             .document("reviews")
-                            .collection("review")
-                            .document(restaurantId)
-                            .set(getReview.copy(takePicture = task.result.toString()))
+                            .collection(restaurantId)
+                            .add(getReview.copy(takePicture = task.result.toString()))
                             .addOnCompleteListener {
                                 completeCallback()
                             }
@@ -106,9 +132,8 @@ object FirebaseObject {
         } ?: run {
             fireStoreInstance.collection("delivery")
                 .document("reviews")
-                .collection("review")
-                .document(restaurantId)
-                .set(getReview)
+                .collection(restaurantId)
+                .add(getReview)
                 .addOnCompleteListener {
                     completeCallback()
                 }

@@ -20,7 +20,9 @@ import com.example.portfolio.ui.screen.home.detailview.review.reviewRoute
 import com.example.portfolio.ui.screen.like.Like
 import com.example.portfolio.ui.screen.login.LoginPage
 import com.example.portfolio.ui.screen.map.GoogleMapView
+import com.example.portfolio.ui.screen.profile.OrderHistoryView
 import com.example.portfolio.ui.screen.profile.Profile
+import com.example.portfolio.ui.screen.profile.orderRoute
 
 fun NavGraphBuilder.addHomeGraph(
     modifier: Modifier = Modifier,
@@ -37,7 +39,7 @@ fun NavGraphBuilder.addHomeGraph(
 
     composable(Sections.HOME.route) { from ->
         val homeViewModel = hiltViewModel<HomeViewModel>()
-        activityViewModel.floatingState = FloatingState.ORDER
+        activityViewModel.floatingState = FloatingState.NONE
 
         Home(
             modifier,
@@ -55,9 +57,6 @@ fun NavGraphBuilder.addHomeGraph(
 
     composable(
         Sections.Like.route,
-        deepLinks = listOf(
-            navDeepLink { uriPattern = deepLinkUri }
-        )
     ) { from ->
         activityViewModel.floatingState = FloatingState.NONE
 
@@ -70,6 +69,15 @@ fun NavGraphBuilder.addHomeGraph(
 
         Profile(activityViewModel, goLogin = { goLogin(from) })
         Log.d("navigationTest", "profile $from")
+    }
+
+    composable(
+        route = "${Sections.PROFILE.route}/$orderRoute",
+        deepLinks = listOf(navDeepLink { uriPattern = deepLinkUri })
+    ) { from ->
+        activityViewModel.floatingState = FloatingState.NONE
+
+        OrderHistoryView()
     }
 
     composable(

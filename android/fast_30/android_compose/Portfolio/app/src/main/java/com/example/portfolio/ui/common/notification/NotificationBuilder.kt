@@ -30,7 +30,7 @@ class NotificationBuilder(
             addNextIntentWithParentStack(
                 Intent(
                     Intent.ACTION_VIEW,
-                    "portfolio://test_deep_link".toUri() // <-- Notice this
+                    "portfolio://test_deep_link".toUri()
                 )
             )
             getPendingIntent(1234, PendingIntent.FLAG_UPDATE_CURRENT)

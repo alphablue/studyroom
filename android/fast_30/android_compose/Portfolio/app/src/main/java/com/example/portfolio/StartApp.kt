@@ -4,8 +4,11 @@ import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -18,7 +21,7 @@ import com.example.portfolio.ui.navigation.applicationNavGraph
 import com.example.portfolio.ui.navigation.rememberApplicationNavState
 import com.example.portfolio.ui.screen.home.detailview.OrderDialog
 import com.example.portfolio.ui.theme.PortfolioTheme
-import com.example.portfolio.ui.theme.textColor
+import com.example.portfolio.ui.theme.secondaryBlue
 
 object MainDestinations {
     const val HOME_ROUTE = "home"
@@ -36,6 +39,7 @@ fun StartApp(
         val context = LocalContext.current
         val noti = NotificationBuilder(context)
         var dialogState by remember { mutableStateOf(false)}
+        val floatState = activityViewModel.floatingState
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -52,9 +56,16 @@ fun StartApp(
             },
             floatingActionButton = {
 
-                when(activityViewModel.floatingState) {
+                when(floatState) {
                     FloatingState.NONE -> {}
                     FloatingState.ORDER -> {
+                        val userId = activityViewModel.userInfo?.id ?: ""
+
+                        val cartCount = activityViewModel.userCartMap
+                            .filterKeys { userId in it }
+                            .map { it.value }
+                            .size
+
                         FloatingActionButton(
                             backgroundColor = MaterialTheme.colors.primary,
                             shape = RoundedCornerShape(14.dp),
@@ -63,7 +74,19 @@ fun StartApp(
                                     true, "알림 테스트 중", "알림 테스트 내용"
                                 )
                             }) {
-                            Text(text = "테스트용", color = textColor)
+                            BadgedBox(
+                                badge = {
+                                    Badge(
+                                        contentColor = Color.White,
+                                        backgroundColor = secondaryBlue
+                                    ) { Text(text = cartCount.toString()) }
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.ShoppingCart,
+                                    contentDescription = "your shopping cart"
+                                )
+                            }
                         }
                     }
                 }

@@ -31,7 +31,6 @@ fun Cart(
             if(cartKeyItems.isEmpty()) {
                 Text(text = "장바구니가 비어있어요")
             } else {
-
                 LazyColumn {
                     items(cartKeyItems) { cartItem ->
                         Row{

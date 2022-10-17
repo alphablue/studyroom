@@ -24,16 +24,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.portfolio.FloatingState
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.R
 import com.example.portfolio.di.modules.firebasemodule.FirebaseObject
 import com.example.portfolio.model.uidatamodels.NearRestaurantInfo
 import com.example.portfolio.ui.screen.home.detailview.OrderDialog
 import com.example.portfolio.ui.screen.util.number2Digits
-import com.example.portfolio.ui.theme.gray
-import com.example.portfolio.ui.theme.lightSecondaryBlue
-import com.example.portfolio.ui.theme.textColor
-import com.example.portfolio.ui.theme.yellow
+import com.example.portfolio.ui.theme.*
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -265,10 +263,18 @@ fun MainAppBar(
             badge = {
                 if (loginState) {
                     if(cartCount != 0){
+                        sharedViewModel.floatingState = FloatingState.ORDER
+
                         Badge(
-                            modifier = Modifier.offset(x = (-7).dp, y = 7.dp)
+                            modifier = Modifier.offset(x = (-7).dp, y = 7.dp),
+                            contentColor = Color.White,
+                            backgroundColor = secondaryBlue
                         ) { Text(text = cartCount.toString()) }
+                    } else {
+                        sharedViewModel.floatingState = FloatingState.NONE
                     }
+                } else {
+                    sharedViewModel.floatingState = FloatingState.NONE
                 }
             }
         ) {

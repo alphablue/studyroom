@@ -70,9 +70,10 @@ fun StartApp(
                             backgroundColor = MaterialTheme.colors.primary,
                             shape = RoundedCornerShape(14.dp),
                             onClick = {
-                                noti.createDeliveryNotificationChannel(
-                                    true, "알림 테스트 중", "알림 테스트 내용"
-                                )
+//                                noti.createDeliveryNotificationChannel(
+//                                    true, "알림 테스트 중", "알림 테스트 내용"
+//                                )
+                                appState.navController.navigate(MainDestinations.CART_PAGE)
                             }) {
                             BadgedBox(
                                 badge = {

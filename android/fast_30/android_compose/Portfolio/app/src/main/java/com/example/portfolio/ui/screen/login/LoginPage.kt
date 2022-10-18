@@ -45,7 +45,7 @@ fun LoginPage(
         var email by remember { mutableStateOf("") }
         var pass by remember { mutableStateOf("") }
 
-        SimpleTitleTopBar(upPress, "로그인")
+        SimpleTitleTopBar(isUpPress = true, upPress, "로그인")
 
         Column(
             modifier = Modifier.fillMaxSize(),

@@ -91,7 +91,7 @@ fun WriteReview(
         Column(
             modifier = Modifier.background(color = White)
         ) {
-            SimpleTitleTopBar(upPress = upPress, title = "리뷰 작성") {
+            SimpleTitleTopBar(isUpPress = true, upPress = upPress, title = "리뷰 작성") {
                 Text(text = "글쓰기", modifier = Modifier.clickable {
                     progressState = true
                     writeFun()

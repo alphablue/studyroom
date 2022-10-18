@@ -65,7 +65,8 @@ fun IconTextButton(
 
 @Composable
 fun SimpleTitleTopBar(
-    upPress: () -> Unit,
+    isUpPress: Boolean,
+    upPress: () -> Unit = {},
     title: String,
     workingOption: @Composable () -> Unit = {}
 ) {
@@ -74,15 +75,17 @@ fun SimpleTitleTopBar(
             .statusBarsPadding()
             .fillMaxWidth(),
         ) {
-        IconButton(
-            onClick = upPress,
-            modifier = Modifier.align(Alignment.CenterVertically)
-        ) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                tint = textColor,
-                contentDescription = "back"
-            )
+        if(isUpPress){
+            IconButton(
+                onClick = upPress,
+                modifier = Modifier.align(Alignment.CenterVertically)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    tint = textColor,
+                    contentDescription = "back"
+                )
+            }
         }
 
         Text(

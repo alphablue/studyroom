@@ -12,7 +12,7 @@ data class NearRestaurantInfo(
     val address: String,
     val lon: Double,
     val lat: Double,
-    val rating: Float = Random.nextDouble(0.0, 5.0).toFloat(),
+    val rating: Float = Random.nextDouble(1.5, 5.0).toFloat(),
     val deliveryTime: String = run {
         val firstTime = Random.nextInt(1..7)
         val secondTime = Random.nextInt(10..35)

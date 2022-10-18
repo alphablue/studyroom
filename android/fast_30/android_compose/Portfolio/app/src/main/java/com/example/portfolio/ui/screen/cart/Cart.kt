@@ -28,7 +28,7 @@ fun Cart(
         modifier = Modifier.fillMaxSize()
     ) {
         Column{
-            SimpleTitleTopBar(upPress = upPress, title = "장바구니")
+            SimpleTitleTopBar(isUpPress = true, upPress = upPress, title = "장바구니")
 
             if(cartKeyItems.isEmpty()) {
                 sharedViewModel.floatingState = FloatingState.NONE

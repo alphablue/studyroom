@@ -41,7 +41,7 @@ fun OrderHistoryView(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                SimpleTitleTopBar(upPress = { upPress() }, title = "주문목록")
+                SimpleTitleTopBar(isUpPress = true, upPress = { upPress() }, title = "주문목록")
 
                 historyData.forEach {
                     Spacer(modifier = Modifier.height(10.dp))

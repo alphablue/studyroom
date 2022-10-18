@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.R
+import com.example.portfolio.ui.common.SimpleTitleTopBar
 import com.example.portfolio.ui.theme.textSecondaryColor
 
 @Composable
@@ -44,6 +45,8 @@ fun Profile(
                 )
                 .fillMaxSize()
         ) {
+            SimpleTitleTopBar(isUpPress = false, title = "나의 프로필")
+
             Column(
                 modifier = Modifier
                     .background(Color.White)

@@ -12,10 +12,10 @@ MVVM 아키텍처를 기반으로 Compose 를 사용해 간단한 배달앱의 �
    ![실행화면](./readmedata/appRun01_scaleDown.gif)
 
 2. 두번째
-   ![실행화면](./readmedata/appRun01_scaleDown.gif)
+   ![실행화면](./readmedata/appRun02_scaleDown.gif)
 
 3. 세법째
-   ![실행화면](./readmedata/appRun01_scaleDown.gif)
+   ![실행화면](./readmedata/appRun03_scaleDown.gif)
 
 ACC :
 

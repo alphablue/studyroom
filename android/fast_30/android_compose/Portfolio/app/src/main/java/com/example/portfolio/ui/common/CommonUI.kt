@@ -71,10 +71,13 @@ fun SimpleTitleTopBar(
 ) {
     TopAppBar(
         modifier = Modifier
-        .statusBarsPadding()
-        .fillMaxWidth(),
-    ) {
-        IconButton(onClick = upPress, modifier = Modifier.align(Alignment.Top)) {
+            .statusBarsPadding()
+            .fillMaxWidth(),
+        ) {
+        IconButton(
+            onClick = upPress,
+            modifier = Modifier.align(Alignment.CenterVertically)
+        ) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 tint = textColor,
@@ -92,7 +95,7 @@ fun SimpleTitleTopBar(
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            Box(modifier = Modifier.align(Alignment.CenterEnd)){
+            Box(modifier = Modifier.align(Alignment.CenterEnd)) {
                 workingOption()
             }
         }

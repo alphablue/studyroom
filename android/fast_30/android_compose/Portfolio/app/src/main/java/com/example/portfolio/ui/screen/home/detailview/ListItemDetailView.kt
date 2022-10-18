@@ -236,14 +236,6 @@ fun DetailTopView(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 StarRatingBar(rateCount = detailModel.rating)
-
-                BadgedBox(badge = { }) {
-                    Icon(
-                        imageVector = Icons.Outlined.Message,
-                        contentDescription = "review icon",
-                        tint = textColor
-                    )
-                }
             }
         }
     }
@@ -357,7 +349,7 @@ fun ItemDetailViewTopBar(
         modifier = Modifier.statusBarsPadding(),
     ) {
 
-        IconButton(onClick = upPress, modifier = Modifier.align(Alignment.Top)) {
+        IconButton(onClick = upPress, modifier = Modifier.align(Alignment.CenterVertically)) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 tint = textColor,

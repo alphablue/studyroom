@@ -49,7 +49,7 @@ fun PermissionCheck(
 
     lifeCycleDetectorState(test.currentState)
 
-    LaunchedEffect(lifecycleState) {
+    SideEffect {
         lifecycleState.launchWhenResumed {
             val isHardWareOk =
                 hardwareName.packageManager.filter {

@@ -160,7 +160,7 @@ fun MapViewTopBar(
     modifier: Modifier = Modifier
 ) {
     TopAppBar(modifier = modifier.statusBarsPadding().fillMaxWidth()) {
-        IconButton(onClick = upPress, modifier = Modifier.align(Alignment.Top)) {
+        IconButton(onClick = upPress, modifier = Modifier.align(Alignment.CenterVertically)) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 tint = textColor,

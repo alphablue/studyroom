@@ -26,11 +26,8 @@ import coil.compose.AsyncImage
 import com.example.portfolio.ui.common.EMPTY_IMAGE_URI
 import com.example.portfolio.ui.common.HardwareName
 import com.example.portfolio.ui.common.PermissionName
-import com.example.portfolio.ui.screen.util.executor
-import com.example.portfolio.ui.screen.util.getCameraProvider
-import com.example.portfolio.ui.screen.util.goToAppDetailSetting
+import com.example.portfolio.ui.screen.util.*
 import com.example.portfolio.ui.screen.util.permission.PermissionCheck
-import com.example.portfolio.ui.screen.util.takePicture
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -43,21 +40,36 @@ fun CameraView(
     addUriOfBackStack: (String, Uri) -> Unit
 ) {
     val context = LocalContext.current
-
     var cameraPermissionCheck by remember { mutableStateOf(false) }
+    var checkLifeCycle by remember { mutableStateOf(false)}
+    val lifecycle = LocalLifecycleOwner.current.lifecycle.observeAsState()
 
-    PermissionCheck(
-        permissionName = PermissionName.CAMERA,
-        hardwareName = HardwareName.CAMERA,
-        grantedCheck = { cameraPermissionCheck = it },
-        onDismissClickEvent = {},
-        dismissButtonEvent = {
-            upPress()
+    lifeCycleDetector(
+        lifecycle,
+        onResume = {
+            checkLifeCycle = true
         },
-        confirmButtonEvent = {
-            goToAppDetailSetting(context = context)
+        onPause = {
+            checkLifeCycle = false
         }
     )
+
+    if(checkLifeCycle) {
+        PermissionCheck(
+            permissionName = PermissionName.CAMERA,
+            hardwareName = HardwareName.CAMERA,
+            grantedCheck = { cameraPermissionCheck = it },
+            onDismissClickEvent = {},
+            dismissButtonEvent = {
+                upPress()
+            },
+            confirmButtonEvent = {
+                goToAppDetailSetting(context = context)
+            }
+        )
+    }
+
+    Log.d("cameraview", "permisson check :: $cameraPermissionCheck")
 
     if (cameraPermissionCheck) {
         MainContent(upPress = upPress, addUriOfBackStack = addUriOfBackStack)

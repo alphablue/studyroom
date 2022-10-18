@@ -6,9 +6,7 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.relocation.BringIntoViewRequester
@@ -17,7 +15,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -30,7 +27,9 @@ import com.example.portfolio.model.uidatamodels.GetReview
 import com.example.portfolio.model.uidatamodels.User
 import com.example.portfolio.ui.common.BigStarRatingBarIndicator
 import com.example.portfolio.ui.common.SimpleTitleTopBar
-import com.example.portfolio.ui.theme.*
+import com.example.portfolio.ui.theme.dividerColor
+import com.example.portfolio.ui.theme.gray
+import com.example.portfolio.ui.theme.lightPrimaryBlue
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -166,13 +165,12 @@ fun WriteReview(
     }
 
     if (progressState) {
-        BackHandler(enabled = false) {}
+        BackHandler(enabled = true) {}
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = gray)
-
+                .background(color = gray.copy(alpha = 0.8f))
         ) {
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center),
@@ -181,6 +179,6 @@ fun WriteReview(
             )
         }
     } else {
-        BackHandler(enabled = true) {}
+        BackHandler(enabled = false) {}
     }
 }

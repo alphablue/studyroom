@@ -37,8 +37,9 @@ fun Like(
                 LazyColumn {
                     items(itemList) { like ->
                         Row(
+                            modifier = Modifier.fillMaxWidth(0.9f),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ){
                             Text(text = like.restaurantName)
                             IconButton(onClick = {

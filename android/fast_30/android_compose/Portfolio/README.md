@@ -20,6 +20,12 @@ ACC :
 - Gson
 - MDC (Material Design Sources)
 - room (Database)
+- firebase Auth
+- cameraX
+
+DB:
+- firebaseStorage
+- firebaseStore
 
 ### [현재완료된 기능 목록]
 1. 구글 맵 상에 중앙 좌표값 가져오기
@@ -35,5 +41,5 @@ ACC :
 - [x] 로그인, 로그아웃 (room 활용)
 - [x] 알림과 딥링크
 - [x] 장바구니
-- [ ] 주문하기 및 알람 딥링크 설정
+- [x] 주문하기 및 알람 딥링크 설정
 - [ ] UI 디자인 개선

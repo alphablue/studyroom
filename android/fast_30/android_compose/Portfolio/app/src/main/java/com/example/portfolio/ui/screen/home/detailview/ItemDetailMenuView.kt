@@ -8,20 +8,21 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import coil.size.Scale
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.R
 import com.example.portfolio.di.modules.firebasemodule.FirebaseObject
 import com.example.portfolio.localdb.CartWithOrder
 import com.example.portfolio.model.uidatamodels.RestaurantMenu
 import com.example.portfolio.ui.screen.util.localRoomLikeKey
-import com.example.portfolio.ui.theme.backgroundColor
 
 const val DETAIL_MENU_VIEW = "메뉴"
 
@@ -45,7 +46,11 @@ fun DetailMenuView(
         }
     }
 
-    Column {
+    Column(
+        modifier = Modifier
+            .background(Color.White)
+            .padding(vertical = 8.dp, horizontal = 4.dp)
+    ) {
         menuList.forEachIndexed { index, menuData ->
             Log.d("detail_menu", menuData.toString())
 
@@ -56,24 +61,28 @@ fun DetailMenuView(
                     .clickable {
                         dialogState = true
                         selectedIndex = index
-                    }
+                    },
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 AsyncImage(
                     model = ImageRequest
                         .Builder(context)
                         .data(menuData.image)
                         .error(R.drawable.roadingimage)
-                        .scale(Scale.FILL)
                         .build(),
                     contentDescription = "Menu Image",
                     modifier = Modifier
-                        .weight(0.25f)
-                        .fillMaxSize()
+                        .size(100.dp),
+                    contentScale = ContentScale.FillBounds
                 )
+
+                Spacer(modifier = Modifier.width(10.dp))
+
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .fillMaxHeight()
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Text(menuData.menuName ?: "")
                     Text(menuData.detailContent ?: "")
@@ -83,8 +92,8 @@ fun DetailMenuView(
             Spacer(
                 Modifier
                     .fillMaxWidth()
-                    .height(1.dp)
-                    .background(backgroundColor)
+                    .height(4.dp)
+                    .background(Color.White)
             )
         }
     }

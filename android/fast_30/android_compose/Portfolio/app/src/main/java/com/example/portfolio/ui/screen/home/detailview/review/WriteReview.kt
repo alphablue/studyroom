@@ -32,8 +32,6 @@ import com.example.portfolio.ui.theme.dividerColor
 import com.example.portfolio.ui.theme.gray
 import com.example.portfolio.ui.theme.lightPrimaryBlue
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
 const val reviewRoute = "review"
 

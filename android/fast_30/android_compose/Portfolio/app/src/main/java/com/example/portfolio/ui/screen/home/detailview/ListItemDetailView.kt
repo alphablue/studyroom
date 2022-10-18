@@ -12,10 +12,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Message
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
@@ -24,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import coil.size.Scale
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.R
 import com.example.portfolio.localdb.Like
@@ -59,34 +59,41 @@ fun ListItemDetailView(
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
         ) {
             ItemDetailViewTopBar(
                 upPress = upPress,
                 restaurantName = restaurantName
             )
 
-            detailModel?.let { info ->
-                DetailTopView(
-                    imgUrl = info.imgUri,
-                    detailModel = info,
-                    sharedViewModel = sharedViewModel,
-                    callBackDialogState = { dialogState = it },
-                    modifier = Modifier.fillMaxWidth()
-                )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            ) {
 
-                DetailMiddleView(detailModel = info)
-                DetailBottomView(
-                    selectedResId= selectedResId,
-                    sharedViewModel,
-                    restaurantName,
-                    goLogin,
-                    goReview,
-                    callBackDialogState = { dialogState = it },
-                )
+                detailModel?.let { info ->
+                    DetailTopView(
+                        imgUrl = info.imgUri,
+                        detailModel = info,
+                        sharedViewModel = sharedViewModel,
+                        callBackDialogState = { dialogState = it },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    DetailMiddleView(detailModel = info)
+                    DetailBottomView(
+                        selectedResId = selectedResId,
+                        sharedViewModel,
+                        restaurantName,
+                        goLogin,
+                        goReview,
+                        callBackDialogState = { dialogState = it },
+                    )
+                }
             }
         }
     }
@@ -139,10 +146,9 @@ fun DetailTopView(
                 .Builder(context)
                 .data(imgUrl)
                 .error(R.drawable.roadingimage)
-                .scale(Scale.FILL)
                 .build(),
             contentDescription = "restaurant Detail Main Image",
-
+            contentScale = ContentScale.FillBounds
             )
 
         Column(
@@ -154,7 +160,7 @@ fun DetailTopView(
             Row(
                 modifier = Modifier
                     .background(
-                        color = lightPrimaryBlue.copy(alpha = 0.35f),
+                        color = lightPrimaryBlue.copy(alpha = 0.45f),
                         shape = RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp)
                     )
                     .fillMaxWidth(),
@@ -227,7 +233,7 @@ fun DetailTopView(
             Row(
                 modifier = Modifier
                     .background(
-                        lightPrimaryBlue.copy(alpha = 0.35f),
+                        lightPrimaryBlue.copy(alpha = 0.45f),
                         shape = RoundedCornerShape(bottomStart = 14.dp, bottomEnd = 14.dp)
                     )
                     .fillMaxWidth()
@@ -251,21 +257,9 @@ fun DetailMiddleView(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .background(Color.White)
             .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
-        Text("배달 시간 : ${detailModel.deliveryTime}")
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(4.dp)
-        )
-        Text("배달팁 : ${detailModel.deliveryTip}")
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(4.dp)
-        )
-
         val restaurantLocation = LatLng(detailModel.lat, detailModel.lon)
         val cameraPosition = rememberCameraPositionState {
             position =
@@ -320,23 +314,43 @@ fun DetailMiddleView(
                         textAlign = TextAlign.Center,
                     )
                 }
+
                 Spacer(
                     modifier = Modifier
                         .fillMaxHeight(1f)
                         .width(1.dp)
                         .background(color = textColor)
                 )
-                Text(
+
+                Box(
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { },
-                    fontSize = 15.sp,
-                    text = "지도보기",
-                    color = textColor,
-                    textAlign = TextAlign.Center
-                )
+                        .fillMaxSize()
+                        .clickable {},
+                ) {
+                    Text(
+                        modifier = Modifier.align(alignment = Alignment.Center),
+                        fontSize = 15.sp,
+                        text = "지도보기",
+                        color = textColor,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
+
+        Text("배달 시간 : ${detailModel.deliveryTime}")
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(4.dp)
+        )
+        Text("배달팁 : ${detailModel.deliveryTip}")
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(4.dp)
+        )
     }
 }
 
@@ -423,7 +437,7 @@ fun DetailBottomView(
                     goLogin
                 )
                 1 -> DetailReviewView(
-                    selectedResId= selectedResId,
+                    selectedResId = selectedResId,
                     goReview,
                     loginState,
                     callBackDialogState

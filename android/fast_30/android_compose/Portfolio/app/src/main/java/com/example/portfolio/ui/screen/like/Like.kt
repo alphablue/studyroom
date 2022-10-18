@@ -36,7 +36,10 @@ fun Like(
             } else {
                 LazyColumn {
                     items(itemList) { like ->
-                        Row{
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ){
                             Text(text = like.restaurantName)
                             IconButton(onClick = {
                                 val key = localRoomLikeKey(userid, like.restaurantId)

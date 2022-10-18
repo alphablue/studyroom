@@ -47,64 +47,67 @@ fun PermissionCheck(
             doNotShowPermission = isGranted
         }
 
-    lifecycleState.launchWhenResumed {
-        val isHardWareOk =
-            hardwareName.packageManager.filter {
-                context.packageManager.hasSystemFeature(it)
-            }.size == hardwareName.packageManager.size
+    lifeCycleDetectorState(test.currentState)
 
-        if (isHardWareOk
-        ) {
-            Log.d("permissionCheck", "하드웨어 체크 [가능]")
+    LaunchedEffect(lifecycleState) {
+        lifecycleState.launchWhenResumed {
+            val isHardWareOk =
+                hardwareName.packageManager.filter {
+                    context.packageManager.hasSystemFeature(it)
+                }.size == hardwareName.packageManager.size
 
-            // 권한 거부중에 상세 설명이 필요한 경우 그 갯수가 0일 때 모든 필수 권한을 허용한 상태이다.
-            val isShowRequestPermissionAllOk =
-                permissionName.permissionName.none {
-                    val check = ActivityCompat.shouldShowRequestPermissionRationale(
-                        context.findActivity(),
-                        it
-                    )
+            if (
+                isHardWareOk
+            ) {
+                Log.d("permissionCheck", "하드웨어 체크 [가능]")
 
-                    Log.d("permissionCheck", "permission name : $it , return check : $check")
-                    check
-                }
+                // 권한 거부중에 상세 설명이 필요한 경우 그 갯수가 0일 때 모든 필수 권한을 허용한 상태이다.
+                val isShowRequestPermissionAllOk =
+                    permissionName.permissionName.none {
+                        val check = ActivityCompat.shouldShowRequestPermissionRationale(
+                            context.findActivity(),
+                            it
+                        )
 
-            if (isShowRequestPermissionAllOk) {
-                Log.d("permissionCheck", "권한창 무시 [승인]")
-
-                val isCheckSelfPermissionOk =
-                    permissionName.permissionName.filter {
-                        context.checkSelfPermission(it) == PackageManager.PERMISSION_GRANTED
-                    }.size == permissionName.permissionName.size
-
-                if (isCheckSelfPermissionOk) {
-                    Log.d("permissionCheck", "셀프 퍼미션 체크 [승인]")
-                    alertDialogState = true
-                    grantedCheck(true)
-
-                } else {
-                    Log.d("permissionCheck", "셀프 퍼미션 체크 [거부]")
-
-                    permissionName.permissionName.forEach {
-                        requestPermission.launch(it)
+                        Log.d("permissionCheck", "permission name : $it , return check : $check")
+                        check
                     }
+
+                if (isShowRequestPermissionAllOk) {
+                    Log.d("permissionCheck", "권한창 무시 [승인]")
+
+                    val isCheckSelfPermissionOk =
+                        permissionName.permissionName.filter {
+                            context.checkSelfPermission(it) == PackageManager.PERMISSION_GRANTED
+                        }.size == permissionName.permissionName.size
+
+                    if (isCheckSelfPermissionOk) {
+                        Log.d("permissionCheck", "셀프 퍼미션 체크 [승인]")
+                        alertDialogState = true
+                        grantedCheck(true)
+
+                    } else {
+                        Log.d("permissionCheck", "셀프 퍼미션 체크 [거부]")
+
+                        permissionName.permissionName.forEach {
+                            requestPermission.launch(it)
+                        }
+                    }
+                } else {
+                    // 다시보지 않기를 클릭 하고 승인 하지 않은 경우
+                    if (!doNotShowPermission) {
+                        Log.d("permissionCheck", "권한창 무시 [거부]")
+                        alertDialogState = false
+                    }
+                    grantedCheck(false)
                 }
+
             } else {
-                // 다시보지 않기를 클릭 하고 승인 하지 않은 경우
-                if (!doNotShowPermission) {
-                    Log.d("permissionCheck", "권한창 무시 [거부]")
-                    alertDialogState = false
-                }
+                Log.d("permissionCheck", "하드웨어 체크 [불가능]")
                 grantedCheck(false)
             }
-
-        } else {
-            Log.d("permissionCheck", "하드웨어 체크 [불가능]")
-            grantedCheck(false)
         }
     }
-
-    lifeCycleDetectorState(test.currentState)
 
     Surface(Modifier.fillMaxSize()) {
         if (!alertDialogState) {

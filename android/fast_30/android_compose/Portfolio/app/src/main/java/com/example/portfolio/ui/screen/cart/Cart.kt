@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.portfolio.MainActivityViewModel
@@ -33,7 +34,10 @@ fun Cart(
             } else {
                 LazyColumn {
                     items(cartKeyItems) { cartItem ->
-                        Row{
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ){
                             Text("${cartItem.restaurantName}, ${cartItem.menuName}, ${cartItem.price}")
                             IconButton(onClick = {
                                 val key = localRoomLikeKey(cartItem.userId, cartItem.restaurantId)

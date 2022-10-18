@@ -78,10 +78,10 @@ fun Profile(
                     .wrapContentSize()
                     .fillMaxWidth()
             ) {
-                if(loginState) {
+                if (loginState) {
                     SettingLayout(onClick = { goOrder() }, name = "주문목록")
-                    SettingLayout(onClick = { sharedViewModel.signOut() }, name ="로그아웃")
-                    SettingLayout(onClick = { sharedViewModel.userWithdrawal() }, name ="회원탈퇴")
+                    SettingLayout(onClick = { sharedViewModel.signOut() }, name = "로그아웃")
+                    SettingLayout(onClick = { sharedViewModel.userWithdrawal() }, name = "회원탈퇴")
                 }
             }
         }
@@ -112,14 +112,18 @@ fun UserBox(
                 .fillMaxHeight()
                 .width(12.dp)
         )
-        Text(
-            text = userName,
-            modifier = Modifier
+        Box(
+            Modifier
                 .weight(1f)
                 .fillMaxSize()
                 .clickable(onClick = onClick),
-            textAlign = TextAlign.Center
-        )
+        ) {
+            Text(
+                modifier = Modifier.align(Alignment.Center),
+                text = userName,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
@@ -132,15 +136,15 @@ fun SettingLayout(
     Row(
         modifier = modifier
             .height(40.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             name,
             modifier = Modifier
-                .padding(horizontal = 8.dp, vertical = 4.dp)
-                .clickable(true, onClick = onClick),
+                .padding(horizontal = 8.dp, vertical = 4.dp),
             fontSize = 18.sp,
             color = textSecondaryColor
         )
@@ -149,7 +153,6 @@ fun SettingLayout(
             contentDescription = "arrowRight",
             modifier = Modifier
                 .size(24.dp)
-                .clickable(true, onClick = onClick)
         )
     }
     Spacer(modifier = Modifier.height(4.dp))

@@ -169,6 +169,8 @@ fun PoiItem(
             contentDescription = "defaultImage"
         )
 
+        Spacer(modifier = Modifier.width(6.dp))
+
         Column {
             Text(item.name)
 
@@ -192,7 +194,7 @@ fun PoiItem(
         modifier = Modifier
             .height(1.dp)
             .fillMaxWidth()
-            .background(gray)
+            .background(backgroundColor)
     )
 }
 

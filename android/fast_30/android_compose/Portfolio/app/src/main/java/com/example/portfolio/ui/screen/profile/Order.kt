@@ -27,13 +27,13 @@ fun OrderHistoryView(
 ) {
     val historyData = historyViewModel.allHistoryData
 
-    SideEffect{
+    SideEffect {
         historyViewModel.getAllHistory(userId = userId)
     }
 
     Surface {
 
-        if(historyData.isEmpty().not()) {
+        if (historyData.isEmpty().not()) {
             Column(
                 Modifier
                     .background(color = Color.White)
@@ -87,7 +87,7 @@ fun HistoryCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-               Text(restaurantName)
+                Text(restaurantName)
                 Text(date)
             }
 

@@ -121,6 +121,7 @@ fun DrawReview(
     ) {
         Row(
             modifier = Modifier.wrapContentHeight()
+                .padding(horizontal = 6.dp)
         ) {
 
             AsyncImage(

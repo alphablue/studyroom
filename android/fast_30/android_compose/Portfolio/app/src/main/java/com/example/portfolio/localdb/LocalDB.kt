@@ -1,6 +1,8 @@
 package com.example.portfolio.localdb
 
+import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(primaryKeys = ["userId", "restaurantId"])
 data class Like(
@@ -19,6 +21,13 @@ data class CartWithOrder(
     val price: String =""
 )
 
+@Entity
+data class OrderHistory(
+    @PrimaryKey(autoGenerate = true) val keys: Int = 0,
+    val orderUserId: String,
+    @Embedded val cartWithOrder: CartWithOrder,
+    val date: String,
+)
 
 /**
  * TODO

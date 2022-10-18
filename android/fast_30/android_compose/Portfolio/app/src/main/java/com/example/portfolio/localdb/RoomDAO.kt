@@ -11,7 +11,7 @@ interface RoomDAO {
     @Insert
     suspend fun insertLike(vararg likes: Like)
 
-    @Delete()
+    @Delete
     suspend fun deleteLike(vararg like: Like)
 
     @Query("SELECT * FROM `Like`")
@@ -25,4 +25,10 @@ interface RoomDAO {
 
     @Query("SELECT * FROM `cartwithorder`")
     suspend fun getAllCarts(): List<CartWithOrder>
+
+    @Insert
+    suspend fun insertOrderHistory(vararg carts: OrderHistory)
+
+    @Query("SELECT * FROM 'orderhistory' WHERE orderUserId=:userId")
+    suspend fun getAllHistory(userId: String): List<OrderHistory>
 }

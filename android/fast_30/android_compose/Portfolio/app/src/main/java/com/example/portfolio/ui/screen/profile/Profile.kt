@@ -24,7 +24,8 @@ import com.example.portfolio.ui.theme.textSecondaryColor
 @Composable
 fun Profile(
     sharedViewModel: MainActivityViewModel,
-    goLogin: () -> Unit
+    goLogin: () -> Unit,
+    goOrder: () -> Unit
 ) {
     val context = LocalContext.current
     val loginState = sharedViewModel.loginState
@@ -54,8 +55,8 @@ fun Profile(
                         UserBox(
                             modifier = Modifier
                                 .height(80.dp),
-                            userImg = it.profileImage!!,
-                            userName = it.name!!,
+                            userImg = it.profileImage,
+                            userName = it.name,
                             onClick = {}
                         )
                     }
@@ -77,8 +78,8 @@ fun Profile(
                     .wrapContentSize()
                     .fillMaxWidth()
             ) {
-                SettingLayout(onClick = { /*TODO*/ }, name = "알림설정")
                 if(loginState) {
+                    SettingLayout(onClick = { goOrder() }, name = "주문목록")
                     SettingLayout(onClick = { sharedViewModel.signOut() }, name ="로그아웃")
                     SettingLayout(onClick = { sharedViewModel.userWithdrawal() }, name ="회원탈퇴")
                 }
@@ -115,6 +116,7 @@ fun UserBox(
             text = userName,
             modifier = Modifier
                 .weight(1f)
+                .fillMaxSize()
                 .clickable(onClick = onClick),
             textAlign = TextAlign.Center
         )
@@ -128,7 +130,9 @@ fun SettingLayout(
     name: String
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier
+            .height(40.dp)
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -148,4 +152,5 @@ fun SettingLayout(
                 .clickable(true, onClick = onClick)
         )
     }
+    Spacer(modifier = Modifier.height(4.dp))
 }

@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.portfolio.FloatingState
 import com.example.portfolio.MainActivityViewModel
 import com.example.portfolio.ui.common.SimpleTitleTopBar
 import com.example.portfolio.ui.screen.util.localRoomLikeKey
@@ -30,8 +31,11 @@ fun Cart(
             SimpleTitleTopBar(upPress = upPress, title = "장바구니")
 
             if(cartKeyItems.isEmpty()) {
+                sharedViewModel.floatingState = FloatingState.NONE
                 Text(text = "장바구니가 비어있어요")
             } else {
+                sharedViewModel.floatingState = FloatingState.ORDER
+
                 LazyColumn {
                     items(cartKeyItems) { cartItem ->
                         Row(

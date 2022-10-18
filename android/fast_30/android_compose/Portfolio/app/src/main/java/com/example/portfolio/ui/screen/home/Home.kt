@@ -263,7 +263,7 @@ fun MainAppBar(
             badge = {
                 if (loginState) {
                     if(cartCount != 0){
-                        sharedViewModel.floatingState = FloatingState.ORDER
+                        sharedViewModel.floatingState = FloatingState.CART
 
                         Badge(
                             modifier = Modifier.offset(x = (-7).dp, y = 7.dp),

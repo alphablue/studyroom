@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -37,8 +38,7 @@ fun StartApp(
     PortfolioTheme {
         val appState = rememberApplicationNavState()
         val context = LocalContext.current
-        val noti = NotificationBuilder(context)
-        var dialogState by remember { mutableStateOf(false)}
+        var dialogState by remember { mutableStateOf(false) }
         val floatState = activityViewModel.floatingState
 
         Scaffold(
@@ -56,9 +56,9 @@ fun StartApp(
             },
             floatingActionButton = {
 
-                when(floatState) {
+                when (floatState) {
                     FloatingState.NONE -> {}
-                    FloatingState.ORDER -> {
+                    FloatingState.CART -> {
                         val userId = activityViewModel.userInfo?.id ?: ""
 
                         val cartCount = activityViewModel.userCartMap
@@ -70,9 +70,6 @@ fun StartApp(
                             backgroundColor = MaterialTheme.colors.primary,
                             shape = RoundedCornerShape(14.dp),
                             onClick = {
-//                                noti.createDeliveryNotificationChannel(
-//                                    true, "알림 테스트 중", "알림 테스트 내용"
-//                                )
                                 appState.navController.navigate(MainDestinations.CART_PAGE)
                             }) {
                             BadgedBox(
@@ -88,6 +85,23 @@ fun StartApp(
                                     contentDescription = "your shopping cart"
                                 )
                             }
+                        }
+                    }
+                    FloatingState.ORDER -> {
+                        FloatingActionButton(onClick = {
+                            val userID = activityViewModel.userInfo?.id ?: ""
+                            activityViewModel.orderCart(userID)
+
+                            NotificationBuilder(context, userID).createDeliveryNotificationChannel(
+                                true, "주문접수",
+                                "주문 접수가 완료되었습니다."
+                            )
+                            appState.navController.navigateUp()
+                        }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Phone,
+                                contentDescription = "order food"
+                            )
                         }
                     }
                 }
@@ -111,7 +125,7 @@ fun StartApp(
             }
         }
 
-        if(dialogState){
+        if (dialogState) {
             OrderDialog(
                 dialogStateCallBack = { state -> dialogState = state },
                 confirmButtonContent = "로그인하기",

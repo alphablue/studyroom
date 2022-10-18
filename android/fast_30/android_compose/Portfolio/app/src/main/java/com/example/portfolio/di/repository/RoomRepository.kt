@@ -2,6 +2,7 @@ package com.example.portfolio.di.repository
 
 import com.example.portfolio.localdb.CartWithOrder
 import com.example.portfolio.localdb.Like
+import com.example.portfolio.localdb.OrderHistory
 import com.example.portfolio.localdb.RoomDAO
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -23,7 +24,7 @@ class RoomRepository @Inject constructor(
 
     suspend fun deleteLike(
         like: Like
-    ) = withContext(Dispatchers.IO) {roomDAO.deleteLike(like)}
+    ) = withContext(Dispatchers.IO) { roomDAO.deleteLike(like) }
 
     suspend fun getAllLike(): List<Like> = withContext(Dispatchers.IO) {
         val getAllList = roomDAO.getAllLike()
@@ -38,12 +39,21 @@ class RoomRepository @Inject constructor(
 
     suspend fun deleteCartWithOrder(
         cart: CartWithOrder
-    ) = withContext(Dispatchers.IO) {roomDAO.deleteCart(cart)}
+    ) = withContext(Dispatchers.IO) { roomDAO.deleteCart(cart) }
 
     suspend fun getAllCartWithOrder(): List<CartWithOrder> = withContext(Dispatchers.IO) {
         val getAllList = roomDAO.getAllCarts()
         suspendCoroutine {
             it.resume(getAllList)
         }
+    }
+
+    suspend fun insertOrderHistory(
+        orderHistory: OrderHistory
+    ) = withContext(Dispatchers.IO) {roomDAO.insertOrderHistory(orderHistory)}
+
+    suspend fun getAllOrderHistory(userId: String): List<OrderHistory> = withContext(Dispatchers.IO) {
+        val allHistory = roomDAO.getAllHistory(userId)
+        suspendCoroutine { it.resume(allHistory) }
     }
 }

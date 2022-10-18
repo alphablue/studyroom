@@ -106,7 +106,7 @@ fun DetailMenuView(
                     restaurantId = restaurantId,
                     restaurantName = restaurantName,
                     menuName = menuList[selectedIndex].menuName ?: "none",
-                    price = menuList[selectedIndex].price ?: "none"
+                    price = "${ menuList[selectedIndex].price ?: "none"} 원"
                 )
 
                 sharedViewModel.insertCart(key, insertObj)

@@ -1,5 +1,6 @@
 package com.example.portfolio.ui.screen.home.detailview
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -21,6 +23,7 @@ import coil.request.ImageRequest
 import com.example.portfolio.di.modules.firebasemodule.FirebaseObject
 import com.example.portfolio.model.uidatamodels.DisPlayReview
 import com.example.portfolio.ui.common.StarRatingBar
+import com.example.portfolio.ui.theme.secondaryBlue
 
 const val DETAIL_REVIEW_VIEW = "리뷰"
 
@@ -44,15 +47,25 @@ fun DetailReviewView(
         }
     }
 
-    Column {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(4.dp))
         Row(
-            modifier = Modifier.clickable {
-                if(loginState) {
-                    goReview()
-                } else {
-                    callBackDialogState(true)
-                }
-            }
+            modifier = Modifier
+                .fillMaxWidth(0.75f)
+                .height(30.dp)
+                .border(width = 1.dp, color = secondaryBlue)
+                .clickable {
+                    if (loginState) {
+                        goReview()
+                    } else {
+                        callBackDialogState(true)
+                    }
+                },
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
             Icon(
                 imageVector = Icons.Filled.DriveFileRenameOutline,
@@ -61,12 +74,15 @@ fun DetailReviewView(
             Text(text = "리뷰쓰기")
         }
 
+        Spacer(modifier = Modifier.height(4.dp))
+
         for((reviewInfo, userInfo) in getResReviews) {
             DrawReview(
                 userNickName = userInfo.name,
                 userProfileImg = userInfo.profileImage,
                 ratingValue = reviewInfo.rating.toFloat(),
                 reviewDate = reviewInfo.date,
+                takePictureData = reviewInfo.takePicture,
                 contentText = reviewInfo.content
             )
         }
@@ -77,6 +93,7 @@ fun DetailReviewView(
                 userProfileImg = userInfo.profileImage,
                 ratingValue = reviewInfo.rating.toFloat(),
                 reviewDate = reviewInfo.date,
+                takePictureData = reviewInfo.takePicture,
                 contentText = reviewInfo.content
             )
         }
@@ -109,19 +126,46 @@ fun DrawReview(
                     .build(),
                 contentDescription = "userProfileImage",
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(30.dp)
                     .clip(RoundedCornerShape(100)),
                 contentScale = ContentScale.Crop
             )
-            Column {
+            Spacer(modifier = Modifier.width(15.dp))
+            Column(
+                modifier = Modifier.fillMaxHeight()
+            ) {
                 Text(text = userNickName)
                 StarRatingBar(rateCount = ratingValue)
             }
             Text(text = reviewDate)
         }
-        if (takePictureData != null) {
-            AsyncImage(model = takePictureData, contentDescription = "contextImage")
+        Spacer(modifier = Modifier.height(10.dp))
+
+        if (takePictureData.isNullOrEmpty().not()) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                AsyncImage(
+                    modifier = Modifier
+                        .fillMaxWidth(0.85f)
+                        .height(150.dp),
+                    model = takePictureData,
+                    contentDescription = "contextImage",
+                    contentScale = ContentScale.FillBounds
+                )
+            }
+            Spacer(Modifier.height(10.dp))
         }
-        Text(text = contentText)
+
+        Column(
+            modifier = Modifier.padding(horizontal = 10.dp)
+        ) {
+            Text(text = contentText)
+        }
+
     }
+
+    Spacer(modifier = Modifier.height(10.dp))
 }

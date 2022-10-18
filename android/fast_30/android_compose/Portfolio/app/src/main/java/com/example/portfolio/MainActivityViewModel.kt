@@ -14,9 +14,11 @@ import com.example.portfolio.di.repository.GoogleRepository
 import com.example.portfolio.di.repository.RoomRepository
 import com.example.portfolio.localdb.CartWithOrder
 import com.example.portfolio.localdb.Like
+import com.example.portfolio.localdb.OrderHistory
 import com.example.portfolio.model.googlegeocode.GoogleGeoCode
 import com.example.portfolio.model.uidatamodels.NearRestaurantInfo
 import com.example.portfolio.model.uidatamodels.User
+import com.example.portfolio.ui.screen.util.getDate
 import com.example.portfolio.ui.screen.util.localRoomLikeKey
 import com.example.portfolio.viewmodel.BaseViewModel
 import com.example.portfolio.viewmodel.DispatcherProvider
@@ -25,6 +27,8 @@ import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -244,6 +248,24 @@ class MainActivityViewModel @Inject constructor(
         roomRepository.deleteCartWithOrder(cart)
     }
 
+    fun orderCart(userId: String) = onIO {
+        val cartData = userCartMap.filterKeys { userId in it }
+
+        cartData.forEach { (key, cartWithOrder) ->
+            launch {
+                roomRepository.insertOrderHistory(
+                    OrderHistory(
+                        orderUserId = userId,
+                        date = getDate(),
+                        cartWithOrder = cartWithOrder
+                    )
+                )
+
+                deleteCart(key, cartWithOrder)
+            }
+        }
+    }
+
     private fun getAllCarts() = onIO {
         userCartMap.clear()
 
@@ -256,5 +278,6 @@ class MainActivityViewModel @Inject constructor(
 
 enum class FloatingState{
     NONE,
-    ORDER
+    ORDER,
+    CART
 }

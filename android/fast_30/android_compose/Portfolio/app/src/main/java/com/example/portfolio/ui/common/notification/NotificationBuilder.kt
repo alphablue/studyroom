@@ -12,13 +12,16 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
 import com.example.portfolio.R
+import com.example.portfolio.ui.navigation.Sections
+import com.example.portfolio.ui.screen.profile.orderRoute
 
 const val DELIVERY_CHANNEL_ID = "delivery_notify_channel"
 const val DELIVERY_NOTI_CHANNEL_NAME = "배달알림"
 const val NOTIFICATION_ID = 10001
 
 class NotificationBuilder(
-    private val context: Context
+    private val context: Context,
+    val userId: String = ""
 ) {
 
     fun createDeliveryNotificationChannel(
@@ -30,7 +33,7 @@ class NotificationBuilder(
             addNextIntentWithParentStack(
                 Intent(
                     Intent.ACTION_VIEW,
-                    "portfolio://test_deep_link".toUri()
+                    "portfolio://profile_order_history?id=$userId".toUri()
                 )
             )
             getPendingIntent(1234, PendingIntent.FLAG_UPDATE_CURRENT)

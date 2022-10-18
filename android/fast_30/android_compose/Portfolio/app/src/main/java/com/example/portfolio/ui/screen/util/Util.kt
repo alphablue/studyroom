@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import androidx.camera.core.ImageCapture
@@ -14,6 +15,9 @@ import androidx.core.content.ContextCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.*
 import java.util.concurrent.Executor
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -88,3 +92,11 @@ fun goToAppDetailSetting(context: Context) {
     )
     context.startActivity(intent)
 }
+
+fun getDate(): String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    LocalDate.now().toString()
+                } else {
+                    val simple = SimpleDateFormat("yyyy-M-dd", Locale.KOREA)
+                    val current = simple.format(Date())
+                    current
+                }

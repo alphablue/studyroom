@@ -20,9 +20,11 @@ import com.example.portfolio.ui.screen.home.detailview.review.reviewRoute
 import com.example.portfolio.ui.screen.like.Like
 import com.example.portfolio.ui.screen.login.LoginPage
 import com.example.portfolio.ui.screen.map.GoogleMapView
+import com.example.portfolio.ui.screen.profile.HistoryViewModel
 import com.example.portfolio.ui.screen.profile.OrderHistoryView
 import com.example.portfolio.ui.screen.profile.Profile
 import com.example.portfolio.ui.screen.profile.orderRoute
+
 
 fun NavGraphBuilder.addHomeGraph(
     modifier: Modifier = Modifier,
@@ -35,7 +37,6 @@ fun NavGraphBuilder.addHomeGraph(
     getUriOfrPreviousStack: (String, (Uri) -> Unit) -> Unit,
     activityViewModel: MainActivityViewModel
 ) {
-    val deepLinkUri = "portfolio://test_deep_link"
 
     composable(Sections.HOME.route) { from ->
         val homeViewModel = hiltViewModel<HomeViewModel>()
@@ -66,18 +67,31 @@ fun NavGraphBuilder.addHomeGraph(
 
     composable(Sections.PROFILE.route) { from ->
         activityViewModel.floatingState = FloatingState.NONE
+        val userId = activityViewModel.userInfo?.id ?: ""
 
-        Profile(activityViewModel, goLogin = { goLogin(from) })
+        Profile(
+            activityViewModel,
+            goLogin = { goLogin(from) },
+            goOrder = { goRoute(from, "${Sections.PROFILE.route}/$orderRoute?id=$userId") }
+        )
         Log.d("navigationTest", "profile $from")
     }
 
     composable(
-        route = "${Sections.PROFILE.route}/$orderRoute",
-        deepLinks = listOf(navDeepLink { uriPattern = deepLinkUri })
-    ) { from ->
+        route = "${Sections.PROFILE.route}/$orderRoute?id={userId}",
+        arguments = listOf(navArgument("userId") { type = NavType.StringType}),
+        deepLinks = listOf(navDeepLink { uriPattern = "portfolio://profile_order_history?id={userId}" })
+    ) {
+        val historyViewModel = hiltViewModel<HistoryViewModel>()
+        val userId = it.arguments?.getString("userId")
+            ?: ""
         activityViewModel.floatingState = FloatingState.NONE
 
-        OrderHistoryView()
+        OrderHistoryView(
+            historyViewModel = historyViewModel,
+            userId = userId,
+            upPress = upPress
+        )
     }
 
     composable(

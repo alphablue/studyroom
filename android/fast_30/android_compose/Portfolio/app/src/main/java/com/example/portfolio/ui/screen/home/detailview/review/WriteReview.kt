@@ -27,6 +27,7 @@ import com.example.portfolio.model.uidatamodels.GetReview
 import com.example.portfolio.model.uidatamodels.User
 import com.example.portfolio.ui.common.BigStarRatingBarIndicator
 import com.example.portfolio.ui.common.SimpleTitleTopBar
+import com.example.portfolio.ui.screen.util.getDate
 import com.example.portfolio.ui.theme.dividerColor
 import com.example.portfolio.ui.theme.gray
 import com.example.portfolio.ui.theme.lightPrimaryBlue
@@ -49,7 +50,6 @@ fun WriteReview(
     var ratingValue by remember { mutableStateOf(0f) }
     var uriState by remember { mutableStateOf<Uri?>(null) }
     val userInfo = sharedViewModel.userInfo ?: User()
-    val writeTime = SimpleDateFormat("yyyy-M-dd", Locale.KOREA).format(Date())
     val context = LocalContext.current
 
     var progressState by remember { mutableStateOf(false) }
@@ -72,7 +72,7 @@ fun WriteReview(
         getReview = GetReview(
             rating = ratingValue.toString(),
             content = reviewContentValue,
-            date = writeTime,
+            date = getDate(),
             userId = userInfo.id,
             restaurantId = resId
         ),

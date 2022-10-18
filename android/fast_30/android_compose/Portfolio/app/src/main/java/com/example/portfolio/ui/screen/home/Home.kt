@@ -164,7 +164,7 @@ fun PoiItem(
         AsyncImage(
             model = ImageRequest.Builder(context)
                 .data(defaultUri)
-                .error(R.drawable.roadingimage)
+                .error(R.drawable.notfound)
                 .build(),
             contentDescription = "defaultImage"
         )

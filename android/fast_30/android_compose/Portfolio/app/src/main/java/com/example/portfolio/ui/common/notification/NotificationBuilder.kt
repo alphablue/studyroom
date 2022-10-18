@@ -36,7 +36,7 @@ class NotificationBuilder(
                     "portfolio://profile_order_history?id=$userId".toUri()
                 )
             )
-            getPendingIntent(1234, PendingIntent.FLAG_UPDATE_CURRENT)
+            getPendingIntent(1234, PendingIntent.FLAG_IMMUTABLE)
         }
 
         val builder = NotificationCompat.Builder(context, DELIVERY_CHANNEL_ID)

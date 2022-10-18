@@ -23,6 +23,7 @@ import com.example.portfolio.ui.navigation.rememberApplicationNavState
 import com.example.portfolio.ui.screen.home.detailview.OrderDialog
 import com.example.portfolio.ui.theme.PortfolioTheme
 import com.example.portfolio.ui.theme.secondaryBlue
+import com.example.portfolio.ui.theme.textColor
 
 object MainDestinations {
     const val HOME_ROUTE = "home"
@@ -88,7 +89,9 @@ fun StartApp(
                         }
                     }
                     FloatingState.ORDER -> {
-                        FloatingActionButton(onClick = {
+                        FloatingActionButton(
+                            shape = RoundedCornerShape(14.dp),
+                            onClick = {
                             val userID = activityViewModel.userInfo?.id ?: ""
                             activityViewModel.orderCart(userID)
 
@@ -98,10 +101,14 @@ fun StartApp(
                             )
                             appState.navController.navigateUp()
                         }) {
-                            Icon(
-                                imageVector = Icons.Outlined.Phone,
-                                contentDescription = "order food"
-                            )
+                            Row(modifier =Modifier.padding(8.dp)){
+                                Icon(
+                                    imageVector = Icons.Outlined.Phone,
+                                    tint = Color.White,
+                                    contentDescription = "order food"
+                                )
+                                Text("주문하기", color = textColor)
+                            }
                         }
                     }
                 }

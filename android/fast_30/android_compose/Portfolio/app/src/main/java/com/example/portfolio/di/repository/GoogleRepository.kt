@@ -44,7 +44,7 @@ class GoogleRepository @Inject constructor(
                     }
 
                     override fun onFailure(call: Call<GoogleGeoCode>, t: Throwable) {
-                        Log.d("GoogleRepository", "retrofit Service run")
+                        Log.d("GoogleRepository", "retrofit Service run, lat : $lat , log : $lng")
                         throw Exception("GoogleRepository error")
                     }
                 })

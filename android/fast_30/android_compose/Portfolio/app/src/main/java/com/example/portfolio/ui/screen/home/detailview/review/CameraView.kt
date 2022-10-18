@@ -253,6 +253,9 @@ fun GallerySelect(
     )
     var permissionCheck by remember { mutableStateOf(false) }
 
+    var checkLifeCycle by remember { mutableStateOf(false)}
+    val lifecycle = LocalLifecycleOwner.current.lifecycle.observeAsState()
+
     @Composable
     fun LaunchGallery() {
         SideEffect {
@@ -260,27 +263,39 @@ fun GallerySelect(
         }
     }
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        PermissionCheck(
-            permissionName = PermissionName.MEDIA,
-            hardwareName = HardwareName.MEDIA,
-            grantedCheck = { state ->
-                permissionCheck = state
-            },
-            confirmButtonEvent = {
-                upPress()
-                goToAppDetailSetting(context)
-            },
-            dismissButtonEvent = {
-                upPress()
-            },
-            onDismissClickEvent = {}
-        )
+    lifeCycleDetector(
+        lifecycle,
+        onResume = {
+            checkLifeCycle = true
+        },
+        onPause = {
+            checkLifeCycle = false
+        }
+    )
 
-        if (permissionCheck) {
+    if(checkLifeCycle) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            PermissionCheck(
+                permissionName = PermissionName.MEDIA,
+                hardwareName = HardwareName.MEDIA,
+                grantedCheck = { state ->
+                    permissionCheck = state
+                },
+                confirmButtonEvent = {
+                    upPress()
+                    goToAppDetailSetting(context)
+                },
+                dismissButtonEvent = {
+                    upPress()
+                },
+                onDismissClickEvent = {}
+            )
+
+            if (permissionCheck) {
+                LaunchGallery()
+            }
+        } else {
             LaunchGallery()
         }
-    } else {
-        LaunchGallery()
     }
 }

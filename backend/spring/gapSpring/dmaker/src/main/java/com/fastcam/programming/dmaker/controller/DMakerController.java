@@ -3,6 +3,7 @@ package com.fastcam.programming.dmaker.controller;
 import com.fastcam.programming.dmaker.dto.CreateDeveloper;
 import com.fastcam.programming.dmaker.dto.DeveloperDetailDto;
 import com.fastcam.programming.dmaker.dto.DeveloperDto;
+import com.fastcam.programming.dmaker.dto.EditDeveloper;
 import com.fastcam.programming.dmaker.service.DMakerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,17 @@ public class DMakerController {
         log.info("GET /developers HTTP/1.1");
 
         return dMakerService.getDeveloperDetail(memberId);
+    }
+
+    @PutMapping("/developers/{memberId}")
+    public DeveloperDetailDto getAllDeveloperDetail(
+            @PathVariable String memberId,
+            @Valid @RequestBody EditDeveloper.Request request
+    ) {
+        // GET /developers HTTP/1.1
+        log.info("GET /developers HTTP/1.1");
+
+        return dMakerService.editDeveloper(memberId, request);
     }
 
     @PostMapping("/create-developer")

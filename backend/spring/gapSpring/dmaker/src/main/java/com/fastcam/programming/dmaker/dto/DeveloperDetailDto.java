@@ -1,5 +1,6 @@
 package com.fastcam.programming.dmaker.dto;
 
+import com.fastcam.programming.dmaker.code.StatusCode;
 import com.fastcam.programming.dmaker.entity.Developer;
 import com.fastcam.programming.dmaker.type.DeveloperLevel;
 import com.fastcam.programming.dmaker.type.DeveloperSkillType;
@@ -21,6 +22,7 @@ public class DeveloperDetailDto {
     private DeveloperSkillType developerSkillType;
     private Integer experienceYears;
     private String memberId;
+    private StatusCode statusCode;
     private String name;
     private Integer age;
 
@@ -31,6 +33,7 @@ public class DeveloperDetailDto {
                 .experienceYears(developer.getExperienceYears())
                 .name(developer.getName())
                 .memberId(developer.getMemberId())
+                .statusCode(developer.getStatusCode())
                 .age(developer.getAge())
                 .build();
     }

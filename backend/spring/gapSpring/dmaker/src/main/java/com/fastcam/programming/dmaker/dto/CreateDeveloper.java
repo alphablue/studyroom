@@ -1,5 +1,6 @@
 package com.fastcam.programming.dmaker.dto;
 
+import com.fastcam.programming.dmaker.entity.Developer;
 import com.fastcam.programming.dmaker.type.DeveloperLevel;
 import com.fastcam.programming.dmaker.type.DeveloperSkillType;
 import lombok.*;
@@ -50,5 +51,14 @@ public class CreateDeveloper {
         private DeveloperSkillType developerSkillType;
         private Integer experienceYears;
         private String memberId;
+
+        public static Response fromEntity(Developer developer) {
+            return Response.builder()
+                    .developerLevel(developer.getDeveloperLevel())
+                    .developerSkillType(developer.getDeveloperSkillType())
+                    .experienceYears(developer.getExperienceYears())
+                    .memberId(developer.getMemberId())
+                    .build();
+        }
     }
 }

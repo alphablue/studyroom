@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,13 +28,11 @@ public class DMakerController {
     }
 
     @PostMapping("/create-developer")
-    public List<String> createDevelopers(
-            @RequestBody CreateDeveloper.Request request
-            ) {
+    public CreateDeveloper.Response createDevelopers(
+           @Valid @RequestBody CreateDeveloper.Request request
+    ) {
         log.info("request : {}", request);
 
-        dMakerService.createDeveloper();
-
-        return List.of("Olaf");
+        return dMakerService.createDeveloper(request);
     }
 }

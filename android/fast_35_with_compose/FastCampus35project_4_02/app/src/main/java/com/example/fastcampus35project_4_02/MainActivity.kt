@@ -1,5 +1,6 @@
 package com.example.fastcampus35project_4_02
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -16,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun openShuffle() {
-
+        startActivity(Intent(this, PinActivity::class.java))
     }
 
     fun openVerifyOTP() {

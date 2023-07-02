@@ -23,6 +23,7 @@
         </activity>
 
         <activity android:name=".PinActivity"/>
+        <activity android:name=".IdentityInputActivity"/>
     </application>
 
 </manifest>

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.studyreference"
+    namespace = "com.seojinlee.studyreference"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.example.studyreference"
+        applicationId = "com.seojinlee.studyreference"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

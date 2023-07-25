@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.codelabstudylib.workManager
+package com.seojinlee.codelabstudylib.workManager
 
 import android.app.Application
 import android.content.ContentResolver
@@ -22,13 +22,17 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.codelabstudylib.R
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
+import com.seojinlee.codelabstudylib.R
 
 
 class BlurViewModel(application: Application) : ViewModel() {
 
     internal var imageUri: Uri? = null
     internal var outputUri: Uri? = null
+
+    private val workerManager = WorkManager.getInstance(application)
 
     init {
         imageUri = getImageUri(application.applicationContext)
@@ -37,7 +41,9 @@ class BlurViewModel(application: Application) : ViewModel() {
      * Create the WorkRequest to apply the blur and save the resulting image
      * @param blurLevel The amount to blur the image
      */
-    internal fun applyBlur(blurLevel: Int) {}
+    internal fun applyBlur(blurLevel: Int) {
+        workerManager.enqueue(OneTimeWorkRequest.from(BlurWorker::class.java))
+    }
 
     private fun uriOrNull(uriString: String?): Uri? {
         return if (!uriString.isNullOrEmpty()) {

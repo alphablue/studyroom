@@ -16,7 +16,7 @@
 
 @file:JvmName("Constants")
 
-package com.example.codelabstudylib.workManager
+package com.seojinlee.codelabstudylib.workManager
 
 // Notification Channel constants
 

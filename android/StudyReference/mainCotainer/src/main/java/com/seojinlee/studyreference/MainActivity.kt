@@ -1,11 +1,11 @@
-package com.example.studyreference
+package com.seojinlee.studyreference
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import com.example.codelabstudylib.workManager.WorkManagerActivity
-import com.example.studyreference.databinding.ActivityMainBinding
+import com.seojinlee.codelabstudylib.workManager.WorkManagerActivity
+import com.seojinlee.studyreference.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.codelabstudylib"
+    namespace = "com.seojinlee.codelabstudylib"
     compileSdk = 33
 
     defaultConfig {
@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.work.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

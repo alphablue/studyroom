@@ -1,12 +1,12 @@
-package com.example.codelabstudylib.workManager
+package com.seojinlee.codelabstudylib.workManager
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
-import com.example.codelabstudylib.R
-import com.example.codelabstudylib.databinding.ActivityBlurWorkManagerBinding
+import com.seojinlee.codelabstudylib.R
+import com.seojinlee.codelabstudylib.databinding.ActivityBlurWorkManagerBinding
 
 class WorkManagerActivity : AppCompatActivity() {
 

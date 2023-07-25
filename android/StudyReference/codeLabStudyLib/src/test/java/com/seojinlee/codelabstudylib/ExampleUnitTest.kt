@@ -1,4 +1,4 @@
-package com.example.codelabstudylib
+package com.seojinlee.codelabstudylib
 
 import org.junit.Test
 

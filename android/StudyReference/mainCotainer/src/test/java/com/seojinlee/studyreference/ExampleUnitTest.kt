@@ -1,4 +1,4 @@
-package com.example.studyreference
+package com.seojinlee.studyreference
 
 import org.junit.Test
 

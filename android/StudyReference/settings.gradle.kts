@@ -14,5 +14,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "StudyReference"
-include(":app")
- 
+include(":mainCotainer")
+include(":codeLabStudyLib")

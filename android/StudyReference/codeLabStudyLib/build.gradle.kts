@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    id("kotlin-kapt")
 }
 
 android {
@@ -27,14 +28,19 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    dataBinding {
+        enable = true
+    }
 }
 
 dependencies {
 
     implementation(libs.core.ktx)
-    implementation(libs.appcompat)
+    implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.constraintlayout)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

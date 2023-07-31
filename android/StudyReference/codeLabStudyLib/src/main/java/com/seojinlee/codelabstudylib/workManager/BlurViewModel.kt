@@ -22,7 +22,9 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.seojinlee.codelabstudylib.R
 
@@ -42,7 +44,12 @@ class BlurViewModel(application: Application) : ViewModel() {
      * @param blurLevel The amount to blur the image
      */
     internal fun applyBlur(blurLevel: Int) {
-        workerManager.enqueue(OneTimeWorkRequest.from(BlurWorker::class.java))
+//        workerManager.enqueue(OneTimeWorkRequest.from(BlurWorker::class.java))  // step 4
+        val blurRequest = OneTimeWorkRequestBuilder<BlurWorker>()               // step 5에서 변경
+            .setInputData(createInputDataForUri())
+            .build()
+
+        workerManager.enqueue(blurRequest)
     }
 
     private fun uriOrNull(uriString: String?): Uri? {
@@ -62,6 +69,14 @@ class BlurViewModel(application: Application) : ViewModel() {
             .appendPath(resources.getResourceTypeName(R.drawable.android_cupcake))
             .appendPath(resources.getResourceEntryName(R.drawable.android_cupcake))
             .build()
+    }
+
+    private fun createInputDataForUri(): Data {
+        val builder = Data.Builder()
+        imageUri?.let {
+            builder.putString(KEY_IMAGE_URI, imageUri.toString())
+        }
+        return builder.build()
     }
 
     internal fun setOutputUri(outputImageUri: String?) {

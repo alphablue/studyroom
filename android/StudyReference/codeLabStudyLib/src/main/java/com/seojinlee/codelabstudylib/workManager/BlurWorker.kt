@@ -15,10 +15,10 @@ private const val TAG = "BlurWorker"
 class BlurWorker(ctx: Context, params: WorkerParameters): Worker(ctx, params) {
     override fun doWork(): Result {
         val appContext = applicationContext
-
         val resourceUri = inputData.getString(KEY_IMAGE_URI) //step 5 추가
-
         makeStatusNotification("Blurring image", appContext)
+
+        sleep()
 
         return try {
 

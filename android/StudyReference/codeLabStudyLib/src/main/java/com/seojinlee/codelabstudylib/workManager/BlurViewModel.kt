@@ -44,12 +44,46 @@ class BlurViewModel(application: Application) : ViewModel() {
      * @param blurLevel The amount to blur the image
      */
     internal fun applyBlur(blurLevel: Int) {
+
+        // step 6 워크매니저 체인을 위한 작업  --- 1
+        var continuation = workerManager
+            .beginWith(OneTimeWorkRequest.from(CleanupWorker::class.java))
+
+
+//        -------------- 수동 으로 체인을 거는 법
 //        workerManager.enqueue(OneTimeWorkRequest.from(BlurWorker::class.java))  // step 4
-        val blurRequest = OneTimeWorkRequestBuilder<BlurWorker>()               // step 5에서 변경
-            .setInputData(createInputDataForUri())
+//        val blurRequest = OneTimeWorkRequestBuilder<BlurWorker>()               // step 5에서 변경
+//            .setInputData(createInputDataForUri())
+//            .build()
+//
+//        // 1번 작업 후 2번째 작업의 순서 추가  ---- 2
+//        continuation = continuation.then(blurRequest)
+//
+//
+//        val save = OneTimeWorkRequest.Builder(SaveImageToFileWorker::class.java).build()
+//        // 2번 작업 후의 작업 추가 --- 3
+//        continuation = continuation.then(save)
+
+//        --------------- end
+
+//        ------------- workmanager 에서 체인의 유연함을 보여줌
+        for(i in 0 until blurLevel) {
+            val blurBuilder = OneTimeWorkRequestBuilder<BlurWorker>()
+
+            if(i == 0) {
+                blurBuilder.setInputData(createInputDataForUri())
+            }
+
+            continuation = continuation.then(blurBuilder.build())
+        }
+
+        val save = OneTimeWorkRequestBuilder<SaveImageToFileWorker>()
             .build()
 
-        workerManager.enqueue(blurRequest)
+        continuation = continuation.then(save)
+
+//        workerManager.enqueue(blurRequest)
+        continuation.enqueue() // 정의된 작업 순서 대로 수행
     }
 
     private fun uriOrNull(uriString: String?): Uri? {

@@ -68,4 +68,36 @@ class IdentityInputActivity: AppCompatActivity() {
             }
         }
     }
+
+    fun onClickDone() {
+        if(!validName()) {
+            binding.nameLayout.error = "1자 이상의 한글을 입력해주세요."
+            return
+        }
+
+        if(!validBirthday()) {
+            binding.birthdayLayout.error = "생년월일 형식이 다릅니다."
+            return
+        }
+
+        if(!validPhone()) {
+            binding.phoneLayout.error = "전화번호 형식이 다릅니다."
+            return
+        }
+    }
+
+    private fun validName() = !binding.nameEdit.text.isNullOrBlank()
+            && REGEX_NAME.toRegex().matches(binding.nameEdit.text!!)
+
+    private fun validBirthday() = !binding.birthdayEdit.text.isNullOrBlank()
+            && REGEX_BIRTHDAY.toRegex().matches(binding.birthdayEdit.text!!)
+
+    private fun validPhone() = !binding.phoneEdit.text.isNullOrBlank()
+            && REGEX_PHONE.toRegex().matches(binding.phoneEdit.text!!)
+
+    companion object {
+        private const val REGEX_NAME = "^[가-힣]{2,}\$"
+        private const val REGEX_BIRTHDAY = "^(19|20)[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])"
+        private const val REGEX_PHONE = "^01([016789])([0-9]{3,4})([0-9]{4})"
+    }
 }

@@ -6,4 +6,8 @@
     <color name="first_card">#BB86FC</color>
     <color name="second_card">#eb455f</color>
     <color name="third_card">#439a97</color>
+
+    <color name="point">#6C00FF</color>
+    <color name="cancel">#FF0000</color>
+    <color name="pay">#000000</color>
 </resources>

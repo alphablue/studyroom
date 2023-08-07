@@ -1,26 +1,44 @@
 [versions]
-agp = "8.2.0-alpha06"
+agp = "8.2.0-alpha11"
 kotlin = "1.8.0"
 core-ktx = "1.10.1"
 junit = "4.13.2"
 espresso-core = "3.5.1"
 material = "1.9.0"
 
+## compose lib
+accompanist = "0.28.0"
+androidxActivity = "1.8.0-alpha06"
+androidxAppCompat = "1.6.1"
+androidxComposeRuntimeTracing = "1.0.0-alpha03"
+androidxCore = "1.10.1"
+androidxCoreSplashscreen = "1.0.1"
+
+## 아키텍처 모듈
+androidxMacroBenchmark = "1.2.0-alpha16"
+
 ## common external lib
 glide ="4.15.1"
+coil = "2.2.2"
+hilt = "2.47"
+hiltExt = "1.0.0"
+okhttp = "4.10.0"
 
 ## androidX lib common
-androidxAppCompat = "1.6.1"
 androidxActivityKTX = "1.7.2"
 androidxlifecycleExtensions = "2.2.0"
 androidxWorkKTX = "2.8.1"
 androidFragmentKTX = "1.6.0"
+androidxBrowser = "1.4.0"
 
 ## androidX lib TEST
 androidx-test-ext-junit = "1.1.5"
 
 ## xml view lib
 androixConstraintlayout = "2.1.4"
+
+## kotlin lib
+kotlinxCoroutines = "1.6.4"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -31,6 +49,39 @@ material = { group = "com.google.android.material", name = "material", version.r
 
 ## common external lib
 glide = {group = "com.github.bumptexch.glide", name="glide", version.ref="glide"}
+coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-ext-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltExt" }
+hilt-ext-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltExt" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+
+
+## compose lib
+accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
+accompanist-testharness = { group = "com.google.accompanist", name = "accompanist-testharness", version.ref = "accompanist" }
+
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
+androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "androidxMacroBenchmark" }
+androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidxBrowser" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
+androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
+androidx-compose-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
+androidx-compose-runtime-tracing = { group = "androidx.compose.runtime", name = "runtime-tracing", version.ref = "androidxComposeRuntimeTracing" }
+androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCoreSplashscreen" }
 
 ## androidX lib
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
@@ -41,6 +92,11 @@ androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", ve
 
 ## xml view lib
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androixConstraintlayout" }
+
+## kotlin lib
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-guava = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-guava", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

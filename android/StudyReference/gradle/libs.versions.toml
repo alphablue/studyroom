@@ -13,6 +13,8 @@ androidxAppCompat = "1.6.1"
 androidxComposeRuntimeTracing = "1.0.0-alpha03"
 androidxCore = "1.10.1"
 androidxCoreSplashscreen = "1.0.1"
+# 아래는 version.ref 가 없는 compose 들의 import를 하기 위한것
+androidxComposeBom = "2023.06.01"
 
 ## 아키텍처 모듈
 androidxMacroBenchmark = "1.2.0-alpha16"
@@ -80,6 +82,7 @@ androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-t
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCoreSplashscreen" }
 
@@ -104,4 +107,4 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 
 [bundles]
-
+default-compose-designSystem = ["androidx-compose-foundation", "androidx-compose-foundation-layout", "androidx-compose-material-iconsExtended", "androidx-compose-material3", "androidx-compose-runtime", "androidx-compose-ui-util", "androidx-compose-ui-tooling-preview", "androidx-activity-compose"]

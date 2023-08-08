@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
@@ -22,19 +21,23 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
+    buildFeatures {compose = true}
 }
 
 dependencies {
 
-    implementation(libs.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    // 아래의 내용을 추가해야지만 toml에 name만 설정된 compose 모듈들을 불러 올 수 있음
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.bundles.default.compose.designSystem)
+
+    debugApi(libs.androidx.compose.ui.tooling)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

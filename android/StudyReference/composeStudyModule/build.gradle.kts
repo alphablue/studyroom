@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.toss.next.composestudymodule"
+    namespace = "com.example.composestudymodule"
     compileSdk = 33
 
     defaultConfig {
@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":sampleProject01DomainLayer"))
 
     // 아래의 내용을 추가해야지만 toml에 name만 설정된 compose 모듈들을 불러 올 수 있음
     implementation(platform(libs.androidx.compose.bom))

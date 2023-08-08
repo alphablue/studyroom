@@ -28,6 +28,11 @@ android {
         jvmTarget = "17"
     }
     buildFeatures {compose = true}
+    composeOptions {
+        // https://developer.android.com/jetpack/androidx/releases/compose-kotlin
+        // 위 링크에서 코틀린 버전과 컴포즈 버전의 세팅을 맞춰줘야함 toml에서 설정한 코틀린버전 확인
+        kotlinCompilerExtensionVersion = "1.4.3"
+    }
 }
 
 dependencies {

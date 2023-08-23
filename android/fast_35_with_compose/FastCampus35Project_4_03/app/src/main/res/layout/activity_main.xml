@@ -7,8 +7,8 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity"
-        app:layoutDescription="@xml/activity_main_scene">
+        app:layoutDescription="@xml/scene_card_click"
+        tools:context=".MainActivity">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/thirdCard"
@@ -16,22 +16,20 @@
             android:layout_height="@dimen/card_height"
             android:backgroundTint="@color/third_card"
             app:cardCornerRadius="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            >
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/thirdCardTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="16dp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="22sp"
                 android:text="TB Card"
-                android:id="@+id/thirdCardTitleTextView"
-                />
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -41,22 +39,20 @@
             android:layout_height="@dimen/card_height"
             android:backgroundTint="@color/second_card"
             app:cardCornerRadius="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            >
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/secondCardTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="16dp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="22sp"
                 android:text="samjong Card"
-                android:id="@+id/secondCardTitleTextView"
-                />
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
 
         </com.google.android.material.card.MaterialCardView>
@@ -67,22 +63,20 @@
             android:layout_height="@dimen/card_height"
             android:backgroundTint="@color/first_card"
             app:cardCornerRadius="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            >
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/firstCardTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="16dp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="22sp"
                 android:text="woomi Card"
-                android:id="@+id/firstCardTitleTextView"
-                />
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
 
         </com.google.android.material.card.MaterialCardView>

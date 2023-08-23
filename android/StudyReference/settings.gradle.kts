@@ -16,3 +16,7 @@ dependencyResolutionManagement {
 rootProject.name = "StudyReference"
 include(":mainCotainer")
 include(":codeLabStudyLib")
+include(":composeStudyModule")
+include(":sampleProject01DataLayer")
+include(":sampleProject01DomainLayer")
+include(":sampleProject01DiLayer")

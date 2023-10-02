@@ -1,17 +1,14 @@
-import org.gradle.kotlin.dsl.`kotlin-dsl`
 
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-}
-
-with(pluginManager) {
-    apply("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
     namespace = "com.example.composestudymodule"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -49,7 +46,7 @@ dependencies {
     implementation(libs.bundles.default.compose.designSystem)
 
     implementation(libs.hilt.android)
-    implementation(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     debugApi(libs.androidx.compose.ui.tooling)
 

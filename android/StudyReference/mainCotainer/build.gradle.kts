@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.seojinlee.studyreference"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.seojinlee.studyreference"

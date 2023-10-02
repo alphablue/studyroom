@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
-    id("kotlin-kapt")
 }
 
 android {
@@ -38,6 +37,8 @@ android {
 }
 
 dependencies {
+    // 모듈을 활용 하려면 아래의 내용을 추가해 줘야함
+    implementation(project(":codeLabStudyLib"))
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -45,8 +46,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.activity.ktx)
 
-    // 모듈을 활용 하려면 아래의 내용을 추가해 줘야함
-    implementation(project(":codeLabStudyLib"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

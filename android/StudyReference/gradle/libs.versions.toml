@@ -1,5 +1,5 @@
 [versions]
-agp = "8.2.0-alpha11"
+agp = "8.1.1"
 kotlin = "1.8.10"
 core-ktx = "1.10.1"
 junit = "4.13.2"
@@ -105,6 +105,8 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+
 
 [bundles]
 default-compose-designSystem = ["androidx-compose-foundation", "androidx-compose-foundation-layout", "androidx-compose-material-iconsExtended", "androidx-compose-material3", "androidx-compose-runtime", "androidx-compose-ui-util", "androidx-compose-ui-tooling-preview", "androidx-activity-compose"]

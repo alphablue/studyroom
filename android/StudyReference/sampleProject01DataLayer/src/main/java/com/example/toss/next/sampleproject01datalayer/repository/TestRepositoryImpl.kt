@@ -6,9 +6,9 @@ import com.example.toss.next.sampleproject01datalayer.datasource.TestDataSource
 import com.example.toss.next.sampleproject01datalayer.model.toDomainModel
 
 class TestRepositoryImpl(
-    val dataSource: TestDataSource
+    private val dataSource: TestDataSource
 ) : TestRepository{
-    override fun getTEstData(): TestModel {
+    override fun getTestData(): TestModel {
         return dataSource.getTestModelResponse().toDomainModel()
     }
 }

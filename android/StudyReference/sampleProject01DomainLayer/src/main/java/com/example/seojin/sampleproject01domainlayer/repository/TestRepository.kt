@@ -3,5 +3,5 @@ package com.example.seojin.sampleproject01domainlayer.repository
 import com.example.seojin.sampleproject01domainlayer.model.TestModel
 
 interface TestRepository {
-    fun getTEstData(): TestModel
+    fun getTestData(): TestModel
 }

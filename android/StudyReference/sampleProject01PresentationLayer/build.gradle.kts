@@ -1,10 +1,12 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    id("com.google.devtools.ksp")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
-    namespace = "com.example.seojin.mylibrary"
+    namespace = "com.example.seojin.sampleProject01PresentationLayer"
     compileSdk = 34
 
     defaultConfig {
@@ -37,6 +39,10 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.bundles.default.compose.designSystem)
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

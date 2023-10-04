@@ -39,7 +39,10 @@ android {
 }
 
 dependencies {
+    // sample 01 프로젝트에서 활용되는 모듈들, 여기서 이 모듈은 DI 역할을 하는중
     implementation(project(":sampleProject01DomainLayer"))
+    implementation(project(":sampleProject01DataLayer"))
+    implementation(project(":sampleProject01PresentationLayer"))
 
     // 아래의 내용을 추가해야지만 toml에 name만 설정된 compose 모듈들을 불러 올 수 있음
     implementation(platform(libs.androidx.compose.bom))

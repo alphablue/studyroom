@@ -32,6 +32,7 @@ android {
 }
 
 dependencies {
+    // domain layer 는 별도의 참조를 가지지 않음
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)

@@ -33,13 +33,14 @@ android {
 
 dependencies {
     implementation(project(":sampleProject01DomainLayer"))
-    implementation(project(":sampleProject01DataLayer"))
-    implementation(project(":composeStudyModule"))
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.default.compose.designSystem)
+    implementation(libs.bundles.use.navigation)
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

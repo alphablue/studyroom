@@ -1,41 +1,41 @@
 [versions]
-agp = "8.1.2"
-kotlin = "1.8.10"
-kotlin-ksp = "1.8.10-1.0.9"
-core-ktx = "1.12.0"
+agp = "8.4.0" # https://developer.android.com/build/releases/gradle-plugin
+kotlin = "1.9.23"
+kotlin-ksp = "1.9.23-1.0.20" # https://kotlinlang.org/docs/ksp-quickstart.html#add-a-processor
+core-ktx = "1.13.1"
 junit = "4.13.2"
 espresso-core = "3.5.1"
-material = "1.9.0"
+material = "1.12.0"
 
 ## compose lib
-accompanist = "0.28.0"
-androidxActivity = "1.8.0-rc01"
+accompanist = "0.34.0"
+androidxActivity = "1.9.0"
 androidxAppCompat = "1.6.1"
-androidxComposeRuntimeTracing = "1.0.0-alpha04"
-androidxCore = "1.12.0"
+androidxComposeRuntimeTracing = "1.0.0-beta01"
+androidxCore = "1.13.1"
 androidxCoreSplashscreen = "1.0.1"
-composeNavigation = "2.7.3"
-hiltComposeNavigation = "1.0.0"
+composeNavigation = "2.7.7"
+hiltComposeNavigation = "1.2.0"
 
 # 아래는 version.ref 가 없는 compose 들의 import를 하기 위한것
-androidxComposeBom = "2023.09.01"
+androidxComposeBom = "2024.05.00" #https://developer.android.com/develop/ui/compose/bom/bom-mapping
 
 ## 아키텍처 모듈
-androidxMacroBenchmark = "1.2.0-rc01"
+androidxMacroBenchmark = "1.2.4"
 
 ## common external lib
 glide ="4.15.1"
-coil = "2.2.2"
-hilt = "2.47"
-hiltExt = "1.0.0"
-okhttp = "4.10.0"
+coil = "2.6.0"
+hilt = "2.51"
+hiltExt = "1.2.0"
+okhttp = "4.12.0"
 
 ## androidX lib common
-androidxActivityKTX = "1.7.2"
+androidxActivityKTX = "1.9.0"
 androidxlifecycleExtensions = "2.2.0"
-androidxWorkKTX = "2.8.1"
-androidFragmentKTX = "1.6.1"
-androidxBrowser = "1.6.0"
+androidxWorkKTX = "2.9.0"
+androidFragmentKTX = "1.7.0"
+androidxBrowser = "1.8.0"
 
 ## androidX lib TEST
 androidx-test-ext-junit = "1.1.5"
@@ -44,7 +44,7 @@ androidx-test-ext-junit = "1.1.5"
 androixConstraintlayout = "2.1.4"
 
 ## kotlin lib
-kotlinxCoroutines = "1.6.4"
+kotlinxCoroutines = "1.8.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }

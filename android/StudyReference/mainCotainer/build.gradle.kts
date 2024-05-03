@@ -51,3 +51,7 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
+
+android.sourceSets.all {
+    java.srcDir("src/$name/kotlin")
+}

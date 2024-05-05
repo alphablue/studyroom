@@ -1,23 +1,16 @@
 plugins {
-    alias(libs.plugins.reference.android.application)
-    alias(libs.plugins.reference.android.application.compose)
+    alias(libs.plugins.reference.android.library)
+    alias(libs.plugins.reference.android.library.compose)
 }
 
 android {
-    namespace = "com.study.architectmodule"
+    namespace = "com.study.commonui"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.study.architectmodule"
         minSdk = 26
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
 
     buildTypes {
@@ -36,11 +29,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":studyFeature:CommonUI"))
-
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.compose.material3)
+    implementation(libs.material)
     implementation(libs.bundles.default.compose.designSystem)
 
     testImplementation(libs.junit)

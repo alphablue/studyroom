@@ -1,23 +1,17 @@
 plugins {
-    alias(libs.plugins.reference.android.application)
-    alias(libs.plugins.reference.android.application.compose)
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
 }
 
 android {
-    namespace = "com.study.architectmodule"
+    namespace = "com.stampcoupon.main"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.study.architectmodule"
         minSdk = 26
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -30,19 +24,19 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
 dependencies {
-    implementation(project(":studyFeature:CommonUI"))
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.bundles.default.compose.designSystem)
-
+    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

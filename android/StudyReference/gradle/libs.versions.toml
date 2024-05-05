@@ -133,10 +133,11 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
-## 프로젝트 내부에서 정의하는 정보
+## 프로젝트 내부에서 정의하는 정보 (각 모듈을 어떤 타입으로 빌드할 것인가에 대한 설정 값과 동일 하다. application 으로 하게되면 app 모듈이 되고 library로 하면 라이브러리 모듈이 된다.)
 # 일반 설정
 reference-android-application = { id = "reference.android.application", version = "unspecified" }
 reference-android-library = { id = "reference.android.library", version = "unspecified"}
+
 # 컴포즈 설정
 reference-android-application-compose = { id = "reference.android.application.compose", version = "unspecified"}
 reference-android-library-compose = { id = "reference.android.library.compose", version = "unspecified"}

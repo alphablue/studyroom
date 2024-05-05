@@ -26,22 +26,22 @@ dependencies {
 gradlePlugin {
     plugins {
         register("androidCompose") {
-            id = "coupon.android.application.compose"
-            implementationClass = "AndroidComposeConventionPlugin"
+            id = "reference.android.application.compose"
+            implementationClass = "AndroidComposeConventionPlugin" // 파일 경로를 바르게 설정 해줘야됨, ../ 등으로 적절한 위치 uri 를 주자
         }
 
         register("androidApplication") {
-            id = "coupon.android.application"
+            id = "reference.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
 
         register("androidLibraryCompose") {
-            id = "coupon.android.library.compose"
+            id = "reference.android.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
 
         register("androidLibrary") {
-            id = "coupon.android.library"
+            id = "reference.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
     }

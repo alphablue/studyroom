@@ -15,9 +15,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "StudyReference"
-include(":mainContainer")
-include(":codeLabStudyLib")
-include(":composeStudyModule")
-include(":sampleProject01DataLayer")
-include(":sampleProject01DomainLayer")
-include(":sampleProject01PresentationLayer")
+include(":uiChallengeXmlView")
+include(":uichallengecompose")
+include(":architectmodule")

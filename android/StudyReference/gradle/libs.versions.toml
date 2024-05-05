@@ -8,6 +8,8 @@ espresso-core = "3.5.1"
 material = "1.12.0"
 
 ## compose lib
+androidxComposeCompiler = "1.5.11"  # https://developer.android.com/jetpack/androidx/releases/compose-compiler
+
 accompanist = "0.34.0"
 androidxActivity = "1.9.0"
 androidxAppCompat = "1.6.1"
@@ -46,6 +48,10 @@ androixConstraintlayout = "2.1.4"
 ## kotlin lib
 kotlinxCoroutines = "1.8.0"
 jetbrainsKotlinJvm = "1.9.23"
+lifecycleRuntimeKtx = "2.7.0"
+
+## java sdk 대응
+desugarJdkLibs = "2.0.4"
 
 [libraries]
 
@@ -60,6 +66,9 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+# 자바의 sdk 버전별 펑션 대응
+android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 
 ## common external lib
 glide = {group = "com.github.bumptexch.glide", name="glide", version.ref="glide"}
@@ -114,12 +123,23 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-guava = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-guava", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+
+## 프로젝트 내부에서 정의하는 정보
+# 일반 설정
+reference-android-application = { id = "reference.android.application", version = "unspecified" }
+reference-android-library = { id = "reference.android.library", version = "unspecified"}
+# 컴포즈 설정
+reference-android-application-compose = { id = "reference.android.application.compose", version = "unspecified"}
+reference-android-library-compose = { id = "reference.android.library.compose", version = "unspecified"}
 
 # 그레이들 세팅 관련 정보
 ksp = { id = "com.google.devtools.ksp", version.ref="kotlin-ksp"}

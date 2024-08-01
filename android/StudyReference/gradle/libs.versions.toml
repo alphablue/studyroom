@@ -1,26 +1,30 @@
 [versions]
-agp = "8.4.0" # https://developer.android.com/build/releases/gradle-plugin
+agp = "8.4.2" # https://developer.android.com/build/releases/gradle-plugin
 kotlin = "1.9.23"
 kotlin-ksp = "1.9.23-1.0.20" # https://kotlinlang.org/docs/ksp-quickstart.html#add-a-processor
 core-ktx = "1.13.1"
 junit = "4.13.2"
-espresso-core = "3.5.1"
+espresso-core = "3.6.1"
 material = "1.12.0"
 
 ## compose lib
 androidxComposeCompiler = "1.5.11"  # https://developer.android.com/jetpack/androidx/releases/compose-compiler
 
 accompanist = "0.34.0"
-androidxActivity = "1.9.0"
-androidxAppCompat = "1.6.1"
+androidxActivity = "1.9.1"
+androidxAppCompat = "1.7.0"
 androidxComposeRuntimeTracing = "1.0.0-beta01"
 androidxCore = "1.13.1"
 androidxCoreSplashscreen = "1.0.1"
 composeNavigation = "2.7.7"
 hiltComposeNavigation = "1.2.0"
 
+# 이미지 처리를 위한 compose 라이브러리
+graphicsAnimation = "1.6.8" # 이미지에 애니메이션 부여 가능,
+graphicsShapes = "1.0.0-rc01" # https://developer.android.com/jetpack/androidx/releases/graphics
+
 # 아래는 version.ref 가 없는 compose 들의 import를 하기 위한것
-androidxComposeBom = "2024.05.00" #https://developer.android.com/develop/ui/compose/bom/bom-mapping
+androidxComposeBom = "2024.06.00" #https://developer.android.com/develop/ui/compose/bom/bom-mapping
 
 ## 아키텍처 모듈
 androidxMacroBenchmark = "1.2.4"
@@ -28,19 +32,19 @@ androidxMacroBenchmark = "1.2.4"
 ## common external lib
 glide ="4.15.1"
 coil = "2.6.0"
-hilt = "2.51"
+hilt = "2.51.1"
 hiltExt = "1.2.0"
 okhttp = "4.12.0"
 
 ## androidX lib common
-androidxActivityKTX = "1.9.0"
+androidxActivityKTX = "1.9.1"
 androidxlifecycleExtensions = "2.2.0"
 androidxWorkKTX = "2.9.0"
-androidFragmentKTX = "1.7.0"
+androidFragmentKTX = "1.8.2"
 androidxBrowser = "1.8.0"
 
 ## androidX lib TEST
-androidx-test-ext-junit = "1.1.5"
+androidx-test-ext-junit = "1.2.1"
 
 ## xml view lib
 androixConstraintlayout = "2.1.4"
@@ -48,7 +52,7 @@ androixConstraintlayout = "2.1.4"
 ## kotlin lib
 kotlinxCoroutines = "1.8.0"
 jetbrainsKotlinJvm = "1.9.23"
-lifecycleRuntimeKtx = "2.7.0"
+lifecycleRuntimeKtx = "2.8.4"
 
 ## java sdk 대응
 desugarJdkLibs = "2.0.4"
@@ -109,6 +113,10 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation"}
 androidx-hilt-compose-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltComposeNavigation"}
 
+# 안드로이드 그래픽 모듈 (android, web, desktop 구분되어 있음 라이브러리 네임 참고)
+androidx-compose-animation = { group = "androidx.compose.animation" , name = "animation-graphics-android", version.ref = "graphicsAnimation"}
+androidx-compose-shape = { group = "androidx.graphics" , name = "graphics-shapes-android", version.ref = "graphicsShapes"}
+
 ## androidX lib
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidxActivityKTX" }
@@ -149,4 +157,5 @@ jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains
 
 [bundles]
 default-compose-designSystem = ["androidx-compose-foundation", "androidx-compose-foundation-layout", "androidx-compose-material-iconsExtended", "androidx-compose-material3", "androidx-compose-runtime", "androidx-compose-ui-util", "androidx-compose-ui-tooling-preview", "androidx-activity-compose"]
+android-compose-graphics = ["androidx-compose-animation", "androidx-compose-shape"]
 use-navigation = ["androidx-hilt-compose-navigation" , "androidx-compose-navigation"]

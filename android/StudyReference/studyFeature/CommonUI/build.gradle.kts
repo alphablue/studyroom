@@ -34,6 +34,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.bundles.default.compose.designSystem)
 
+    implementation(libs.bundles.android.compose.graphics)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

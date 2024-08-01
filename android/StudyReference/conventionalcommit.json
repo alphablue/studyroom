@@ -1,0 +1,37 @@
+{
+  "$schema": "https://github.com/lppedd/idea-conventional-commit/raw/master/src/main/resources/defaults/conventionalcommit.schema.json",
+  "types": {
+    "리펙터링": {
+      "description": "Changes which neither fix a bug nor add a feature"
+    },
+    "버그수정": {
+      "description": "Changes which patch a bug"
+    },
+    "신규개발": {
+      "description": "Changes which introduce a new feature"
+    },
+    "테스트": {
+      "description": "Changes which add missing tests or fix existing ones"
+    },
+    "버전업": {
+      "description": "version up"
+    },
+    "디자인수정": {
+      "description": "design changed"
+    },
+    "학습": {
+      "description": "study"
+    }
+  },
+  "commonScopes": {
+    "LeeSJ" : {
+      "description": "작성자, 이서진"
+    }
+  },
+  "footerTypes": [
+    {
+      "name": "UI_정보",
+      "description": "The commit introduces breaking API changes"
+    }
+  ]
+}

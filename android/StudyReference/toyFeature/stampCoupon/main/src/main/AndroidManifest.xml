@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.NFC" />
 
+    <!-- google play 에서 nfc 가 있는 기기에만 표시되도록 함-->
+    <uses-feature android:name="android.hardware.nfc" android:required="true"/>
+
+    <application>
+        <activity android:name="com.stampcoupon.main.ToyStartActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+            </intent-filter>
+
+            <meta-data android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_list"/>
+        </activity>
+    </application>
 </manifest>

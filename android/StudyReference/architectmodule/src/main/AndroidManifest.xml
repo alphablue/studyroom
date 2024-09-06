@@ -18,6 +18,23 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- nfc 사용을 위한 intent filter ACTION_NDEF_DISCOVERED 로 데이터가 인식되는 이것을 받기위한 기본 필터 -->
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+
+            <!-- url 을 필터링 하는 것 -->
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="https"
+                    android:host="developer.android.com"
+                    android:pathPrefix="/index.html" />
+            </intent-filter>
+
         </activity>
     </application>
 

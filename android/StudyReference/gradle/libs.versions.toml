@@ -58,6 +58,10 @@ lifecycleRuntimeKtx = "2.8.4"
 desugarJdkLibs = "2.0.4"
 activity = "1.9.1"
 
+## third party
+# 로거
+logger = "2.2.0"
+
 [libraries]
 
 # 그레이들 관련 세팅
@@ -137,6 +141,10 @@ androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 
+## third party
+# 로거
+third-logger = { group = "com.orhanobut", name = "logger", version.ref = "logger" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -161,3 +169,4 @@ jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains
 default-compose-designSystem = ["androidx-compose-foundation", "androidx-compose-foundation-layout", "androidx-compose-material-iconsExtended", "androidx-compose-material3", "androidx-compose-runtime", "androidx-compose-ui-util", "androidx-compose-ui-tooling-preview", "androidx-activity-compose"]
 android-compose-graphics = ["androidx-compose-animation", "androidx-compose-shape"]
 use-navigation = ["androidx-hilt-compose-navigation" , "androidx-compose-navigation"]
+useful-third-parties = ["third-logger"]

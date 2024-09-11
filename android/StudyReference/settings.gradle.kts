@@ -21,4 +21,4 @@ include(":architectmodule")
 
 include(":studyFeature:challengeUI")
 include(":studyFeature:CommonUI")
-include(":toyFeature:stampCoupon:main")
+include(":toyappsentrypoints")

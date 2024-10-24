@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-feature android:name="android.hardware.nfc"/>
-    <uses-feature android:name="android.hardware.nfc.hce"/>
+    <uses-feature android:name="android.hardware.nfc" />
+    <uses-feature android:name="android.hardware.nfc.hce" />
 
     <application
         android:allowBackup="true"
@@ -24,33 +24,34 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ToyStartActivity"
+        <activity
+            android:name=".ToyStartActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="text/plain"/>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
             </intent-filter>
 
             <intent-filter>
-                <action android:name="android.nfc.action.TECH_DISCOVERD"/>
+                <action android:name="android.nfc.action.TECH_DISCOVERD" />
             </intent-filter>
 
             <meta-data
                 android:name="android.nfc.action.TECH_DISCOVERED"
-                android:resource="@xml/nfc_tech_list"/>
+                android:resource="@xml/nfc_tech_list" />
         </activity>
 
-        <service android:name=".HCEServiceImplement"
+        <service
+            android:name=".HCEServiceImplement"
             android:exported="true"
-            android:permission="android.permission.BIND_NFC_SERVICE"
-            >
+            android:permission="android.permission.BIND_NFC_SERVICE">
             <intent-filter>
-                <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE"/>
+                <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE" />
             </intent-filter>
-            <meta-data android:name="android.nfc.cardemulation.host_apdu_service"
-                android:resource="@xml/apduservice"
-                />
+            <meta-data
+                android:name="android.nfc.cardemulation.host_apdu_service"
+                android:resource="@xml/apduservice" />
 
         </service>
     </application>

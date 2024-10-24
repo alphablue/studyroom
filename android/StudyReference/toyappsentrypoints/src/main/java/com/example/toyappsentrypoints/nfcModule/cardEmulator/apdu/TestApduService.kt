@@ -20,11 +20,20 @@ class TestApduService: HostApduService() {
     override fun processCommandApdu(commandApdu: ByteArray?, extras: Bundle?): ByteArray {
 //        "#ProcessCommandAdpu() ${commandApdu?.toHexString(HexFormat.UpperCase)}".d()
         "#ProcessCommandAdpu() ${commandApdu?.toHexStringEx()}".d()
+        if(extras != null)   {
+            for (s in extras.keySet()) {
+                "Get Extras Key info : ${extras.getString(s)} to $s"
+            }
+        }
+
+        if(commandApdu != null) {
+//            val commandRequest = Comman
+        }
+
         return commandApdu ?: ByteArray(2)
     }
 
     override fun onDeactivated(reason: Int) {
-        TODO("Not yet implemented")
     }
 
 }

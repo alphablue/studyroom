@@ -14,6 +14,8 @@ internal fun Project.configureAndroidCompose(
             compose = true
         }
 
+        // kotlin 2.0 이후 버전에서는 자동으로 compose compile 이 통합되어 배포 되기 때문에 따로 설정 할 필요가 없다.
+        // 업데이트 이후 사용 하지 않도록 할 것
         composeOptions {
             kotlinCompilerExtensionVersion = libs.findVersion("androidxComposeCompiler").get().toString()
         }
@@ -36,7 +38,7 @@ internal fun Project.configureAndroidCompose(
 }
 
 // 사용하는 이유에 대한 정보
-// https://github.com/androidx/androidx/blob/androidx-main/compose/compiler/design/compiler-metrics.md
+// https://github.com/JetBrains/kotlin/blob/master/plugins/compose/design/compiler-metrics.md
 private fun Project.buildComposeMetricsParameters(): List<String> {
     val metricParameters = mutableListOf<String>()
     val enableMetricsProvider = project.providers.gradleProperty("enableComposeCompilerMetrics")

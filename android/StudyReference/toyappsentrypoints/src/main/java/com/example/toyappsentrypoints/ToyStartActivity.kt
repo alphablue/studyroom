@@ -57,6 +57,8 @@ class ToyStartActivity : ComponentActivity() {
         if(::nfcAdapter.isInitialized) {
             nfcAdapter.disableForegroundDispatch(this)
         }
+
+//        nfcAdapter.enableReaderMode()
     }
 
     override fun onPause() {

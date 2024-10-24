@@ -1,6 +1,5 @@
 package com.example.toyappsentrypoints
 
-import android.nfc.cardemulation.CardEmulation
 import android.nfc.cardemulation.HostApduService
 import android.os.Bundle
 

@@ -3,10 +3,15 @@ package com.example.convention
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.kotlin.dsl.assign
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.provideDelegate
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinTopLevelExtension
 
 internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
@@ -25,7 +30,7 @@ internal fun Project.configureKotlinAndroid(
         }
     }
 
-    configureKotlin()
+    configureKotlin<KotlinAndroidProjectExtension>()
 
     dependencies {
         // desugar 외 빌드의 구조를 이해할 수 있는 자료
@@ -36,18 +41,47 @@ internal fun Project.configureKotlinAndroid(
     }
 }
 
-internal fun Project.configureKotlin() {
-    tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_17.toString()
+internal fun Project.configureKotlinJVM() {
 
-            // 아래 옵션에 관한 상세 내용은 링크를 참조 하자
-            // https://kotlinlang.org/docs/gradle-compiler-options.html#common-attributes
-            val warningAsErrors: String? by project
-            allWarningsAsErrors = warningAsErrors.toBoolean()
-            freeCompilerArgs = freeCompilerArgs + listOf(
-                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-            )
-        }
+    // [dsl - 1]
+    extensions.configure<JavaPluginExtension> {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    configureKotlin<KotlinJvmProjectExtension>()
+
+    /**
+     * kotlin 2.0.0 이후 dsl 형태로 바꾸면서 [dsl - 1] 의 방식으로 사용함
+     * */
+//    tasks.withType<KotlinCompile>().configureEach {
+//        kotlinOptions {
+//            jvmTarget = JavaVersion.VERSION_17.toString()
+//
+//            // 아래 옵션에 관한 상세 내용은 링크를 참조 하자
+//            // https://kotlinlang.org/docs/gradle-compiler-options.html#common-attributes
+//            val warningAsErrors: String? by project
+//            allWarningsAsErrors = warningAsErrors.toBoolean()
+//            freeCompilerArgs = freeCompilerArgs + listOf(
+//                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+//            )
+//        }
+//    }
+}
+
+private inline fun <reified T : KotlinTopLevelExtension> Project.configureKotlin() = configure<T> {
+    val warningsAsErrors: String? by project
+
+    when(this) {
+        is KotlinAndroidProjectExtension -> compilerOptions
+        is KotlinJvmProjectExtension -> compilerOptions
+        else -> TODO()
+    }.apply {
+        jvmTarget = JvmTarget.JVM_17
+        allWarningsAsErrors = warningsAsErrors.toBoolean()
+        freeCompilerArgs.add(
+            // Enable experimental coroutines APIs, including Flow
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        )
     }
 }

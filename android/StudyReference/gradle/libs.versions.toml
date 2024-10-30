@@ -1,7 +1,7 @@
 [versions]
-agp = "8.4.2" # https://developer.android.com/build/releases/gradle-plugin
-kotlin = "1.9.23"
-kotlin-ksp = "1.9.23-1.0.20" # https://kotlinlang.org/docs/ksp-quickstart.html#add-a-processor
+agp = "8.7.1" # https://developer.android.com/build/releases/gradle-plugin
+kotlin = "2.0.20"
+kotlin-ksp = "2.0.21-1.0.25" # https://kotlinlang.org/docs/ksp-quickstart.html#add-a-processor
 core-ktx = "1.13.1"
 junit = "4.13.2"
 espresso-core = "3.6.1"
@@ -23,7 +23,7 @@ graphicsAnimation = "1.6.8" # 이미지에 애니메이션 부여 가능,
 graphicsShapes = "1.0.0-rc01" # https://developer.android.com/jetpack/androidx/releases/graphics
 
 # 아래는 version.ref 가 없는 compose 들의 import를 하기 위한것
-androidxComposeBom = "2024.06.00" #https://developer.android.com/develop/ui/compose/bom/bom-mapping
+androidxComposeBom = "2024.10.00" #https://developer.android.com/develop/ui/compose/bom/bom-mapping
 
 ## 아키텍처 모듈
 androidxMacroBenchmark = "1.2.4"
@@ -50,7 +50,7 @@ androixConstraintlayout = "2.1.4"
 
 ## kotlin lib
 kotlinxCoroutines = "1.8.0"
-jetbrainsKotlinJvm = "1.9.23"
+jetbrainsKotlinJvm = "2.0.20"
 lifecycleRuntimeKtx = "2.8.4"
 
 ## java sdk 대응
@@ -143,6 +143,9 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 # 로거
 third-logger = { group = "com.orhanobut", name = "logger", version.ref = "logger" }
 
+## build-logic 에 등록해야 하는 것
+compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -150,18 +153,21 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
 ## 프로젝트 내부에서 정의하는 정보 (각 모듈을 어떤 타입으로 빌드할 것인가에 대한 설정 값과 동일 하다. application 으로 하게되면 app 모듈이 되고 library로 하면 라이브러리 모듈이 된다.)
+## 연결된 클래스를 잘 살펴보면 extension에서 application 인지 library 인지 확인이 가능하다.
 # 일반 설정
-reference-android-application = { id = "reference.android.application", version = "unspecified" }
-reference-android-library = { id = "reference.android.library", version = "unspecified"}
+reference-android-application = { id = "reference.android.application"}
+reference-android-library = { id = "reference.android.library"}
 
 # 컴포즈 설정
-reference-android-application-compose = { id = "reference.android.application.compose", version = "unspecified"}
-reference-android-library-compose = { id = "reference.android.library.compose", version = "unspecified"}
+reference-android-application-compose = { id = "reference.android.application.compose"}
+reference-android-library-compose = { id = "reference.android.library.compose"}
 
 # 그레이들 세팅 관련 정보
 ksp = { id = "com.google.devtools.ksp", version.ref="kotlin-ksp"}
 jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
+# compose compiler 설정 - 코틀린 라이브러리 통합
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 [bundles]
 default-compose-designSystem = ["androidx-compose-foundation", "androidx-compose-foundation-layout", "androidx-compose-material-iconsExtended", "androidx-compose-material3", "androidx-compose-runtime", "androidx-compose-ui-util", "androidx-compose-ui-tooling-preview", "androidx-activity-compose"]

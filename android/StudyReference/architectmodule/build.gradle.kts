@@ -1,3 +1,10 @@
+
+/*
+* 이렇게 호출 하기 위해서는 build-logic 에서 등록한 register 의 클래스 정보와 함께
+* 각 연결된 클래스에 plugin 연결이 필요하다. 여기서는 아래의 코드가 포함되어야지 스크립트 빌드가 된다.
+* apply(plugin = "com.android.application")
+* apply(plugin = "org.jetbrains.kotlin.plugin.compose")
+* */
 plugins {
     alias(libs.plugins.reference.android.application)
     alias(libs.plugins.reference.android.application.compose)

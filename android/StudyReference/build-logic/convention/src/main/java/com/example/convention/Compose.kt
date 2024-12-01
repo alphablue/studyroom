@@ -7,6 +7,12 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 
+/**
+ * 이 함수가 어떻게 확장 되어 있는 가를 확인 하는게 필요할 것으로 보인다. gradle 설정을 확인 해 보면 각 그레이들이 속해 있는 모듈의 타입을
+ * 타입에 따라서 plugins 에 붙는 내용이 달라지는 것을 확인 할 수 있다.
+ * library 로 만들어진 모듈에는 library 가 붙고
+ * application 으로 만들어진 모듈에는 application 으로 확장된 plugin 이 붙는 것을 확인 할 수 있다.
+ * */
 internal fun Project.configureAndroidCompose(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {

@@ -15,7 +15,7 @@ class AndroidComposeConventionPlugin: Plugin<Project> {
             apply(plugin = "com.android.application")
             apply(plugin = "org.jetbrains.kotlin.plugin.compose")
 
-
+            // application 으로 확장 된 것을 확인 가능
             val extension = extensions.getByType<ApplicationExtension>()
             configureAndroidCompose(extension)
         }

@@ -72,5 +72,10 @@ gradlePlugin {
             id = "reference.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
+
+        register("hilt") {
+            id = "study.reference.hilt"
+            implementationClass = ""
+        }
     }
 }

@@ -1,5 +1,5 @@
 [versions]
-agp = "8.7.1" # https://developer.android.com/build/releases/gradle-plugin
+agp = "8.7.2" # https://developer.android.com/build/releases/gradle-plugin
 kotlin = "2.0.20"
 kotlin-ksp = "2.0.21-1.0.25" # https://kotlinlang.org/docs/ksp-quickstart.html#add-a-processor
 core-ktx = "1.13.1"

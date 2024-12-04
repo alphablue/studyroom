@@ -75,7 +75,7 @@ gradlePlugin {
 
         register("hilt") {
             id = "study.reference.hilt"
-            implementationClass = ""
+            implementationClass = "HiltPlugin"
         }
     }
 }

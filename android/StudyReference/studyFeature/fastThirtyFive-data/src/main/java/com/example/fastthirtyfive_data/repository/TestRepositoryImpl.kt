@@ -9,9 +9,9 @@ import com.example.fastthirtyfive_domain.repository.TestRepository
 * 이렇게 하는 이유? response 의 필드가 채워질 것을 확신 할 수 없기 때문 (크래시 발생)
 * */
 class TestRepositoryImpl(
-    val dataSource: TestDataSource
+    private val dataSource: TestDataSource
 ): TestRepository {
-    override fun getTestData(): TestModel {
+    override fun getTestData(): TestModel? {
         return dataSource.getTestModelResponse().toDomainModel()
     }
 }

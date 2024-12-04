@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.reference.android.hilt)
 }
 
 android {
@@ -42,6 +43,10 @@ android {
 dependencies {
 
     implementation(project(":studyFeature:fastThirtyFive-domain"))
+    implementation(project(":studyFeature:fastThirtyFive-data"))
+
+    // 힐트 설정
+    ksp(libs.hilt.compiler)
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

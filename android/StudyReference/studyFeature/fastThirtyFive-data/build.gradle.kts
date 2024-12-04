@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.reference.android.hilt)
 }
 
 android {
@@ -33,8 +34,9 @@ android {
 }
 
 dependencies {
-
     implementation(project(":studyFeature:fastThirtyFive-domain"))
+
+    ksp(libs.hilt.compiler)
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)

@@ -24,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination
@@ -51,8 +52,6 @@ fun GreetingPreview() {
  * older 의 디자인은 material1~2 를 사용하는 경우 api 의 종류가 달라 구현 방법이 다르고
  * new 의 경운 material3 이상을 사용하는 경우로 api 가 개선된 것이다.
  * */
-
-val topLevelDestinations = MainTopLevelDestination.entries
 
 @Composable
 fun ShowMainScreenNew() {
@@ -90,6 +89,7 @@ fun MainScreenNew(
 
     NavigationSuiteScaffold(
         navigationSuiteItems = {
+
             ThirtyFiveNavigationSuiteScope(
                 navigationSuiteScope = this,
                 navigationSuiteItemColors = navigationSuiteItemColors
@@ -152,10 +152,6 @@ fun MainScreenOlder() {
     }
 }
 
-@Composable
-fun MainBottomNavigationBarNew(
-) {
-}
 
 @Composable
 fun MainBottomNavigationBarOlder(
@@ -207,6 +203,8 @@ object NavigationDefaults {
 }
 
 enum class MainTopLevelDestination(
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector,
     val route: KClass<*>,
     val screenName: String
 ) {
@@ -279,4 +277,8 @@ class ThirtyFiveAppState(
                 currentDestination?.hasRoute(route = mainTopLevelDestination.route) == true
             }
         }
+
+    val mainTopLevelDestination: List<MainTopLevelDestination> = MainTopLevelDestination.entries
+
+
 }

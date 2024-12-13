@@ -55,6 +55,9 @@ dependencies {
     api(libs.androidx.compose.material)
     api(libs.bundles.compose.material3)
 
+    // icon extended
+    implementation(libs.androidx.compose.material.iconsExtended)
+    // serialize
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.core.ktx)

@@ -3,6 +3,10 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.reference.android.hilt)
+    id("kotlinx-serialization") // 이걸 쓸 때 build-logic 에서 정의한 feature 과는 별개로 사용해야된다.
+    // 아래처럼 사용하고 싶더라도 .androidApplication 과 .android.hilt 쪽에 정의 해둔 것들의 충돌이 발생해서 불가능
+//    alias(libs.plugins.reference.android.feature)
+//    id("kotlinx-serialization")
 }
 
 android {
@@ -50,6 +54,8 @@ dependencies {
 
     api(libs.androidx.compose.material)
     api(libs.bundles.compose.material3)
+
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

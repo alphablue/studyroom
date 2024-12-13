@@ -1,5 +1,6 @@
 package com.example.fastthirtyfivefinal.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
@@ -17,6 +18,7 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteItemCo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -24,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -31,6 +35,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.fastthirtyfivefinal.R
 import com.example.fastthirtyfivefinal.ui.theme.StudyReferenceTheme
+import kotlinx.serialization.Serializable
+import kotlin.reflect.KClass
 
 
 @Preview(showBackground = true)
@@ -47,6 +53,11 @@ fun GreetingPreview() {
  * */
 
 val topLevelDestinations = MainTopLevelDestination.entries
+
+@Composable
+fun ShowMainScreenNew() {
+
+}
 
 @Composable
 fun MainScreenNew(
@@ -132,7 +143,6 @@ fun MainScreenOlder() {
         bottomBar = {
             MainBottomNavigationBarOlder(navControllerOrder)
         },
-
     ) { paddingValue ->
         Column(
             modifier = Modifier.padding(paddingValue)
@@ -197,13 +207,18 @@ object NavigationDefaults {
 }
 
 enum class MainTopLevelDestination(
-    val route: String,
+    val route: KClass<*>,
     val screenName: String
 ) {
-    MAIN("Main", "Main"),
-    CATEGORY("Category", "Category"),
-    MY_PAGE("MyPage", "MyPage")
+    MAIN(Main::class, "Main"),
+    CATEGORY(Category::class, "Category"),
+    MY_PAGE(MyPage::class, "MyPage")
 }
+
+@Serializable data object Main
+@Serializable data object Category
+@Serializable data object MyPage
+
 
 // 강의 에서 사용하는 방식 -> material3 가 들어오면서 사용하는 방식이 바뀜
 sealed class MainNavigationItem(
@@ -234,4 +249,34 @@ fun MainNavigationScreenOld(navController: NavHostController) {
             Text(text = "Hello MyPage")
         }
     }
+}
+
+@Composable
+fun ThirtyFiveApp() {
+
+}
+
+class ThirtyFiveAppState(
+    val navController: NavHostController
+) {
+    private val previousDestination = mutableStateOf<NavDestination?>(null)
+
+    val currentDestination: NavDestination?
+        @Composable get() {
+            val currentEntry = navController.currentBackStackEntryFlow
+                .collectAsState(initial = null)
+
+            return currentEntry.value?.destination.also { destination ->
+                if (destination != null) {
+                    previousDestination.value = destination
+                }
+            } ?: previousDestination.value
+        }
+
+    val currentTopLevelDestination: MainTopLevelDestination?
+        @Composable get() {
+            return MainTopLevelDestination.entries.firstOrNull { mainTopLevelDestination ->
+                currentDestination?.hasRoute(route = mainTopLevelDestination.route) == true
+            }
+        }
 }

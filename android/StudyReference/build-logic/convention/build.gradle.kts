@@ -42,7 +42,7 @@ dependencies {
     compileOnly(libs.ksp.gradlePlugin)
     /**
      * 이 내용은 kotlin 2.0.0 이후 Dsl 방식을 사용하기 위해 필수로 들어가는 부분이다.
-     * toml 설정시 필요하고 이후에는 
+     * toml 설정시 필요
      * */
     compileOnly(libs.compose.gradlePlugin)
 }
@@ -76,6 +76,11 @@ gradlePlugin {
         register("hilt") {
             id = "study.reference.hilt"
             implementationClass = "HiltPlugin"
+        }
+
+        register("androidFeature") {
+            id = "study.reference.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
         }
     }
 }

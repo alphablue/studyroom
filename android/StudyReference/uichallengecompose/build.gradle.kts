@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.analyticspractice.uichallengecompose"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.analyticspractice.uichallengecompose"
@@ -38,7 +38,7 @@ android {
 dependencies {
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    implementation(libs.material.google)
     implementation(libs.bundles.default.compose.designSystem)
 
     testImplementation(libs.junit)

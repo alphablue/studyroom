@@ -1,11 +1,11 @@
 [versions]
 agp = "8.7.3" # https://developer.android.com/build/releases/gradle-plugin
-kotlin = "2.0.20"
+kotlin = "2.0.21"
 kotlin-ksp = "2.0.21-1.0.25" # https://kotlinlang.org/docs/ksp-quickstart.html#add-a-processor
 core-ktx = "1.15.0"
 junit = "4.13.2"
 espresso-core = "3.6.1"
-material = "1.12.0"
+material-google = "1.12.0"
 
 ## compose lib
 androidxComposeCompiler = "1.5.11"  # https://developer.android.com/jetpack/androidx/releases/compose-compiler
@@ -50,7 +50,7 @@ androixConstraintlayout = "2.2.0"
 
 ## kotlin lib
 kotlinxCoroutines = "1.9.0"
-jetbrainsKotlinJvm = "2.0.20"
+jetbrainsKotlinJvm = "2.0.21"
 lifecycleRuntimeKtx = "2.8.7"
 
 ## java sdk 대응
@@ -73,7 +73,7 @@ core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+material-google = { group = "com.google.android.material", name = "material", version.ref = "material-google" }
 
 # 자바의 sdk 버전별 펑션 대응
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
@@ -106,8 +106,16 @@ androidx-browser = { group = "androidx.browser", name = "browser", version.ref =
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
 androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
+
+## 구버전의 material 기능 scaffold, bottomNavigationBar 와 같은 아키텍처를 제공한다.
+androidx-compose-material = { group = "androidx.compose.material", name = "material" }
+
+## material3로 일반 material 과는 조금 다른 형식의 디자인 툴들을 제공한다.
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
+androidx-compose-material3-adaptive-navigation = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite" }
+
+
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 androidx-compose-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
 androidx-compose-runtime-tracing = { group = "androidx.compose.runtime", name = "runtime-tracing", version.ref = "androidxComposeRuntimeTracing" }
@@ -178,7 +186,8 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 reference-android-hilt = { id = "study.reference.hilt"}
 
 [bundles]
-default-compose-designSystem = ["androidx-compose-foundation", "androidx-compose-foundation-layout", "androidx-compose-material-iconsExtended", "androidx-compose-material3", "androidx-compose-runtime", "androidx-compose-ui-util", "androidx-compose-ui-tooling-preview", "androidx-activity-compose"]
+default-compose-designSystem = ["androidx-compose-foundation", "androidx-compose-foundation-layout", "androidx-compose-material-iconsExtended", "androidx-compose-runtime", "androidx-compose-ui-util", "androidx-compose-ui-tooling-preview", "androidx-activity-compose"]
+compose-material3 = ["androidx-compose-material3", "androidx-compose-material3-adaptive-navigation"]
 android-compose-graphics = ["androidx-compose-animation", "androidx-compose-shape"]
 use-navigation = ["androidx-hilt-compose-navigation" , "androidx-compose-navigation"]
 useful-third-parties = ["third-logger"]

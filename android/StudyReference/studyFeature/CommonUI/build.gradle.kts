@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.study.commonui"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 26
@@ -31,7 +31,7 @@ android {
 dependencies {
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    implementation(libs.material.google)
     implementation(libs.bundles.default.compose.designSystem)
 
     implementation(libs.bundles.android.compose.graphics)

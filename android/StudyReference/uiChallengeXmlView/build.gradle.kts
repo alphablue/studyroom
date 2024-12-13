@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.seojinlee.studyreference"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.seojinlee.studyreference"
@@ -41,7 +41,7 @@ dependencies {
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    implementation(libs.material.google)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.activity.ktx)
 

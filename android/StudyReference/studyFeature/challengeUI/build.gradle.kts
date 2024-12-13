@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.study.challengeui"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 26
@@ -32,7 +32,7 @@ android {
 dependencies {
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    implementation(libs.material.google)
     implementation(libs.bundles.default.compose.designSystem)
 
     testImplementation(libs.junit)

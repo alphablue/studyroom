@@ -12,7 +12,7 @@ plugins {
 
 android {
     namespace = "com.study.architectmodule"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.study.architectmodule"

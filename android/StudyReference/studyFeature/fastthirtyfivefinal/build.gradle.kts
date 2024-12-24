@@ -60,6 +60,10 @@ dependencies {
     // serialize
     implementation(libs.kotlinx.serialization.json)
 
+    // kotlinx lib
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.androidx.dataStore)
+
     implementation(libs.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

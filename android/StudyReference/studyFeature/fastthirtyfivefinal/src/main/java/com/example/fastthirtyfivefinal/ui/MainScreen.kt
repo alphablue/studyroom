@@ -1,8 +1,16 @@
 package com.example.fastthirtyfivefinal.ui
 
-import android.annotation.SuppressLint
+import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -13,29 +21,47 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.WindowAdaptiveInfo
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteItemColors
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import com.example.fastthirtyfivefinal.R
+import com.example.fastthirtyfivefinal.designsystem.icon.ThirtyFiveIcons
+import com.example.fastthirtyfivefinal.ui.screen.category.categorySection
+import com.example.fastthirtyfivefinal.ui.screen.main.mainSection
+import com.example.fastthirtyfivefinal.ui.screen.mypage.myPageSection
 import com.example.fastthirtyfivefinal.ui.theme.StudyReferenceTheme
+import com.example.fastthirtyfivefinal.util.TimeZoneMonitor
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.datetime.TimeZone
 import kotlinx.serialization.Serializable
 import kotlin.reflect.KClass
 
@@ -54,16 +80,125 @@ fun GreetingPreview() {
  * */
 
 @Composable
-fun ShowMainScreenNew() {
+fun ThirtyFiveApp(
+    appState: ThirtyFiveAppState,
+    modifier: Modifier = Modifier,
+    windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
+){
+    val snackbarHostState = remember { androidx.compose.material3.SnackbarHostState() }
 
+    ThirtyFiveAppNew(
+        appState = appState,
+        snackbarHostState = snackbarHostState,
+        windowAdaptiveInfo = windowAdaptiveInfo
+    )
+}
+
+
+@Composable
+internal fun ThirtyFiveAppNew(
+    appState: ThirtyFiveAppState,
+    /**
+     *  한번에 최대 하나의 스낵바를 표시하도록 보장하는 것, 다른 스택바가 이미 표시되어 있는 동안 다른 스택바를 호출하게 되면 잠시 일시 중단 되고
+     *  이후 이전 스택바의 표출이 끝나면 보여지게 된다. 스낵바의 대기열을 세부적으로 제어할 수 있는 기능을 제공한다.
+     * */
+    snackbarHostState: androidx.compose.material3.SnackbarHostState,
+    modifier: Modifier = Modifier,
+    windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
+) {
+    val currentDestination = appState.currentDestination
+
+    ThirtyFiveNavigationSuiteScaffold(
+        navigationSuiteItem = {
+            appState.mainTopLevelDestination.forEach { destination ->
+                val selected = currentDestination
+                    .isRouteInHierarchy(destination.route)
+
+                item(
+                    selected = selected,
+                    onClick = { appState.navigateToTopLevelDestination(destination) },
+                    icon = {
+                        Icon(
+                            imageVector = destination.unselectedIcon,
+                            contentDescription = null,
+                        )
+                    },
+                    selectedIcon = {
+                        Icon(
+                            imageVector = destination.selectedIcon,
+                            contentDescription = null
+                        )
+                    },
+                    label = { Text(stringResource(destination.screenName)) }, // 아이콘 밑에 텍스트를 넣는 것
+                    modifier = Modifier
+                )
+            }
+        },
+        windowAdaptiveInt = windowAdaptiveInfo
+    ) {
+        androidx.compose.material3.Scaffold(
+            modifier = modifier,
+            containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onBackground,
+            contentWindowInsets = WindowInsets(0, 0, 0, 0),
+            snackbarHost = { androidx.compose.material3.SnackbarHost(snackbarHostState) }
+        ) { padding ->
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .consumeWindowInsets(padding)
+                    .windowInsetsPadding(
+                        // sdk 35 의 edge-to-edge 관련하여 새로 추가된 api 로 그려지는 공간에 대하여 콘텐츠가 가려지지 않도록 보장하는 기능을 제공한다.
+                        WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
+                    )
+            ) {
+                val destination = appState.currentTopLevelDestination
+                var shouldShowTopAppBar = false
+
+                if (destination != null) {
+                    shouldShowTopAppBar = true
+                    // TODO : TopAbbBar 디자이 설정
+                }
+
+                Box(
+                    modifier = Modifier.consumeWindowInsets(
+                        if (shouldShowTopAppBar) {
+                            WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
+                        } else {
+                            WindowInsets(0, 0, 0, 0)
+                        }
+                    )
+                ) {
+                    ThirtyFiveNavHostNew(
+                        appState = appState,
+                        onShowSnackbar = { message, action ->
+                            snackbarHostState.showSnackbar(
+                                message = message,
+                                actionLabel = action,
+                                duration = androidx.compose.material3.SnackbarDuration.Short
+                            ) == androidx.compose.material3.SnackbarResult.ActionPerformed
+                        }
+                    )
+                }
+
+            }
+        }
+    }
 }
 
 @Composable
-fun MainScreenNew(
-    navigationSuiteItem: ThirtyFiveNavigationSuiteScope.() -> Unit
+fun ThirtyFiveNavigationSuiteScaffold(
+    navigationSuiteItem: ThirtyFiveNavigationSuiteScope.() -> Unit,
+    modifier: Modifier = Modifier,
+    windowAdaptiveInt: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
+    content: @Composable () -> Unit
 ) {
-    val navController = rememberSaveable { mutableStateOf(MainTopLevelDestination.MAIN) }
+    // adaptive screen info 를 가져오는 것
+    val layoutType = NavigationSuiteScaffoldDefaults
+        .calculateFromAdaptiveInfo(windowAdaptiveInt)
 
+    // 사용자의 화면의 크기별로 적용하는 color 팔렛트
     val navigationSuiteItemColors = NavigationSuiteItemColors(
         navigationBarItemColors = NavigationBarItemDefaults.colors(
             selectedIconColor = NavigationDefaults.navigationSelectedItemColor(),
@@ -89,7 +224,6 @@ fun MainScreenNew(
 
     NavigationSuiteScaffold(
         navigationSuiteItems = {
-
             ThirtyFiveNavigationSuiteScope(
                 navigationSuiteScope = this,
                 navigationSuiteItemColors = navigationSuiteItemColors
@@ -98,9 +232,11 @@ fun MainScreenNew(
         navigationSuiteColors = NavigationSuiteDefaults.colors(
             navigationBarContentColor = NavigationDefaults.navigationContentColor(),
             navigationRailContentColor = Color.Transparent
-        )
+        ),
+        layoutType = layoutType,
+        modifier = modifier
     ) {
-
+        content()
     }
 }
 
@@ -136,18 +272,18 @@ fun MainScreenOlder() {
     val scaffoldState = rememberScaffoldState()
 
     // 일반적인 사용법? 강의에서 사용한 방법
-    val navControllerOrder = rememberNavController()
+    val navControllerOlder = rememberNavController()
 
     Scaffold(
         scaffoldState = scaffoldState, // material3 에서는 또 없어짐
         bottomBar = {
-            MainBottomNavigationBarOlder(navControllerOrder)
+            MainBottomNavigationBarOlder(navControllerOlder)
         },
     ) { paddingValue ->
         Column(
             modifier = Modifier.padding(paddingValue)
         ) {
-            MainNavigationScreenOld(navControllerOrder)
+            MainNavigationScreenOld(navControllerOlder)
         }
     }
 }
@@ -206,16 +342,22 @@ enum class MainTopLevelDestination(
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
     val route: KClass<*>,
-    val screenName: String
+    @StringRes val screenName: Int
 ) {
-    MAIN(Main::class, "Main"),
-    CATEGORY(Category::class, "Category"),
-    MY_PAGE(MyPage::class, "MyPage")
+    MAIN(ThirtyFiveIcons.home, ThirtyFiveIcons.homeFilled, Main::class, R.string.bottom_nav_main),  // TODO : 각 리소스의 정보는 스크린 모듈이 만들어질 때 해당 모듈의 리소스에 넣어줘야 된다, 현재는 app 모듈에 들어가있음
+    CATEGORY(ThirtyFiveIcons.airLineTicket, ThirtyFiveIcons.airLineTicketFilled, Category::class, R.string.bottom_nav_category),
+    MY_PAGE(ThirtyFiveIcons.setting, ThirtyFiveIcons.settingFilled, MyPage::class, R.string.bottom_nav_my_page)
 }
 
+// 공식 가이드에서 직렬화 가능한 객체나 클래스를 사용하라는 권고 사항이 있다. -> In Compose, use a serializable object or class to define a route.
+// tip : Use a data class for a route with arguments, and an object or data object for a route with no arguments.
 @Serializable data object Main
 @Serializable data object Category
 @Serializable data object MyPage
+
+fun NavController.navigateToMain(navOptions: NavOptions) = navigate(route = Main, navOptions = navOptions)
+fun NavController.navigateToCategory(navOptions: NavOptions) = navigate(route = Category, navOptions = navOptions)
+fun NavController.navigateToMyPage(navOptions: NavOptions) = navigate(route = MyPage, navOptions = navOptions)
 
 
 // 강의 에서 사용하는 방식 -> material3 가 들어오면서 사용하는 방식이 바뀜
@@ -230,6 +372,8 @@ sealed class MainNavigationItem(
 
 @Composable
 fun MainNavigationScreenOld(navController: NavHostController) {
+    // NavHost 설계 도면을 수행 할 수 있도록 하는 모듈이고
+    // navController 에서 createGraph() 를 통해서 만들어지거나 navGraphBuilder 로 만들어진 내용은 설계도 이다.
     NavHost(
         navController = navController,
         startDestination = MainNavigationItem.Main.route
@@ -249,18 +393,17 @@ fun MainNavigationScreenOld(navController: NavHostController) {
     }
 }
 
-@Composable
-fun ThirtyFiveApp() {
 
-}
 
 class ThirtyFiveAppState(
-    val navController: NavHostController
+    val navController: NavHostController,
+    coroutineScope: CoroutineScope,
+    timeZoneMonitor: TimeZoneMonitor
 ) {
     private val previousDestination = mutableStateOf<NavDestination?>(null)
 
     val currentDestination: NavDestination?
-        @Composable get() {
+        @Composable get() {  //
             val currentEntry = navController.currentBackStackEntryFlow
                 .collectAsState(initial = null)
 
@@ -280,5 +423,52 @@ class ThirtyFiveAppState(
 
     val mainTopLevelDestination: List<MainTopLevelDestination> = MainTopLevelDestination.entries
 
+    val currentTimeZone = timeZoneMonitor.currentTimeZone
+        .stateIn(
+            coroutineScope,
+            SharingStarted.WhileSubscribed(5_000),
+            TimeZone.currentSystemDefault()
+        )
 
+    fun navigateToTopLevelDestination(topLevelDestination: MainTopLevelDestination) {
+        val topLevelNavOption = navOptions {
+
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+
+            launchSingleTop = true
+            restoreState = true  // saveInstance 적용
+        }
+
+        when (topLevelDestination) {
+            MainTopLevelDestination.MAIN -> navController.navigateToMain(topLevelNavOption)
+            MainTopLevelDestination.CATEGORY -> navController.navigateToCategory(topLevelNavOption)
+            MainTopLevelDestination.MY_PAGE -> navController.navigateToMyPage(topLevelNavOption)
+        }
+    }
 }
+
+@Composable
+fun ThirtyFiveNavHostNew(
+    appState: ThirtyFiveAppState,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
+    modifier: Modifier = Modifier,
+) {
+    val navController = appState.navController
+
+    NavHost(
+        navController = navController,
+        startDestination = Main,
+        modifier = modifier
+    ) {
+        mainSection()
+        categorySection()
+        myPageSection()
+    }
+}
+
+private fun NavDestination?.isRouteInHierarchy(route: KClass<*>) =
+    this?.hierarchy?.any {
+        it.hasRoute(route)
+    } ?: false

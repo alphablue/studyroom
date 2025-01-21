@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_package = "com.example.fastthirtyfivefinal";
+option java_multiple_files = true;
+
+/*
+정의를 했다면 rebuild 를 진행 해줘야 된다. proto 파일에 정의되는 것은 컴파일 타임에 생성되기 때문
+*/
+message TestingPreferences {
+  bool test_ok = 1;
+}

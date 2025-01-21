@@ -36,7 +36,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.compose.material3)
@@ -45,4 +44,8 @@ dependencies {
 
     // third party
     implementation(libs.bundles.useful.third.parties)
+
+    // test junit
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
 }

@@ -7,6 +7,7 @@ plugins {
     // 아래처럼 사용하고 싶더라도 .androidApplication 과 .android.hilt 쪽에 정의 해둔 것들의 충돌이 발생해서 불가능
 //    alias(libs.plugins.reference.android.feature)
 //    id("kotlinx-serialization")
+    alias(libs.plugins.protobuf)
 }
 
 android {
@@ -63,6 +64,7 @@ dependencies {
     // kotlinx lib
     implementation(libs.kotlinx.datetime)
     implementation(libs.androidx.dataStore)
+    implementation(libs.protobuf.kotlin.lite)
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -82,4 +84,26 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.testManifest)
+}
+
+// plugin 을 연결 해야 지만 활용이 가능한 영역
+// 관련 정보는 : https://github.com/google/protobuf-gradle-plugin#customizing-protobuf-compilation 참조
+protobuf {
+    protoc {
+        artifact = libs.protobuf.protoc.get().toString()
+    }
+
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                register("java") {
+                    option("lite")
+                }
+
+                register("kotlin") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }

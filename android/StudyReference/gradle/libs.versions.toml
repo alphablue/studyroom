@@ -1,7 +1,7 @@
 [versions]
 agp = "8.7.3" # https://developer.android.com/build/releases/gradle-plugin
-kotlin = "2.0.21"
-kotlin-ksp = "2.0.21-1.0.25" # https://kotlinlang.org/docs/ksp-quickstart.html#add-a-processor
+kotlin = "2.1.0"
+kotlin-ksp = "2.1.0-1.0.29" # https://kotlinlang.org/docs/ksp-quickstart.html#add-a-processor
 core-ktx = "1.15.0"
 junit = "4.13.2"
 espresso-core = "3.6.1"
@@ -10,8 +10,8 @@ material-google = "1.12.0"
 ## compose lib
 androidxComposeCompiler = "1.5.11"  # https://developer.android.com/jetpack/androidx/releases/compose-compiler
 
-accompanist = "0.36.0"
-androidxActivity = "1.9.3"
+accompanist = "0.37.0"
+androidxActivity = "1.10.0"
 androidxAppCompat = "1.7.0"
 androidxComposeRuntimeTracing = "1.7.6"
 androidxCoreSplashscreen = "1.0.1"
@@ -25,7 +25,7 @@ graphicsAnimation = "1.7.6" # 이미지에 애니메이션 부여 가능,
 graphicsShapes = "1.0.1" # https://developer.android.com/jetpack/androidx/releases/graphics
 
 # 아래는 version.ref 가 없는 compose 들의 import를 하기 위한것
-androidxComposeBom = "2024.12.01" #https://developer.android.com/develop/ui/compose/bom/bom-mapping
+androidxComposeBom = "2025.01.00" #https://developer.android.com/develop/ui/compose/bom/bom-mapping
 
 ## 아키텍처 모듈
 androidxMacroBenchmark = "1.3.3"
@@ -33,17 +33,19 @@ androidxMacroBenchmark = "1.3.3"
 ## common external lib
 glide ="4.15.1"
 coil = "2.7.0"
-hilt = "2.52"
+hilt = "2.54"
 hiltExt = "1.2.0"
 okhttp = "4.12.0"
 
 ## androidX lib common
-androidxActivityKTX = "1.9.3"
+androidxActivityKTX = "1.10.0"
 androidxlifecycleExtensions = "2.2.0"
 androidxWorkKTX = "2.10.0"
 androidFragmentKTX = "1.8.5"
 androidxBrowser = "1.8.0"
-androidxDataStore = "1.1.1"
+androidxDataStore = "1.1.2"
+protobuf = "4.29.2"
+protobufPlugin = "0.9.4"
 
 ## androidX lib TEST
 androidx-test-ext-junit = "1.2.1"
@@ -59,8 +61,8 @@ kotlinxSerializationJson = "1.6.3"
 kotlinxDateTime = "0.6.1" ## 멀티 플랫폼에서 활용 가능한 시간관련 라이브러리, https://github.com/Kotlin/kotlinx-datetime
 
 ## java sdk 대응
-desugarJdkLibs = "2.1.3"
-activity = "1.9.3"
+desugarJdkLibs = "2.1.4"
+activity = "1.10.0"
 
 ## third party
 # 로거
@@ -150,8 +152,13 @@ androidx-lifecycle-extensions = { group = "androidx.lifecycle", name = "lifecycl
 androidx-work-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWorkKTX" }
 androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidFragmentKTX" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDateTime" }
+
+## protocol buffer 를 사용하기 위한 세트(데이터 스토어랑 함께 사용됨)
 androidx-dataStore = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
 androidx-dataStore-core = { group = "androidx.datastore", name = "datastore-core", version.ref = "androidxDataStore" }
+protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
+protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
+
 
 ## xml view lib
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androixConstraintlayout" }
@@ -199,6 +206,9 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 #힐트 설정 (build-logic의 그레이들 참고)
 reference-android-hilt = { id = "study.reference.hilt"}
 reference-android-feature = { id = "study.reference.feature"}
+
+# DataStore 설정, protobuf 플러긴을 지정해 줘야 된다.
+protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin"}
 
 [bundles]
 default-compose-designSystem = ["androidx-compose-foundation", "androidx-compose-foundation-layout", "androidx-compose-material-iconsExtended", "androidx-compose-runtime", "androidx-compose-ui-util", "androidx-compose-ui-tooling-preview", "androidx-activity-compose"]

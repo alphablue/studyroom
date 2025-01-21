@@ -73,42 +73,42 @@ class ToyStartActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         // NFC 태그 읽기
-        val nfcText = readNFCTag(intent)
-
-        if (nfcText.isEmpty()) {
-            Toast.makeText(this, "Read Nfc Tag: $nfcText", Toast.LENGTH_LONG).show()
-        }
+//        val nfcText = readNFCTag(intent)
+//
+//        if (nfcText.isEmpty()) {
+//            Toast.makeText(this, "Read Nfc Tag: $nfcText", Toast.LENGTH_LONG).show()
+//        }
     }
 
-    private fun readNFCTag(intent: Intent) : String {
-        if(NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
-            val ndef: Ndef? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                Ndef.get(intent.getParcelableExtra(NfcAdapter.EXTRA_TAG, Tag::class.java))
-            } else {
-                Ndef.get(intent.getParcelableExtra(NfcAdapter.EXTRA_TAG))
-            }
-
-            ndef?.let {
-                ndef.use {
-
-                    try {
-                        it.connect()
-                        val ndefMessage = ndef.ndefMessage
-                        val records = ndefMessage.records
-
-                        if (records.isNotEmpty()) {
-                            val payload = String(records.first().payload, StandardCharsets.UTF_8)
-                            return payload
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    } finally {
-
-                    }
-                }
-
-            }
-        }
-        return ""
-    }
+//    private fun readNFCTag(intent: Intent) : String {
+//        if(NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
+//            val ndef: Ndef? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//                Ndef.get(intent.getParcelableExtra(NfcAdapter.EXTRA_TAG, Tag::class.java))
+//            } else {
+//                Ndef.get(intent.getParcelableExtra(NfcAdapter.EXTRA_TAG))
+//            }
+//
+//            ndef?.let {
+//                ndef.use {
+//
+//                    try {
+//                        it.connect()
+//                        val ndefMessage = ndef.ndefMessage
+//                        val records = ndefMessage.records
+//
+//                        if (records.isNotEmpty()) {
+//                            val payload = String(records.first().payload, StandardCharsets.UTF_8)
+//                            return payload
+//                        }
+//                    } catch (e: Exception) {
+//                        e.printStackTrace()
+//                    } finally {
+//
+//                    }
+//                }
+//
+//            }
+//        }
+//        return ""
+//    }
 }

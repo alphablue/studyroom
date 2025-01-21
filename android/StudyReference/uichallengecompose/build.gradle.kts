@@ -41,6 +41,8 @@ dependencies {
     implementation(libs.material.google)
     implementation(libs.bundles.default.compose.designSystem)
 
+    api(libs.androidx.compose.material3)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -35,7 +35,7 @@ class FastThirtyFiveFinalActivity : ComponentActivity() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("testeste")
+                Text("test test test")
             }
         }
     }

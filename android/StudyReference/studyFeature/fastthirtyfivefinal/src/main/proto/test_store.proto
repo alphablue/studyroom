@@ -5,7 +5,11 @@ option java_multiple_files = true;
 
 /*
 정의를 했다면 rebuild 를 진행 해줘야 된다. proto 파일에 정의되는 것은 컴파일 타임에 생성되기 때문
+
+protocol buffer의 github
+: https://github.com/protocolbuffers/protobuf
 */
 message TestingPreferences {
   bool test_ok = 1;
+  int32 test_int = 2;
 }

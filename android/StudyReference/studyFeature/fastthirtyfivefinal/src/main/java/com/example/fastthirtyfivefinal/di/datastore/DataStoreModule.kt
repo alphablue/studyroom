@@ -32,8 +32,7 @@ object DataStoreModule {
     ): DataStore<TestingPreferences> =
         DataStoreFactory.create(
             serializer = testingPreferencesSerializer,
-            scope = CoroutineScope(scope.coroutineContext + ioDispatcher),
-            migrations = listOf()
+            scope = CoroutineScope(scope.coroutineContext + ioDispatcher)
         ) {
             context.dataStoreFile("testing_prefs.pb")
         }

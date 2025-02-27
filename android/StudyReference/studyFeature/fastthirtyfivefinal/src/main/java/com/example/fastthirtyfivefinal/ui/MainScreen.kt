@@ -15,6 +15,10 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -33,6 +37,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -80,8 +85,8 @@ fun GreetingPreview() {
  * */
 
 @Composable
-fun ThirtyFiveApp(
-    appState: ThirtyFiveAppState,
+fun EntryThirtyFiveAppNew(
+    appState: ThirtyFiveAppNewState,
     modifier: Modifier = Modifier,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
 ){
@@ -97,7 +102,7 @@ fun ThirtyFiveApp(
 
 @Composable
 internal fun ThirtyFiveAppNew(
-    appState: ThirtyFiveAppState,
+    appState: ThirtyFiveAppNewState,
     /**
      *  한번에 최대 하나의 스낵바를 표시하도록 보장하는 것, 다른 스택바가 이미 표시되어 있는 동안 다른 스택바를 호출하게 되면 잠시 일시 중단 되고
      *  이후 이전 스택바의 표출이 끝나면 보여지게 된다. 스낵바의 대기열을 세부적으로 제어할 수 있는 기능을 제공한다.
@@ -275,6 +280,10 @@ fun MainScreenOlder() {
     val navControllerOlder = rememberNavController()
 
     Scaffold(
+        // 상단 바
+        topBar = {
+
+        },
         scaffoldState = scaffoldState, // material3 에서는 또 없어짐
         bottomBar = {
             MainBottomNavigationBarOlder(navControllerOlder)
@@ -288,6 +297,10 @@ fun MainScreenOlder() {
     }
 }
 
+@Composable
+fun Header() {
+
+}
 
 @Composable
 fun MainBottomNavigationBarOlder(
@@ -308,6 +321,7 @@ fun MainBottomNavigationBarOlder(
 
         bottomNavigationItems.forEach { item ->
             BottomNavigationItem(
+                icon = { Icon(item.icon, item.name) },
                 selected = currentRoute == item.route,
                 onClick = {
                     navigationController.navigate(item.route) {
@@ -321,7 +335,6 @@ fun MainBottomNavigationBarOlder(
                         restoreState = true  // activity 나 fragment 에서 saveInstanceState 값을 넣어줄지 말지를 결정하는 것
                     }
                 },
-                icon = { Icon(painterResource(R.drawable.baseline_smart_button_24), contentDescription = item.route)}
             )
         }
     }
@@ -363,11 +376,12 @@ fun NavController.navigateToMyPage(navOptions: NavOptions) = navigate(route = My
 // 강의 에서 사용하는 방식 -> material3 가 들어오면서 사용하는 방식이 바뀜
 sealed class MainNavigationItem(
     val route: String,
+    val icon: ImageVector,
     val name: String
 ) {
-    data object Main: MainNavigationItem("Main", "Main")
-    data object Category: MainNavigationItem("Category", "Category")
-    data object MyPage: MainNavigationItem("MyPage", "MyPage")
+    data object Main: MainNavigationItem("Main", Icons.Filled.Home, "Main")
+    data object Category: MainNavigationItem("Category", Icons.Filled.Star, "Category")
+    data object MyPage: MainNavigationItem("MyPage", Icons.Filled.AccountBox, "MyPage")
 }
 
 @Composable
@@ -393,9 +407,25 @@ fun MainNavigationScreenOld(navController: NavHostController) {
     }
 }
 
+@Composable
+fun rememberFiveAppState(
+    timeZoneMonitor: TimeZoneMonitor,
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    navController: NavHostController = rememberNavController()
+): ThirtyFiveAppNewState {
+    return remember(
+        coroutineScope,
+        navController,
+    ) {
+        ThirtyFiveAppNewState(
+            navController = navController,
+            coroutineScope = coroutineScope,
+            timeZoneMonitor = timeZoneMonitor
+        )
+    }
+}
 
-
-class ThirtyFiveAppState(
+class ThirtyFiveAppNewState(
     val navController: NavHostController,
     coroutineScope: CoroutineScope,
     timeZoneMonitor: TimeZoneMonitor
@@ -451,12 +481,13 @@ class ThirtyFiveAppState(
 
 @Composable
 fun ThirtyFiveNavHostNew(
-    appState: ThirtyFiveAppState,
+    appState: ThirtyFiveAppNewState,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     modifier: Modifier = Modifier,
 ) {
     val navController = appState.navController
 
+    // 실제 navigation graph 를 생성하는 곳
     NavHost(
         navController = navController,
         startDestination = Main,

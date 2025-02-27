@@ -5,10 +5,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.fastthirtyfivefinal.ui.Main
+import com.example.fastthirtyfivefinal.ui.MyPage
 
 fun NavGraphBuilder.myPageSection() {
-    composable<Main> {
+    composable<MyPage> {
         MyPageScreen()
     }
 }

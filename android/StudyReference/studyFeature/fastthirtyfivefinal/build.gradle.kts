@@ -52,6 +52,7 @@ dependencies {
 
     // 힐트 설정
     ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.compose.navigation)
 
     api(libs.androidx.compose.material)
     api(libs.bundles.compose.material3)

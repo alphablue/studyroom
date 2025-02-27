@@ -1,5 +1,6 @@
 package com.example.fastthirtyfivefinal.ui
 
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,10 +15,13 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.MaterialTheme
@@ -34,6 +38,7 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,9 +46,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -63,6 +70,7 @@ import com.example.fastthirtyfivefinal.ui.screen.main.mainSection
 import com.example.fastthirtyfivefinal.ui.screen.mypage.myPageSection
 import com.example.fastthirtyfivefinal.ui.theme.StudyReferenceTheme
 import com.example.fastthirtyfivefinal.util.TimeZoneMonitor
+import com.example.fastthirtyfivefinal.viewmodel.MainViewModelOld
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -274,6 +282,9 @@ class ThirtyFiveNavigationSuiteScope internal constructor(
 
 @Composable
 fun MainScreenOlder() {
+    // hilt-navigation-compose 를 추가 해줘야지만 사용 가능하다.
+    val viewModel = hiltViewModel<MainViewModelOld>()
+
     val scaffoldState = rememberScaffoldState()
 
     // 일반적인 사용법? 강의에서 사용한 방법
@@ -282,7 +293,7 @@ fun MainScreenOlder() {
     Scaffold(
         // 상단 바
         topBar = {
-
+            HeaderOld(viewModel)
         },
         scaffoldState = scaffoldState, // material3 에서는 또 없어짐
         bottomBar = {
@@ -298,8 +309,21 @@ fun MainScreenOlder() {
 }
 
 @Composable
-fun Header() {
-
+fun HeaderOld(
+    viewModel: MainViewModelOld
+) {
+    TopAppBar(
+        title = { Text("My App") },
+        actions = {
+            IconButton(
+                onClick = {
+                    viewModel.openSearchForm()
+                }
+            ) {
+                Icon(Icons.Filled.Search, "SearchIcon")
+            }
+        }
+    )
 }
 
 @Composable

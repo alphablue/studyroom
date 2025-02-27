@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.reference.android.hilt)
+    alias(libs.plugins.reference.android.room)
 }
 
 android {

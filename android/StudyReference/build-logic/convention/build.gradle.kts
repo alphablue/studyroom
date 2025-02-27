@@ -40,6 +40,7 @@ dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.room.gradlePlugin)
     /**
      * 이 내용은 kotlin 2.0.0 이후 Dsl 방식을 사용하기 위해 필수로 들어가는 부분이다.
      * toml 설정시 필요
@@ -81,6 +82,11 @@ gradlePlugin {
         register("androidFeature") {
             id = "study.reference.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
+        }
+
+        register("androidRoom") {
+            id = "study.reference.room"
+            implementationClass = "AndroidRoomConventionPlugin"
         }
     }
 }

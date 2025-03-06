@@ -1,5 +1,8 @@
 package com.example.fastthirtyfive_domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ThirtyFiveProduct(
     val productId: String,
     val productName: String,
@@ -11,6 +14,7 @@ data class ThirtyFiveProduct(
     val isFreeShipping: Boolean,
 )
 
+@Serializable
 data class ThirtyFivePrice(
     val originPrice: Int,
     val finalPrice: Int,

@@ -1,5 +1,9 @@
 package com.example.fastthirtyfive_domain.model
 
+import kotlinx.serialization.Serializable
+
+
+@Serializable
 sealed class ThirtyFiveCategory(
     val categoryId: String,
     val categoryName: String,

@@ -1,6 +1,5 @@
 package com.example.fastthirtyfivefinal.ui
 
-import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,7 +37,6 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,8 +44,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -65,6 +61,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.example.fastthirtyfivefinal.R
 import com.example.fastthirtyfivefinal.designsystem.icon.ThirtyFiveIcons
+import com.example.fastthirtyfivefinal.ui.main.ThirtyFiveMainInsideScreen
 import com.example.fastthirtyfivefinal.ui.screen.category.categorySection
 import com.example.fastthirtyfivefinal.ui.screen.main.mainSection
 import com.example.fastthirtyfivefinal.ui.screen.mypage.myPageSection
@@ -303,7 +300,10 @@ fun MainScreenOlder() {
         Column(
             modifier = Modifier.padding(paddingValue)
         ) {
-            MainNavigationScreenOld(navControllerOlder)
+            MainNavigationScreenOld(
+                navController = navControllerOlder,
+                mainViewModelOld = viewModel
+            )
         }
     }
 }
@@ -409,7 +409,10 @@ sealed class MainNavigationItem(
 }
 
 @Composable
-fun MainNavigationScreenOld(navController: NavHostController) {
+fun MainNavigationScreenOld(
+    navController: NavHostController,
+    mainViewModelOld: MainViewModelOld
+) {
     // NavHost 설계 도면을 수행 할 수 있도록 하는 모듈이고
     // navController 에서 createGraph() 를 통해서 만들어지거나 navGraphBuilder 로 만들어진 내용은 설계도 이다.
     NavHost(
@@ -418,7 +421,7 @@ fun MainNavigationScreenOld(navController: NavHostController) {
     ) {
         // composable 은 navigation 에 존재하는 route 기능을 제공하기 위함
         composable(MainNavigationItem.Main.route) {
-            Text(text = "Hello Main")
+            ThirtyFiveMainInsideScreen(mainViewModelOld)
         }
 
         composable(MainNavigationItem.Category.route) {

@@ -15,7 +15,7 @@ class ThirtyFiveRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ): ThirtyFiveRepository {
     override fun getProductList(): Flow<List<ThirtyFiveProduct>> = flow {
-        val inputStream = context.assets.open("product_list.json")
+        val inputStream = context.assets.open("study_thirty_five_product_list.json")
         val inputStreamReader = InputStreamReader(inputStream)
         val jsonString = inputStreamReader.readText()
 
@@ -24,7 +24,13 @@ class ThirtyFiveRepositoryImpl @Inject constructor(
 //        val type = object: TypeToken<List<ThirtyFiveProduct>>() {}.type
 //        return GsonBuilder().create().fromJson(jsonString, type)
 
-        val jsonElement = Json.parseToJsonElement(jsonString)
+//        val jsonElement = Json.parseToJsonElement(jsonString)
+
+        val jsonBuilder = Json {
+            ignoreUnknownKeys = true
+        }
+
+        val jsonElement = jsonBuilder.parseToJsonElement(jsonString)
 
         emit(Json.decodeFromJsonElement(jsonElement))
     }

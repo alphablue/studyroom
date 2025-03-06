@@ -24,13 +24,13 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.fastthirtyfive_domain.model.ThirtyFiveCategory
 import com.example.fastthirtyfive_domain.model.ThirtyFivePrice
 import com.example.fastthirtyfive_domain.model.ThirtyFiveProduct
 import com.example.fastthirtyfive_domain.model.ThirtyFiveSalesStatus.ON_DISCOUNT
 import com.example.fastthirtyfive_domain.model.ThirtyFiveSalesStatus.ON_SALE
 import com.example.fastthirtyfive_domain.model.ThirtyFiveSalesStatus.SOLD_OUT
 import com.example.fastthirtyfive_domain.model.ThirtyFiveShop
+import com.example.fastthirtyfive_domain.model.Top
 import com.example.fastthirtyfivefinal.R
 import com.example.fastthirtyfivefinal.ui.theme.Purple200
 
@@ -124,6 +124,7 @@ private fun Price(
 private fun PreviewProductCard() {
     ThirtyFiveProductCard(
         product = ThirtyFiveProduct(
+            type = "PRODUCT",
             productId = "1",
             productName = "상품 이름",
             imageUrl = "",
@@ -132,7 +133,7 @@ private fun PreviewProductCard() {
                 300000,
                 ON_SALE,
             ),
-            category = ThirtyFiveCategory.Top,
+            category = Top,
             shop = ThirtyFiveShop(
                 "1",
                 "샵 이름",
@@ -151,6 +152,7 @@ private fun PreviewProductCard() {
 private fun PreviewProductCardDisCount() {
     ThirtyFiveProductCard(
         product = ThirtyFiveProduct(
+            type = "PRODUCT",
             productId = "1",
             productName = "상품 이름",
             imageUrl = "",
@@ -159,7 +161,7 @@ private fun PreviewProductCardDisCount() {
                 20000,
                 ON_DISCOUNT,
             ),
-            category = ThirtyFiveCategory.Top,
+            category = Top,
             shop = ThirtyFiveShop(
                 "1",
                 "샵 이름",
@@ -178,6 +180,7 @@ private fun PreviewProductCardDisCount() {
 private fun PreviewProductCardSoldOut() {
     ThirtyFiveProductCard(
         product = ThirtyFiveProduct(
+            type = "PRODUCT",
             productId = "1",
             productName = "상품 이름",
             imageUrl = "",
@@ -186,7 +189,7 @@ private fun PreviewProductCardSoldOut() {
                 30000,
                 SOLD_OUT,
             ),
-            category = ThirtyFiveCategory.Top,
+            category = Top,
             shop = ThirtyFiveShop(
                 "1",
                 "샵 이름",

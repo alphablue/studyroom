@@ -1,9 +1,11 @@
 package com.example.fastthirtyfive_domain.model
 
+import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ThirtyFiveProduct(
+    val type: String,
     val productId: String,
     val productName: String,
     val imageUrl: String,

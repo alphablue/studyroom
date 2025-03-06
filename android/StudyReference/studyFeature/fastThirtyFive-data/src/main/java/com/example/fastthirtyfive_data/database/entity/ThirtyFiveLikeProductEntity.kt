@@ -13,6 +13,7 @@ import com.example.fastthirtyfive_domain.model.ThirtyFiveShop
 @Entity(tableName = "thirty_five_like")
 @TypeConverters(ThirtyFiveLikeConverter::class)
 data class ThirtyFiveLikeProductEntity(
+    val type: String,
     @PrimaryKey val productId: String,
     val productName: String,
     val imageUrl: String,
@@ -25,6 +26,7 @@ data class ThirtyFiveLikeProductEntity(
 
 fun ThirtyFiveLikeProductEntity.toDomainModel(): ThirtyFiveProduct {
     return ThirtyFiveProduct(
+        type = type,
         productId = productId,
         productName = productName,
         imageUrl = imageUrl,

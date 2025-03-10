@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -50,7 +52,6 @@ fun ThirtyFiveProductCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(320.dp)
                 .padding(10.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
@@ -58,9 +59,10 @@ fun ThirtyFiveProductCard(
             Image(
                 painter = painterResource(id = R.drawable.thirty_five_product_image),
                 contentDescription = "product_image",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .wrapContentWidth(Alignment.End)
+                    .aspectRatio(1f) // 이미지의 비율에 맞춰서 들어감
             )
             Text(
                 fontSize = 14.sp,
@@ -86,14 +88,14 @@ private fun Price(
             Text(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                text = "${product.price.originPrice}"
+                text = "${product.price.originPrice}원"
             )
         }
         ON_DISCOUNT -> {
             Text(
                 fontSize = 14.sp,
                 style = TextStyle(textDecoration = TextDecoration.LineThrough),
-                text = "${product.price.originPrice}"
+                text = "${product.price.originPrice}원"
             )
             Row {
                 Text(
@@ -105,7 +107,7 @@ private fun Price(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Purple200,
-                    text = "${product.price.finalPrice}"
+                    text = "${product.price.finalPrice}원"
                 )
             }
         }

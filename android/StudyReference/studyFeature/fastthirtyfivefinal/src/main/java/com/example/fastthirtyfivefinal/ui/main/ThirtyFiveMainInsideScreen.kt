@@ -1,6 +1,8 @@
 package com.example.fastthirtyfivefinal.ui.main
 
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -14,7 +16,7 @@ fun ThirtyFiveMainInsideScreen(
     // state를 통해서 viewmodel 을 가져온다?
     val productList by mainViewModel.productList.collectAsState(initial = listOf())
 
-    LazyColumn {
+    LazyVerticalGrid(columns = GridCells.Fixed(2)) {
         items(productList.size) {
             ThirtyFiveProductCard(
                 product = productList[it]

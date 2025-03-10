@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fastthirtyfivefinal.ui.theme.StudyReferenceTheme
 import com.example.fastthirtyfivefinal.util.TimeZoneMonitor
+import com.example.fastthirtyfivefinal.viewmodel.MainViewModelOld
 import com.example.fastthirtyfivefinal.viewmodel.TempViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -60,7 +61,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class FastThirtyFiveFinalActivity : ComponentActivity() {
 
-    private val viewModel: TempViewModel by viewModels()
+//    private val viewModel: TempViewModel by viewModels()
+    private val thirtyFiveMainViewModel: MainViewModelOld by viewModels()
 
     @Inject
     lateinit var timeZoneMonitor: TimeZoneMonitor
@@ -113,6 +115,22 @@ class FastThirtyFiveFinalActivity : ComponentActivity() {
             // material 2 컴포넌트 적용
             ShowOldVersion()
         }
+        // 화면의 사이즈가 다양한데 변화에 맞게 보여줄 아이템의 갯수를 조절하기 위한 부분
+        thirtyFiveMainViewModel.updateColumnCount(getColumnCount())
+    }
+
+    private fun getColumnCount(): Int {
+        return getDisplayWidthDp().toInt() / DEFAULT_COLUMN_SIZE
+    }
+
+    // 현재 디스플레이의 dp 값을 가져오는 방법
+    // window manager 를 통해서 가져오는 방법도 있지만 deprecated 되었다.
+    private fun getDisplayWidthDp(): Float {
+        return resources.displayMetrics.run { widthPixels / density }
+    }
+
+    companion object {
+        private const val DEFAULT_COLUMN_SIZE = 160
     }
 }
 

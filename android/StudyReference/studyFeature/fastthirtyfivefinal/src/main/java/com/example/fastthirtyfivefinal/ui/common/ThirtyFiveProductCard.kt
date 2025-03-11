@@ -79,7 +79,7 @@ fun ThirtyFiveProductCard(
 
 // 할인상품 확인
 @Composable
-private fun Price(
+fun Price(
     product: ThirtyFiveProduct
 ) {
     when (product.price.salesStatus) {

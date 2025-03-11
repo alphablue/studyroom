@@ -2,7 +2,9 @@ package com.example.fastthirtyfive_data.repository
 
 import android.content.Context
 import com.example.fastthirtyfive_domain.model.ThirtyFiveBanner
+import com.example.fastthirtyfive_domain.model.ThirtyFiveBannerList
 import com.example.fastthirtyfive_domain.model.ThirtyFiveBaseModel
+import com.example.fastthirtyfive_domain.model.ThirtyFiveCarousel
 import com.example.fastthirtyfive_domain.model.ThirtyFiveProduct
 import com.example.fastthirtyfive_domain.repository.ThirtyFiveRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -50,6 +52,8 @@ class ThirtyFiveRepositoryImpl @Inject constructor(
             serializersModule = SerializersModule {
                 polymorphic(ThirtyFiveBaseModel::class) {
                     subclass(ThirtyFiveBanner::class)
+                    subclass(ThirtyFiveBannerList::class)
+                    subclass(ThirtyFiveCarousel::class)
                     defaultDeserializer { ThirtyFiveProduct.serializer() }
                 }
             }

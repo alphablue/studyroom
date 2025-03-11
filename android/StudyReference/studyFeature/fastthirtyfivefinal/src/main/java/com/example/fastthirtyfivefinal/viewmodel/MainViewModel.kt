@@ -2,6 +2,9 @@ package com.example.fastthirtyfivefinal.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.fastthirtyfive_domain.model.ThirtyFiveBanner
+import com.example.fastthirtyfive_domain.model.ThirtyFiveBannerList
+import com.example.fastthirtyfive_domain.model.ThirtyFiveProduct
 import com.example.fastthirtyfive_domain.usecase.ThirtyFiveMainUseCase
 import com.example.fastthirtyfivefinal.util.d
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,6 +33,22 @@ class MainViewModelOld @Inject constructor(
         viewModelScope.launch {
             _columnCount.emit(count)
         }
+    }
+
+    fun openProduct(product: ThirtyFiveProduct) {
+
+    }
+
+    fun openCarouselProduct(prodcut: ThirtyFiveProduct) {
+
+    }
+
+    fun openBanner(banner: ThirtyFiveBanner) {
+
+    }
+
+    fun openBannerList(banner: ThirtyFiveBannerList) {
+
     }
 
     // 가능하면 하드로 들어가는 값들은 상수로 빼서 관리하는게 좋다.

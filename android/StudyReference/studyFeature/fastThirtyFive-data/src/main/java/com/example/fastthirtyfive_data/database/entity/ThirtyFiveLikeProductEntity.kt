@@ -3,7 +3,6 @@ package com.example.fastthirtyfive_data.database.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.fastthirtyfive_data.database.converter.ThirtyFiveBasketConverter
 import com.example.fastthirtyfive_data.database.converter.ThirtyFiveLikeConverter
 import com.example.fastthirtyfive_domain.model.ThirtyFiveCategory
 import com.example.fastthirtyfive_domain.model.ThirtyFivePrice
@@ -13,7 +12,6 @@ import com.example.fastthirtyfive_domain.model.ThirtyFiveShop
 @Entity(tableName = "thirty_five_like")
 @TypeConverters(ThirtyFiveLikeConverter::class)
 data class ThirtyFiveLikeProductEntity(
-    val type: String,
     @PrimaryKey val productId: String,
     val productName: String,
     val imageUrl: String,
@@ -26,7 +24,6 @@ data class ThirtyFiveLikeProductEntity(
 
 fun ThirtyFiveLikeProductEntity.toDomainModel(): ThirtyFiveProduct {
     return ThirtyFiveProduct(
-        type = type,
         productId = productId,
         productName = productName,
         imageUrl = imageUrl,

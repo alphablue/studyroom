@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -126,7 +125,6 @@ private fun Price(
 private fun PreviewProductCard() {
     ThirtyFiveProductCard(
         product = ThirtyFiveProduct(
-            type = "PRODUCT",
             productId = "1",
             productName = "상품 이름",
             imageUrl = "",
@@ -154,7 +152,6 @@ private fun PreviewProductCard() {
 private fun PreviewProductCardDisCount() {
     ThirtyFiveProductCard(
         product = ThirtyFiveProduct(
-            type = "PRODUCT",
             productId = "1",
             productName = "상품 이름",
             imageUrl = "",
@@ -170,7 +167,7 @@ private fun PreviewProductCardDisCount() {
                 "",
             ),
             isNew = false,
-            isFreeShipping = false
+            isFreeShipping = false,
         ),
     ) {
 
@@ -182,7 +179,6 @@ private fun PreviewProductCardDisCount() {
 private fun PreviewProductCardSoldOut() {
     ThirtyFiveProductCard(
         product = ThirtyFiveProduct(
-            type = "PRODUCT",
             productId = "1",
             productName = "상품 이름",
             imageUrl = "",
@@ -198,7 +194,7 @@ private fun PreviewProductCardSoldOut() {
                 "",
             ),
             isNew = false,
-            isFreeShipping = false
+            isFreeShipping = false,
         ),
     ) {
 

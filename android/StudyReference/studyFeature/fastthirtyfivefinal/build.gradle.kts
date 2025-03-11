@@ -85,6 +85,7 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.testManifest)
+    implementation(libs.androidx.test.rules)
 }
 
 // plugin 을 연결 해야 지만 활용이 가능한 영역

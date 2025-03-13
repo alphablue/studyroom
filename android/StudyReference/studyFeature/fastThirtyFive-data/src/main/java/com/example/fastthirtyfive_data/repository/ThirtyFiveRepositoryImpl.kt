@@ -6,6 +6,7 @@ import com.example.fastthirtyfive_domain.model.ThirtyFiveBannerList
 import com.example.fastthirtyfive_domain.model.ThirtyFiveBaseModel
 import com.example.fastthirtyfive_domain.model.ThirtyFiveCarousel
 import com.example.fastthirtyfive_domain.model.ThirtyFiveProduct
+import com.example.fastthirtyfive_domain.model.ThirtyFiveRanking
 import com.example.fastthirtyfive_domain.repository.ThirtyFiveRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -54,6 +55,7 @@ class ThirtyFiveRepositoryImpl @Inject constructor(
                     subclass(ThirtyFiveBanner::class)
                     subclass(ThirtyFiveBannerList::class)
                     subclass(ThirtyFiveCarousel::class)
+                    subclass(ThirtyFiveRanking::class)
                     defaultDeserializer { ThirtyFiveProduct.serializer() }
                 }
             }

@@ -11,10 +11,12 @@ import com.example.fastthirtyfive_domain.model.ThirtyFiveBannerList
 import com.example.fastthirtyfive_domain.model.ThirtyFiveBaseModel
 import com.example.fastthirtyfive_domain.model.ThirtyFiveCarousel
 import com.example.fastthirtyfive_domain.model.ThirtyFiveProduct
+import com.example.fastthirtyfive_domain.model.ThirtyFiveRanking
 import com.example.fastthirtyfivefinal.ui.common.ThirtyFiveBannerCard
 import com.example.fastthirtyfivefinal.ui.common.ThirtyFiveBannerListCard
 import com.example.fastthirtyfivefinal.ui.common.ThirtyFiveCarouselCard
 import com.example.fastthirtyfivefinal.ui.common.ThirtyFiveProductCard
+import com.example.fastthirtyfivefinal.ui.common.ThirtyFiveRankingCard
 import com.example.fastthirtyfivefinal.viewmodel.MainViewModelOld
 
 @Composable
@@ -39,6 +41,7 @@ fun ThirtyFiveMainInsideScreen(
                 is ThirtyFiveBanner -> ThirtyFiveBannerCard(model = item) { banner -> mainViewModel.openBanner(banner)}
                 is ThirtyFiveBannerList -> ThirtyFiveBannerListCard(model = item) {banner -> mainViewModel.openBannerList(banner)}
                 is ThirtyFiveCarousel -> ThirtyFiveCarouselCard(item) { product-> mainViewModel.openCarouselProduct(product) }
+                is ThirtyFiveRanking -> ThirtyFiveRankingCard(item) { product-> mainViewModel.openRankingProduct(product) }
             }
         }
     }
@@ -51,7 +54,8 @@ private fun getSpanCountByTypes(
 ) : Int {
     return when(type) {
         is ThirtyFiveProduct -> { 1 }
-        is ThirtyFiveBanner, is ThirtyFiveBannerList-> { defaultColumnCount }
+        is ThirtyFiveBanner, is ThirtyFiveBannerList,
+            is ThirtyFiveCarousel, is ThirtyFiveRanking -> { defaultColumnCount }
         else -> { 1 }
     }
 }

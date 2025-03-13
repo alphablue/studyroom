@@ -39,7 +39,11 @@ class MainViewModelOld @Inject constructor(
 
     }
 
-    fun openCarouselProduct(prodcut: ThirtyFiveProduct) {
+    fun openCarouselProduct(product: ThirtyFiveProduct) {
+
+    }
+
+    fun openRankingProduct(product: ThirtyFiveProduct) {
 
     }
 

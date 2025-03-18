@@ -20,7 +20,7 @@ import com.example.fastthirtyfivefinal.ui.common.ThirtyFiveRankingCard
 import com.example.fastthirtyfivefinal.viewmodel.MainViewModelOld
 
 @Composable
-fun ThirtyFiveMainInsideScreen(
+fun ThirtyFiveMainHomeScreen(
     mainViewModel: MainViewModelOld
 ) {
     // state를 통해서 viewmodel 을 가져온다?

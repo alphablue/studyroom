@@ -8,6 +8,7 @@ plugins {
 //    alias(libs.plugins.reference.android.feature)
 //    id("kotlinx-serialization")
     alias(libs.plugins.protobuf)
+    id("kotlin-parcelize") // parcelable 객체를 kotlin-serialization 에서 사용하기 위해 쓰는 것
 }
 
 android {

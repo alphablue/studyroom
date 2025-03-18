@@ -198,6 +198,7 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 room = { id = "androidx.room", version.ref = "room" }
 
 ## 프로젝트 내부에서 정의하는 정보 (각 모듈을 어떤 타입으로 빌드할 것인가에 대한 설정 값과 동일 하다. application 으로 하게되면 app 모듈이 되고 library로 하면 라이브러리 모듈이 된다.)

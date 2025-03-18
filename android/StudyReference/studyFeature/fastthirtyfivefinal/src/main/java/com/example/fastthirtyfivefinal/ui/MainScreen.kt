@@ -18,10 +18,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -54,14 +51,19 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.navigation.navOptions
+import com.example.fastthirtyfive_domain.model.ThirtyFiveCategory
 import com.example.fastthirtyfivefinal.R
 import com.example.fastthirtyfivefinal.designsystem.icon.ThirtyFiveIcons
-import com.example.fastthirtyfivefinal.ui.main.ThirtyFiveMainInsideScreen
+import com.example.fastthirtyfivefinal.ui.category.ThirtyFiveCategoryScreen
+import com.example.fastthirtyfivefinal.ui.main.ThirtyFiveMainCategoryScreen
+import com.example.fastthirtyfivefinal.ui.main.ThirtyFiveMainHomeScreen
 import com.example.fastthirtyfivefinal.ui.screen.category.categorySection
 import com.example.fastthirtyfivefinal.ui.screen.main.mainSection
 import com.example.fastthirtyfivefinal.ui.screen.mypage.myPageSection
@@ -73,6 +75,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.datetime.TimeZone
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import kotlin.reflect.KClass
 
 
@@ -287,6 +290,9 @@ fun MainScreenOlder() {
     // 일반적인 사용법? 강의에서 사용한 방법
     val navControllerOlder = rememberNavController()
 
+    val navBackStackEntry by navControllerOlder.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route // 현재 탭을 가져 오는 방법
+
     Scaffold(
         // 상단 바
         topBar = {
@@ -294,7 +300,10 @@ fun MainScreenOlder() {
         },
         scaffoldState = scaffoldState, // material3 에서는 또 없어짐
         bottomBar = {
-            MainBottomNavigationBarOlder(navControllerOlder)
+            // main route 에서만 바텀 네비게이션 노출
+            if(ThirtyFiveNavigationItem.MainNav.isMainRoute(currentRoute)) {
+                MainBottomNavigationBarOlder(navControllerOlder, currentRoute)
+            }
         },
     ) { paddingValue ->
         Column(
@@ -328,20 +337,19 @@ fun HeaderOld(
 
 @Composable
 fun MainBottomNavigationBarOlder(
-    navigationController: NavHostController
+    navigationController: NavHostController,
+    currentRoute: String?
 ) {
     val bottomNavigationItems = listOf(
-        MainNavigationItem.Main,
-        MainNavigationItem.Category,
-        MainNavigationItem.MyPage,
+        ThirtyFiveNavigationItem.MainNav.Home,
+        ThirtyFiveNavigationItem.MainNav.Category,
+        ThirtyFiveNavigationItem.MainNav.MyPage,
     )
 
     BottomNavigation(
         backgroundColor = Color(0xffff0000),
         contentColor = Color(0xff00ff00)
     ) {
-        val navBackStackEntry by navigationController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route // 현재 탭을 가져 오는 방법
 
         bottomNavigationItems.forEach { item ->
             BottomNavigationItem(
@@ -398,15 +406,16 @@ fun NavController.navigateToMyPage(navOptions: NavOptions) = navigate(route = My
 
 
 // 강의 에서 사용하는 방식 -> material3 가 들어오면서 사용하는 방식이 바뀜
-sealed class MainNavigationItem(
-    val route: String,
-    val icon: ImageVector,
-    val name: String
-) {
-    data object Main: MainNavigationItem("Main", Icons.Filled.Home, "Main")
-    data object Category: MainNavigationItem("Category", Icons.Filled.Star, "Category")
-    data object MyPage: MainNavigationItem("MyPage", Icons.Filled.AccountBox, "MyPage")
-}
+// 강의가 진행됨에 따라 ThirtyFiveNavigationItem 으로 이동
+//sealed class MainNavigationItem(
+//    val route: String,
+//    val icon: ImageVector,
+//    val name: String
+//) {
+//    data object Main: MainNavigationItem("Main", Icons.Filled.Home, "Main")
+//    data object Category: MainNavigationItem("Category", Icons.Filled.Star, "Category")
+//    data object MyPage: MainNavigationItem("MyPage", Icons.Filled.AccountBox, "MyPage")
+//}
 
 @Composable
 fun MainNavigationScreenOld(
@@ -417,19 +426,34 @@ fun MainNavigationScreenOld(
     // navController 에서 createGraph() 를 통해서 만들어지거나 navGraphBuilder 로 만들어진 내용은 설계도 이다.
     NavHost(
         navController = navController,
-        startDestination = MainNavigationItem.Main.route
+        startDestination = ThirtyFiveNavigationRouteName.MAIN_HOME
     ) {
         // composable 은 navigation 에 존재하는 route 기능을 제공하기 위함
-        composable(MainNavigationItem.Main.route) {
-            ThirtyFiveMainInsideScreen(mainViewModelOld)
+        composable(ThirtyFiveNavigationRouteName.MAIN_HOME) {
+            ThirtyFiveMainHomeScreen(mainViewModelOld)
         }
 
-        composable(MainNavigationItem.Category.route) {
-            Text(text = "Hello Category")
+        composable(ThirtyFiveNavigationRouteName.MAIN_CATEGORY) {
+            ThirtyFiveMainCategoryScreen(mainViewModelOld, navController)
         }
 
-        composable(MainNavigationItem.MyPage.route) {
+        composable(ThirtyFiveNavigationRouteName.MAIN_MY_PAGE) {
             Text(text = "Hello MyPage")
+        }
+
+        composable(ThirtyFiveNavigationRouteName.CATEGORY + "/{category}",
+            // 아래의 의미는 route 에서 / 뒤에 {id} 로 설정한 값을 id 를 토대로 추출한다음에 backStackEntry에 argument 에 넣어준다는 의미이다.
+            arguments = listOf(navArgument("category"){
+                type = NavType.StringType
+            })
+        ) {
+            it.arguments?.getString("category")?.let {categoryString ->
+                val category = Json.decodeFromString<ThirtyFiveCategory>(categoryString)
+
+                ThirtyFiveCategoryScreen(
+                    category = category
+                )
+            }
         }
     }
 }

@@ -15,11 +15,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.fastthirtyfive_domain.model.ThirtyFiveBanner
 import com.example.fastthirtyfivefinal.R
+import com.example.fastthirtyfivefinal.model.ThirtyFiveBannerVM
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ThirtyFiveBannerCard(
-    model: ThirtyFiveBanner,
+    viewModel: ThirtyFiveBannerVM,
     onClick : (ThirtyFiveBanner) -> Unit
 ) {
     Card(
@@ -28,7 +29,7 @@ fun ThirtyFiveBannerCard(
             .fillMaxWidth()
             .padding(10.dp)
             .shadow(20.dp),
-        onClick = { onClick(model) }
+        onClick = { onClick(viewModel.model) }
     ) {
         Image(
             painter = painterResource(id = R.drawable.thirty_five_product_image),

@@ -19,21 +19,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fastthirtyfive_domain.model.ThirtyFiveProduct
-import com.example.fastthirtyfive_domain.model.ThirtyFiveRanking
 import com.example.fastthirtyfivefinal.R
+import com.example.fastthirtyfivefinal.model.ThirtyFiveRankingVM
 
 private const val DEFAULT_RANKING_ITEM_COUNT = 3
 
 @Composable
 fun ThirtyFiveRankingCard(
-    model: ThirtyFiveRanking,
+    viewModel: ThirtyFiveRankingVM,
     onClick: (ThirtyFiveProduct) -> Unit
 ) {
-    val pagerState = rememberPagerState { model.productList.size / DEFAULT_RANKING_ITEM_COUNT }
+    val pagerState = rememberPagerState { viewModel.model.productList.size / DEFAULT_RANKING_ITEM_COUNT }
 
     Column {
         Text(
-            text = model.title,
+            text = viewModel.model.title,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier
@@ -47,9 +47,9 @@ fun ThirtyFiveRankingCard(
     ) { idx ->
 
         Column {
-            RankingProductCard(idx * 3, model.productList[idx * 3], onClick)
-            RankingProductCard(idx * 3 + 1, model.productList[idx * 3 + 1], onClick)
-            RankingProductCard(idx * 3 + 2, model.productList[idx * 3 + 2], onClick)
+            RankingProductCard(idx * 3, viewModel.model.productList[idx * 3], onClick)
+            RankingProductCard(idx * 3 + 1, viewModel.model.productList[idx * 3 + 1], onClick)
+            RankingProductCard(idx * 3 + 2, viewModel.model.productList[idx * 3 + 2], onClick)
         }
     }
 }

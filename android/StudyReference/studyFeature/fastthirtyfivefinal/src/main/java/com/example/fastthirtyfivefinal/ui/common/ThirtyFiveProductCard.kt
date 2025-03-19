@@ -33,11 +33,13 @@ import com.example.fastthirtyfive_domain.model.ThirtyFiveSalesStatus.SOLD_OUT
 import com.example.fastthirtyfive_domain.model.ThirtyFiveShop
 import com.example.fastthirtyfive_domain.model.Top
 import com.example.fastthirtyfivefinal.R
+import com.example.fastthirtyfivefinal.delegate.ThirtyFiveProductDelegate
+import com.example.fastthirtyfivefinal.model.ThirtyFiveProductVM
 import com.example.fastthirtyfivefinal.ui.theme.Purple200
 
 @Composable
 fun ThirtyFiveProductCard(
-    product: ThirtyFiveProduct,
+    viewModel: ThirtyFiveProductVM,
     onClick: (ThirtyFiveProduct) -> Unit?
 ) {
     Card(
@@ -66,13 +68,13 @@ fun ThirtyFiveProductCard(
             Text(
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
-                text = product.shop.shopName
+                text = viewModel.model.shop.shopName
             )
             Text(
                 fontSize = 14.sp,
-                text = product.productName
+                text = viewModel.model.productName
             )
-            Price(product)
+            Price(viewModel.model)
         }
     }
 }
@@ -90,6 +92,7 @@ fun Price(
                 text = "${product.price.originPrice}원"
             )
         }
+
         ON_DISCOUNT -> {
             Text(
                 fontSize = 14.sp,
@@ -110,6 +113,7 @@ fun Price(
                 )
             }
         }
+
         SOLD_OUT -> {
             Text(
                 fontSize = 18.sp,
@@ -124,79 +128,97 @@ fun Price(
 @Preview
 private fun PreviewProductCard() {
     ThirtyFiveProductCard(
-        product = ThirtyFiveProduct(
-            productId = "1",
-            productName = "상품 이름",
-            imageUrl = "",
-            price = ThirtyFivePrice(
-                30000,
-                300000,
-                ON_SALE,
-            ),
-            category = Top,
-            shop = ThirtyFiveShop(
-                "1",
-                "샵 이름",
-                "",
-            ),
-            isNew = false,
-            isFreeShipping = false
-        ),
-    ) {
+        viewModel =
+            ThirtyFiveProductVM(
+                model = ThirtyFiveProduct(
+                    productId = "1",
+                    productName = "상품 이름",
+                    imageUrl = "",
+                    price = ThirtyFivePrice(
+                        30000,
+                        300000,
+                        ON_SALE,
+                    ),
+                    category = Top,
+                    shop = ThirtyFiveShop(
+                        "1",
+                        "샵 이름",
+                        "",
+                    ),
+                    isNew = false,
+                    isFreeShipping = false
+                ),
+                productDelegate = object : ThirtyFiveProductDelegate {
+                    override fun openProduct(product: ThirtyFiveProduct) {
 
-    }
+                    }
+                }
+            )
+    ) { }
 }
 
 @Composable
 @Preview
 private fun PreviewProductCardDisCount() {
     ThirtyFiveProductCard(
-        product = ThirtyFiveProduct(
-            productId = "1",
-            productName = "상품 이름",
-            imageUrl = "",
-            price = ThirtyFivePrice(
-                30000,
-                20000,
-                ON_DISCOUNT,
-            ),
-            category = Top,
-            shop = ThirtyFiveShop(
-                "1",
-                "샵 이름",
-                "",
-            ),
-            isNew = false,
-            isFreeShipping = false,
-        ),
-    ) {
+        viewModel =
+            ThirtyFiveProductVM(
+                model = ThirtyFiveProduct(
+                    productId = "1",
+                    productName = "상품 이름",
+                    imageUrl = "",
+                    price = ThirtyFivePrice(
+                        30000,
+                        20000,
+                        ON_DISCOUNT,
+                    ),
+                    category = Top,
+                    shop = ThirtyFiveShop(
+                        "1",
+                        "샵 이름",
+                        "",
+                    ),
+                    isNew = false,
+                    isFreeShipping = false,
+                ),
+                productDelegate = object : ThirtyFiveProductDelegate {
+                    override fun openProduct(product: ThirtyFiveProduct) {
 
-    }
+                    }
+                }
+            )
+    ) { }
 }
 
 @Composable
 @Preview
 private fun PreviewProductCardSoldOut() {
     ThirtyFiveProductCard(
-        product = ThirtyFiveProduct(
-            productId = "1",
-            productName = "상품 이름",
-            imageUrl = "",
-            price = ThirtyFivePrice(
-                30000,
-                30000,
-                SOLD_OUT,
-            ),
-            category = Top,
-            shop = ThirtyFiveShop(
-                "1",
-                "샵 이름",
-                "",
-            ),
-            isNew = false,
-            isFreeShipping = false,
-        ),
-    ) {
+        viewModel =
+            ThirtyFiveProductVM(
+                model = ThirtyFiveProduct(
+                    productId = "1",
+                    productName = "상품 이름",
+                    imageUrl = "",
+                    price = ThirtyFivePrice(
+                        30000,
+                        30000,
+                        SOLD_OUT,
+                    ),
+                    category = Top,
+                    shop = ThirtyFiveShop(
+                        "1",
+                        "샵 이름",
+                        "",
+                    ),
+                    isNew = false,
+                    isFreeShipping = false,
+                ),
+                productDelegate = object : ThirtyFiveProductDelegate {
+                    override fun openProduct(product: ThirtyFiveProduct) {
 
-    }
+                    }
+                }
+            )
+    ) { }
 }

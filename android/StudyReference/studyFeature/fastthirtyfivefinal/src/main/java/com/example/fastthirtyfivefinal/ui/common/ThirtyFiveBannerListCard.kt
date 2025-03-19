@@ -22,15 +22,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.fastthirtyfive_domain.model.ThirtyFiveBannerList
 import com.example.fastthirtyfivefinal.R
+import com.example.fastthirtyfivefinal.model.ThirtyFiveBannerListVM
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ThirtyFiveBannerListCard(
-    model: ThirtyFiveBannerList,
+    viewModel: ThirtyFiveBannerListVM,
     onClick: (ThirtyFiveBannerList) -> Unit
 ) {
-    val pagerState = rememberPagerState(pageCount = { model.imageList.size })
+    val pagerState = rememberPagerState(pageCount = { viewModel.model.imageList.size })
 
     // auto scroll 을 할 때 카드의 라이프 사이클과 뷰의 라이프 사이클의 동기화 하는 스코프이다?
     // 뷰가 보일 때만 작동하도록 보장 해 준다.
@@ -45,7 +46,7 @@ fun ThirtyFiveBannerListCard(
                 .fillMaxWidth()
                 .padding(10.dp)
                 .shadow(20.dp),
-            onClick = { onClick(model) }
+            onClick = { onClick(viewModel.model) }
         ) {
             Image(
                 painter = painterResource(id = R.drawable.thirty_five_product_image),

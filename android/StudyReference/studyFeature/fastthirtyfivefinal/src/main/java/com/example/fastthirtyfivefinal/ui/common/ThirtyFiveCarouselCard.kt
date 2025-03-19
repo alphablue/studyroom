@@ -22,19 +22,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.fastthirtyfive_domain.model.ThirtyFiveCarousel
 import com.example.fastthirtyfive_domain.model.ThirtyFiveProduct
 import com.example.fastthirtyfivefinal.R
+import com.example.fastthirtyfivefinal.model.ThirtyFiveCarouselVM
 
 @Composable
-fun ThirtyFiveCarouselCard(model: ThirtyFiveCarousel, onClick: (ThirtyFiveProduct) -> Unit) {
+fun ThirtyFiveCarouselCard(
+    viewModel: ThirtyFiveCarouselVM,
+    onClick: (ThirtyFiveProduct) -> Unit
+) {
     val scrollState = rememberLazyListState()
 
     Column {
         Text(
             fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
-            text = model.title,
+            text = viewModel.model.title,
             modifier = Modifier.padding(10.dp)
         )
 
@@ -44,9 +47,9 @@ fun ThirtyFiveCarouselCard(model: ThirtyFiveCarousel, onClick: (ThirtyFiveProduc
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            items(model.productList.size) {
+            items(viewModel.model.productList.size) {
                 ThirtyFiveCarouselProductCard(
-                    product = model.productList[it],
+                    product = viewModel.model.productList[it],
                     onClick = onClick
                 )
             }

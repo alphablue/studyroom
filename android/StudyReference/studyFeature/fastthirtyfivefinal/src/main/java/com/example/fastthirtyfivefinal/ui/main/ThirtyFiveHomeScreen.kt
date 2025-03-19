@@ -38,11 +38,11 @@ fun ThirtyFiveMainHomeScreen(
             }
         ) {
             when(val item = modelList[it]) {
-                is ThirtyFiveProductVM -> ThirtyFiveProductCard(viewModel = item) {product -> mainViewModel.openProduct(product) }
-                is ThirtyFiveBannerVM -> ThirtyFiveBannerCard(viewModel = item) { banner -> mainViewModel.openBanner(banner.bannerId)}
-                is ThirtyFiveBannerListVM -> ThirtyFiveBannerListCard(viewModel = item) {banner -> mainViewModel.openBannerList(banner)}
-                is ThirtyFiveCarouselVM -> ThirtyFiveCarouselCard(viewModel = item) { product-> mainViewModel.openCarouselProduct(product) }
-                is ThirtyFiveRankingVM -> ThirtyFiveRankingCard(viewModel = item) { product-> mainViewModel.openRankingProduct(product) }
+                is ThirtyFiveProductVM -> ThirtyFiveProductCard(viewModel = item)
+                is ThirtyFiveBannerVM -> ThirtyFiveBannerCard(viewModel = item)
+                is ThirtyFiveBannerListVM -> ThirtyFiveBannerListCard(viewModel = item)
+                is ThirtyFiveCarouselVM -> ThirtyFiveCarouselCard(viewModel = item)
+                is ThirtyFiveRankingVM -> ThirtyFiveRankingCard(viewModel = item)
             }
         }
     }

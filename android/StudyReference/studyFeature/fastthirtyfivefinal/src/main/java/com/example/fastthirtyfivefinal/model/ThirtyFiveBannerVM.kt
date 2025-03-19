@@ -5,7 +5,5 @@ import com.example.fastthirtyfivefinal.delegate.ThirtyFiveBannerDelegate
 
 class ThirtyFiveBannerVM(
     model: ThirtyFiveBanner,
-    private val bannerDelegate: ThirtyFiveBannerDelegate
-): ThirtyFivePresentationVM<ThirtyFiveBanner>(model) {
-
-}
+    bannerDelegate: ThirtyFiveBannerDelegate
+): ThirtyFivePresentationVM<ThirtyFiveBanner>(model), ThirtyFiveBannerDelegate by bannerDelegate

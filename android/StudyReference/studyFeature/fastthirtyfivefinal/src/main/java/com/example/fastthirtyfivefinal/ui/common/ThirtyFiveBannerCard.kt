@@ -13,7 +13,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.fastthirtyfive_domain.model.ThirtyFiveBanner
 import com.example.fastthirtyfivefinal.R
 import com.example.fastthirtyfivefinal.model.ThirtyFiveBannerVM
 
@@ -21,7 +20,6 @@ import com.example.fastthirtyfivefinal.model.ThirtyFiveBannerVM
 @Composable
 fun ThirtyFiveBannerCard(
     viewModel: ThirtyFiveBannerVM,
-    onClick : (ThirtyFiveBanner) -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
@@ -29,7 +27,7 @@ fun ThirtyFiveBannerCard(
             .fillMaxWidth()
             .padding(10.dp)
             .shadow(20.dp),
-        onClick = { onClick(viewModel.model) }
+        onClick = { viewModel.openBanner(viewModel.model.bannerId) }
     ) {
         Image(
             painter = painterResource(id = R.drawable.thirty_five_product_image),

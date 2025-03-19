@@ -40,7 +40,6 @@ import com.example.fastthirtyfivefinal.ui.theme.Purple200
 @Composable
 fun ThirtyFiveProductCard(
     viewModel: ThirtyFiveProductVM,
-    onClick: (ThirtyFiveProduct) -> Unit?
 ) {
     Card(
         shape = RoundedCornerShape(8.dp),
@@ -154,7 +153,7 @@ private fun PreviewProductCard() {
                     }
                 }
             )
-    ) { }
+    )
 }
 
 @Composable
@@ -187,7 +186,7 @@ private fun PreviewProductCardDisCount() {
                     }
                 }
             )
-    ) { }
+    )
 }
 
 @Composable
@@ -220,5 +219,5 @@ private fun PreviewProductCardSoldOut() {
                     }
                 }
             )
-    ) { }
+    )
 }

@@ -34,9 +34,7 @@ fun ThirtyFiveCategoryScreen(
         contentPadding = PaddingValues(10.dp)
     ) {
         items(products.size) {idx ->
-            ThirtyFiveProductCard(viewModel = products[idx]) {
-                viewModel.openProduct(it)
-            }
+            ThirtyFiveProductCard(viewModel = products[idx])
         }
     }
 }

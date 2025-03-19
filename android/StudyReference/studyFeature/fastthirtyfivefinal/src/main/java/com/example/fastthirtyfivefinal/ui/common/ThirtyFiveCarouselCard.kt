@@ -28,8 +28,7 @@ import com.example.fastthirtyfivefinal.model.ThirtyFiveCarouselVM
 
 @Composable
 fun ThirtyFiveCarouselCard(
-    viewModel: ThirtyFiveCarouselVM,
-    onClick: (ThirtyFiveProduct) -> Unit
+    viewModel: ThirtyFiveCarouselVM
 ) {
     val scrollState = rememberLazyListState()
 
@@ -47,10 +46,10 @@ fun ThirtyFiveCarouselCard(
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            items(viewModel.model.productList.size) {
+            items(viewModel.model.productList.size) {idx ->
                 ThirtyFiveCarouselProductCard(
-                    product = viewModel.model.productList[it],
-                    onClick = onClick
+                    product = viewModel.model.productList[idx],
+                    onClick = { viewModel.openCarouselProduct(viewModel.model.productList[idx]) }
                 )
             }
         }

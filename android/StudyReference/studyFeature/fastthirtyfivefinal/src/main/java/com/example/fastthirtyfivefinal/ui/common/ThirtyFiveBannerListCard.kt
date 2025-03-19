@@ -20,7 +20,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.fastthirtyfive_domain.model.ThirtyFiveBannerList
 import com.example.fastthirtyfivefinal.R
 import com.example.fastthirtyfivefinal.model.ThirtyFiveBannerListVM
 import kotlinx.coroutines.delay
@@ -29,7 +28,6 @@ import kotlinx.coroutines.delay
 @Composable
 fun ThirtyFiveBannerListCard(
     viewModel: ThirtyFiveBannerListVM,
-    onClick: (ThirtyFiveBannerList) -> Unit
 ) {
     val pagerState = rememberPagerState(pageCount = { viewModel.model.imageList.size })
 
@@ -46,7 +44,7 @@ fun ThirtyFiveBannerListCard(
                 .fillMaxWidth()
                 .padding(10.dp)
                 .shadow(20.dp),
-            onClick = { onClick(viewModel.model) }
+            onClick = { viewModel.openBannerList(viewModel.model.bannerId) }
         ) {
             Image(
                 painter = painterResource(id = R.drawable.thirty_five_product_image),

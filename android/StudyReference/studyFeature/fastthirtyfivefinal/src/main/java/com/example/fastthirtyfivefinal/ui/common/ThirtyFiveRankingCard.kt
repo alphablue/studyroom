@@ -26,8 +26,7 @@ private const val DEFAULT_RANKING_ITEM_COUNT = 3
 
 @Composable
 fun ThirtyFiveRankingCard(
-    viewModel: ThirtyFiveRankingVM,
-    onClick: (ThirtyFiveProduct) -> Unit
+    viewModel: ThirtyFiveRankingVM
 ) {
     val pagerState = rememberPagerState { viewModel.model.productList.size / DEFAULT_RANKING_ITEM_COUNT }
 
@@ -47,9 +46,15 @@ fun ThirtyFiveRankingCard(
     ) { idx ->
 
         Column {
-            RankingProductCard(idx * 3, viewModel.model.productList[idx * 3], onClick)
-            RankingProductCard(idx * 3 + 1, viewModel.model.productList[idx * 3 + 1], onClick)
-            RankingProductCard(idx * 3 + 2, viewModel.model.productList[idx * 3 + 2], onClick)
+            RankingProductCard(idx * 3, viewModel.model.productList[idx * 3], viewModel) {
+                viewModel.openRankingProduct(it)
+            }
+            RankingProductCard(idx * 3 + 1, viewModel.model.productList[idx * 3 + 1], viewModel) {
+                viewModel.openRankingProduct(it)
+            }
+            RankingProductCard(idx * 3 + 2, viewModel.model.productList[idx * 3 + 2], viewModel) {
+                viewModel.openRankingProduct(it)
+            }
         }
     }
 }
@@ -58,6 +63,7 @@ fun ThirtyFiveRankingCard(
 private fun RankingProductCard(
     index: Int,
     product: ThirtyFiveProduct,
+    viewModel: ThirtyFiveRankingVM,
     onClick: (ThirtyFiveProduct) -> Unit
 ) {
     Row(

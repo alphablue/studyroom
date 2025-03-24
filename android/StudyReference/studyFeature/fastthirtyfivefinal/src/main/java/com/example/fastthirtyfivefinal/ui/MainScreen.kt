@@ -64,6 +64,7 @@ import com.example.fastthirtyfivefinal.designsystem.icon.ThirtyFiveIcons
 import com.example.fastthirtyfivefinal.ui.category.ThirtyFiveCategoryScreen
 import com.example.fastthirtyfivefinal.ui.main.ThirtyFiveMainCategoryScreen
 import com.example.fastthirtyfivefinal.ui.main.ThirtyFiveMainHomeScreen
+import com.example.fastthirtyfivefinal.ui.product_detail.ThirtyFiveProductDetailScreen
 import com.example.fastthirtyfivefinal.ui.screen.category.categorySection
 import com.example.fastthirtyfivefinal.ui.screen.main.mainSection
 import com.example.fastthirtyfivefinal.ui.screen.mypage.myPageSection
@@ -430,7 +431,7 @@ fun MainNavigationScreenOld(
     ) {
         // composable 은 navigation 에 존재하는 route 기능을 제공하기 위함
         composable(ThirtyFiveNavigationRouteName.MAIN_HOME) {
-            ThirtyFiveMainHomeScreen(mainViewModelOld)
+            ThirtyFiveMainHomeScreen(navController, mainViewModelOld)
         }
 
         composable(ThirtyFiveNavigationRouteName.MAIN_CATEGORY) {
@@ -451,8 +452,20 @@ fun MainNavigationScreenOld(
                 val category = Json.decodeFromString<ThirtyFiveCategory>(categoryString)
 
                 ThirtyFiveCategoryScreen(
+                    navHostController = navController,
                     category = category
                 )
+            }
+        }
+
+        composable(ThirtyFiveNavigationRouteName.PRODUCT_DETAIL + "/{product}",
+            arguments = listOf(navArgument("product") { type = NavType.StringType} )
+        ) {
+            it.arguments?.getString("product")?.let { productId ->
+                // product 객체로 받아야 되는 경우 아래 처럼 사용, 현재는 id 만 받으므로 처리 불필요
+//                val product = Json.decodeFromString<ThirtyFiveProduct>(productString)
+
+                ThirtyFiveProductDetailScreen(productId)
             }
         }
     }

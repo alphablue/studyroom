@@ -56,8 +56,8 @@ class MainViewModelOld @Inject constructor(
         }
     }
 
-    override fun openProduct(product: ThirtyFiveProduct) {
-
+    override fun openProduct(navHostController: NavHostController, product: ThirtyFiveProduct) {
+        ThirtyFiveNavigationUtils.navigate(navHostController, ThirtyFiveNavigationRouteName.PRODUCT_DETAIL, product)
     }
 
     fun openCarouselProduct(product: ThirtyFiveProduct) {

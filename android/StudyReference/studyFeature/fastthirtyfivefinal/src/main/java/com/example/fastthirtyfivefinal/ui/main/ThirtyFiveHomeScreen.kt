@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.navigation.NavHostController
 import com.example.fastthirtyfive_domain.model.ThirtyFiveBaseModel
 import com.example.fastthirtyfivefinal.model.ThirtyFiveBannerListVM
 import com.example.fastthirtyfivefinal.model.ThirtyFiveBannerVM
@@ -22,6 +23,7 @@ import com.example.fastthirtyfivefinal.viewmodel.MainViewModelOld
 
 @Composable
 fun ThirtyFiveMainHomeScreen(
+    navHostController: NavHostController,
     mainViewModel: MainViewModelOld
 ) {
     // state를 통해서 viewmodel 을 가져온다?
@@ -38,11 +40,11 @@ fun ThirtyFiveMainHomeScreen(
             }
         ) {
             when(val item = modelList[it]) {
-                is ThirtyFiveProductVM -> ThirtyFiveProductCard(viewModel = item)
+                is ThirtyFiveProductVM -> ThirtyFiveProductCard(navHostController, viewModel = item)
                 is ThirtyFiveBannerVM -> ThirtyFiveBannerCard(viewModel = item)
                 is ThirtyFiveBannerListVM -> ThirtyFiveBannerListCard(viewModel = item)
-                is ThirtyFiveCarouselVM -> ThirtyFiveCarouselCard(viewModel = item)
-                is ThirtyFiveRankingVM -> ThirtyFiveRankingCard(viewModel = item)
+                is ThirtyFiveCarouselVM -> ThirtyFiveCarouselCard(navHostController, viewModel = item)
+                is ThirtyFiveRankingVM -> ThirtyFiveRankingCard(navHostController, viewModel = item)
             }
         }
     }

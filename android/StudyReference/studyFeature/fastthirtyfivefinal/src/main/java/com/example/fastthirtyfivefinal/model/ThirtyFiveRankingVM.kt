@@ -1,5 +1,6 @@
 package com.example.fastthirtyfivefinal.model
 
+import androidx.navigation.NavHostController
 import com.example.fastthirtyfive_domain.model.ThirtyFiveProduct
 import com.example.fastthirtyfive_domain.model.ThirtyFiveRanking
 import com.example.fastthirtyfivefinal.delegate.ThirtyFiveProductDelegate
@@ -14,8 +15,8 @@ class ThirtyFiveRankingVM(
     private val productDelegate: ThirtyFiveProductDelegate
 ): ThirtyFivePresentationVM<ThirtyFiveRanking>(model) {
 
-    fun openRankingProduct(product: ThirtyFiveProduct) {
-        productDelegate.openProduct(product)
+    fun openRankingProduct(navHostController: NavHostController, product: ThirtyFiveProduct) {
+        productDelegate.openProduct(navHostController, product)
         sendRankingLog()
     }
 

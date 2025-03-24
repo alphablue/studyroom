@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.example.fastthirtyfive_domain.model.ThirtyFiveCategory
+import com.example.fastthirtyfive_domain.model.ThirtyFiveProduct
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToJsonElement
@@ -29,6 +30,10 @@ object ThirtyFiveNavigationUtils {
 
                 is ThirtyFiveCategory -> {
                     arguments = String.format("/%s", Json.encodeToJsonElement(args).toString().toUri())
+                }
+
+                is ThirtyFiveProduct -> {
+                    arguments = String.format("/%s", args.productId)
                 }
             }
         }

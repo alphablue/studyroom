@@ -6,10 +6,12 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.fastthirtyfive_domain.model.ThirtyFiveCategory
+import com.example.fastthirtyfive_domain.model.ThirtyFiveProduct
 import com.example.fastthirtyfivefinal.ui.ThirtyFiveNavigationRouteName.CATEGORY
 import com.example.fastthirtyfivefinal.ui.ThirtyFiveNavigationRouteName.MAIN_CATEGORY
 import com.example.fastthirtyfivefinal.ui.ThirtyFiveNavigationRouteName.MAIN_HOME
 import com.example.fastthirtyfivefinal.ui.ThirtyFiveNavigationRouteName.MAIN_MY_PAGE
+import com.example.fastthirtyfivefinal.ui.ThirtyFiveNavigationRouteName.PRODUCT_DETAIL
 
 sealed class ThirtyFiveNavigationItem(
     open val route: String,
@@ -34,6 +36,9 @@ sealed class ThirtyFiveNavigationItem(
     }
 
     data class ThirtyFiveCategoryNav(val category: ThirtyFiveCategory): ThirtyFiveNavigationItem(CATEGORY)
+
+    // 랜딩 페이지
+    data class ThirtyFiveProductDetailNav(val product: ThirtyFiveProduct): ThirtyFiveNavigationItem(PRODUCT_DETAIL)
 }
 
 object ThirtyFiveNavigationRouteName {
@@ -41,4 +46,5 @@ object ThirtyFiveNavigationRouteName {
     const val MAIN_CATEGORY = "main_category"
     const val MAIN_MY_PAGE = "main_my_page"
     const val CATEGORY = "category"
+    const val PRODUCT_DETAIL = "product_detail"
 }

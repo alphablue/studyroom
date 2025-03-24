@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.fastthirtyfive_domain.model.ThirtyFiveProduct
 import com.example.fastthirtyfivefinal.R
 import com.example.fastthirtyfivefinal.model.ThirtyFiveRankingVM
@@ -26,6 +27,7 @@ private const val DEFAULT_RANKING_ITEM_COUNT = 3
 
 @Composable
 fun ThirtyFiveRankingCard(
+    navHostController: NavHostController,
     viewModel: ThirtyFiveRankingVM
 ) {
     val pagerState = rememberPagerState { viewModel.model.productList.size / DEFAULT_RANKING_ITEM_COUNT }
@@ -47,13 +49,13 @@ fun ThirtyFiveRankingCard(
 
         Column {
             RankingProductCard(idx * 3, viewModel.model.productList[idx * 3], viewModel) {
-                viewModel.openRankingProduct(it)
+                viewModel.openRankingProduct(navHostController, it)
             }
             RankingProductCard(idx * 3 + 1, viewModel.model.productList[idx * 3 + 1], viewModel) {
-                viewModel.openRankingProduct(it)
+                viewModel.openRankingProduct(navHostController, it)
             }
             RankingProductCard(idx * 3 + 2, viewModel.model.productList[idx * 3 + 2], viewModel) {
-                viewModel.openRankingProduct(it)
+                viewModel.openRankingProduct(navHostController, it)
             }
         }
     }

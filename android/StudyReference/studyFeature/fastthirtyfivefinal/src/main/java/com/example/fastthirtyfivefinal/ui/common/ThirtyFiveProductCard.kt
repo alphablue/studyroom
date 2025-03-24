@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,6 +26,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.fastthirtyfive_domain.model.ThirtyFivePrice
 import com.example.fastthirtyfive_domain.model.ThirtyFiveProduct
 import com.example.fastthirtyfive_domain.model.ThirtyFiveSalesStatus.ON_DISCOUNT
@@ -37,8 +40,10 @@ import com.example.fastthirtyfivefinal.delegate.ThirtyFiveProductDelegate
 import com.example.fastthirtyfivefinal.model.ThirtyFiveProductVM
 import com.example.fastthirtyfivefinal.ui.theme.Purple200
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ThirtyFiveProductCard(
+    navHostController: NavHostController,
     viewModel: ThirtyFiveProductVM,
 ) {
     Card(
@@ -47,7 +52,8 @@ fun ThirtyFiveProductCard(
             .fillMaxWidth()
             .height(intrinsicSize = IntrinsicSize.Max) // 하위 compose 를 계산해서 적절한 크기를 맞추는 옵션
             .padding(10.dp)
-            .shadow(elevation = 10.dp)
+            .shadow(elevation = 10.dp),
+        onClick = { viewModel.openProduct(navHostController, viewModel.model) }
     ) {
         Column(
             modifier = Modifier
@@ -127,6 +133,8 @@ fun Price(
 @Preview
 private fun PreviewProductCard() {
     ThirtyFiveProductCard(
+//        navHostController = NavHostController(LocalContext.current),
+        rememberNavController(),
         viewModel =
             ThirtyFiveProductVM(
                 model = ThirtyFiveProduct(
@@ -148,7 +156,7 @@ private fun PreviewProductCard() {
                     isFreeShipping = false
                 ),
                 productDelegate = object : ThirtyFiveProductDelegate {
-                    override fun openProduct(product: ThirtyFiveProduct) {
+                    override fun openProduct(navHostController: NavHostController, product: ThirtyFiveProduct) {
 
                     }
                 }
@@ -160,6 +168,7 @@ private fun PreviewProductCard() {
 @Preview
 private fun PreviewProductCardDisCount() {
     ThirtyFiveProductCard(
+        navHostController = rememberNavController(),
         viewModel =
             ThirtyFiveProductVM(
                 model = ThirtyFiveProduct(
@@ -181,9 +190,10 @@ private fun PreviewProductCardDisCount() {
                     isFreeShipping = false,
                 ),
                 productDelegate = object : ThirtyFiveProductDelegate {
-                    override fun openProduct(product: ThirtyFiveProduct) {
+                    override fun openProduct(navHostController: NavHostController, product: ThirtyFiveProduct) {
 
                     }
+
                 }
             )
     )
@@ -193,6 +203,7 @@ private fun PreviewProductCardDisCount() {
 @Preview
 private fun PreviewProductCardSoldOut() {
     ThirtyFiveProductCard(
+        navHostController = rememberNavController(),
         viewModel =
             ThirtyFiveProductVM(
                 model = ThirtyFiveProduct(
@@ -214,7 +225,7 @@ private fun PreviewProductCardSoldOut() {
                     isFreeShipping = false,
                 ),
                 productDelegate = object : ThirtyFiveProductDelegate {
-                    override fun openProduct(product: ThirtyFiveProduct) {
+                    override fun openProduct(navHostController: NavHostController, product: ThirtyFiveProduct) {
 
                     }
                 }

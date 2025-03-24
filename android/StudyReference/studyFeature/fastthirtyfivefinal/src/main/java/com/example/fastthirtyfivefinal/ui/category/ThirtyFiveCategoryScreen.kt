@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.example.fastthirtyfive_domain.model.ThirtyFiveCategory
 import com.example.fastthirtyfivefinal.ui.common.ThirtyFiveProductCard
 import com.example.fastthirtyfivefinal.viewmodel.category.ThirtyFiveCategoryViewModel
@@ -17,6 +18,7 @@ import com.example.fastthirtyfivefinal.viewmodel.category.ThirtyFiveCategoryView
 @Composable
 fun ThirtyFiveCategoryScreen(
     category: ThirtyFiveCategory,
+    navHostController: NavHostController,
     viewModel: ThirtyFiveCategoryViewModel = hiltViewModel(),
 ) {
     val products by viewModel.products.collectAsState()
@@ -34,7 +36,7 @@ fun ThirtyFiveCategoryScreen(
         contentPadding = PaddingValues(10.dp)
     ) {
         items(products.size) {idx ->
-            ThirtyFiveProductCard(viewModel = products[idx])
+            ThirtyFiveProductCard(navHostController, viewModel = products[idx])
         }
     }
 }

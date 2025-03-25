@@ -24,7 +24,6 @@ import com.example.fastthirtyfivefinal.model.ThirtyFiveProductVM
 import com.example.fastthirtyfivefinal.model.ThirtyFiveRankingVM
 import com.example.fastthirtyfivefinal.ui.ThirtyFiveNavigationRouteName
 import com.example.fastthirtyfivefinal.util.ThirtyFiveNavigationUtils
-import com.example.fastthirtyfivefinal.util.d
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,8 +44,8 @@ class MainViewModelOld @Inject constructor(
     val productList = mainUseCase.getProductList().map(::convertToPresentationVM)
     val categories = categoryUseCase.getCategories()
 
-    fun openSearchForm() {
-        "open Search From run".d()
+    fun openSearchForm(navHostController: NavHostController) {
+        ThirtyFiveNavigationUtils.navigate(navHostController, ThirtyFiveNavigationRouteName.SEARCH)
     }
 
     fun updateColumnCount(count: Int) {

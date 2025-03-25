@@ -31,7 +31,7 @@ class ThirtyFiveCategoryRepositoryImpl @Inject constructor(
     }
 
     override fun getProductsByCategory(category: ThirtyFiveCategory): Flow<List<ThirtyFiveProduct>> {
-        return productDataSource.getProducts().map { productList ->
+        return productDataSource.getHomeComponents().map { productList ->
 
             // filterIsInstance 는 해당 타입과 같은 것만 골라서 필터링 할 수 있도록 한다.
             productList.filterIsInstance<ThirtyFiveProduct>()

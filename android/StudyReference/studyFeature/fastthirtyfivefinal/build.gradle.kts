@@ -1,3 +1,6 @@
+import org.gradle.internal.extensions.stdlib.capitalized
+import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompileTool
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
@@ -9,11 +12,30 @@ plugins {
 //    id("kotlinx-serialization")
     alias(libs.plugins.protobuf)
     id("kotlin-parcelize") // parcelable 객체를 kotlin-serialization 에서 사용하기 위해 쓰는 것
+    alias(libs.plugins.reference.android.room)
 }
 
 android {
     namespace = "com.example.fastthirtyfivefinal"
     compileSdk = 35
+
+    /**
+     * room 과 protobuf 를 같이 쓰게 될 경우 ksp compiler 에서 annotation 해석에 대해서 오류가 있다고 한다.
+     * 이를 해결 하기 위해서 https://github.com/google/dagger/issues/4051#issuecomment-1969345762 에서 제시하는 방법을 사용하였다.
+    * */
+    androidComponents {
+        onVariants(selector().all()) { variant ->
+            afterEvaluate {
+                project.tasks.getByName("ksp" + variant.name.capitalized() + "Kotlin") {
+                    val buildConfigTask = project.tasks.getByName("generate${variant.name.capitalized()}Proto")
+                                        as com.google.protobuf.gradle.GenerateProtoTask
+
+                    dependsOn(buildConfigTask)
+                    (this as AbstractKotlinCompileTool<*>).setSource(buildConfigTask.outputBaseDir)
+                }
+            }
+        }
+    }
 
     defaultConfig {
         applicationId = "com.example.fastthirtyfivefinal"

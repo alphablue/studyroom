@@ -68,6 +68,7 @@ import com.example.fastthirtyfivefinal.ui.product_detail.ThirtyFiveProductDetail
 import com.example.fastthirtyfivefinal.ui.screen.category.categorySection
 import com.example.fastthirtyfivefinal.ui.screen.main.mainSection
 import com.example.fastthirtyfivefinal.ui.screen.mypage.myPageSection
+import com.example.fastthirtyfivefinal.ui.search.ThirtyFiveSearchScreen
 import com.example.fastthirtyfivefinal.ui.theme.StudyReferenceTheme
 import com.example.fastthirtyfivefinal.util.TimeZoneMonitor
 import com.example.fastthirtyfivefinal.viewmodel.MainViewModelOld
@@ -297,7 +298,9 @@ fun MainScreenOlder() {
     Scaffold(
         // 상단 바
         topBar = {
-            HeaderOld(viewModel)
+            if(ThirtyFiveNavigationItem.MainNav.isMainRoute(currentRoute)) {
+                MainHeaderOld(navControllerOlder, viewModel)
+            }
         },
         scaffoldState = scaffoldState, // material3 에서는 또 없어짐
         bottomBar = {
@@ -319,7 +322,8 @@ fun MainScreenOlder() {
 }
 
 @Composable
-fun HeaderOld(
+fun MainHeaderOld(
+    navController: NavHostController,
     viewModel: MainViewModelOld
 ) {
     TopAppBar(
@@ -327,7 +331,7 @@ fun HeaderOld(
         actions = {
             IconButton(
                 onClick = {
-                    viewModel.openSearchForm()
+                    viewModel.openSearchForm(navController)
                 }
             ) {
                 Icon(Icons.Filled.Search, "SearchIcon")
@@ -467,6 +471,10 @@ fun MainNavigationScreenOld(
 
                 ThirtyFiveProductDetailScreen(productId)
             }
+        }
+
+        composable(ThirtyFiveNavigationRouteName.SEARCH) {
+            ThirtyFiveSearchScreen(navController)
         }
     }
 }

@@ -12,6 +12,7 @@ import com.example.fastthirtyfivefinal.ui.ThirtyFiveNavigationRouteName.MAIN_CAT
 import com.example.fastthirtyfivefinal.ui.ThirtyFiveNavigationRouteName.MAIN_HOME
 import com.example.fastthirtyfivefinal.ui.ThirtyFiveNavigationRouteName.MAIN_MY_PAGE
 import com.example.fastthirtyfivefinal.ui.ThirtyFiveNavigationRouteName.PRODUCT_DETAIL
+import com.example.fastthirtyfivefinal.ui.ThirtyFiveNavigationRouteName.SEARCH
 
 sealed class ThirtyFiveNavigationItem(
     open val route: String,
@@ -39,6 +40,8 @@ sealed class ThirtyFiveNavigationItem(
 
     // 랜딩 페이지
     data class ThirtyFiveProductDetailNav(val product: ThirtyFiveProduct): ThirtyFiveNavigationItem(PRODUCT_DETAIL)
+
+    data object ThirtyFiveSearchNav: ThirtyFiveNavigationItem(SEARCH)
 }
 
 object ThirtyFiveNavigationRouteName {
@@ -47,4 +50,5 @@ object ThirtyFiveNavigationRouteName {
     const val MAIN_MY_PAGE = "main_my_page"
     const val CATEGORY = "category"
     const val PRODUCT_DETAIL = "product_detail"
+    const val SEARCH = "search"
 }

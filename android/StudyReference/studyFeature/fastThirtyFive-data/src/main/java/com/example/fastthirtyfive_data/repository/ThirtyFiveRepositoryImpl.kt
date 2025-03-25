@@ -9,6 +9,6 @@ import javax.inject.Inject
 class ThirtyFiveRepositoryImpl @Inject constructor(
     private val productDataSource: ThirtyFiveProductDataSource,
 ): ThirtyFiveRepository {
-    override fun getProductList(): Flow<List<ThirtyFiveBaseModel>> = productDataSource.getProducts()
+    override fun getProductList(): Flow<List<ThirtyFiveBaseModel>> = productDataSource.getHomeComponents()
 }
 

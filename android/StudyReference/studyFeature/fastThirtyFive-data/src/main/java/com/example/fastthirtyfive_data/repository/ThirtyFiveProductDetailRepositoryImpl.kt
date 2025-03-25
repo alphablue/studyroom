@@ -11,7 +11,7 @@ class ThirtyFiveProductDetailRepositoryImpl @Inject constructor(
     private val dataSource: ThirtyFiveProductDataSource
 ) : ThirtyFiveProductDetailRepository {
     override fun getProductDetail(productId: String): Flow<ThirtyFiveProduct> {
-        return dataSource.getProducts().map { products ->
+        return dataSource.getHomeComponents().map { products ->
             products.filterIsInstance<ThirtyFiveProduct>().first { it.productId == productId }
         }
     }

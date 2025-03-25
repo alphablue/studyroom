@@ -10,6 +10,7 @@ import com.example.fastthirtyfive_domain.model.ThirtyFiveRanking
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -20,7 +21,7 @@ import javax.inject.Inject
 class ThirtyFiveProductDataSource @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-    fun getProducts(): Flow<List<ThirtyFiveBaseModel>> = flow {
+    fun getHomeComponents(): Flow<List<ThirtyFiveBaseModel>> = flow {
 //        val inputStream = context.assets.open("study_thirty_five_product_list.json")
         val inputStream = context.assets.open("clip09_product_list.json")
         val inputStreamReader = InputStreamReader(inputStream)
@@ -80,6 +81,8 @@ class ThirtyFiveProductDataSource @Inject constructor(
 //        emit(Json.decodeFromJsonElement(jsonElement))
         emit(jsonBuilder.decodeFromString(jsonString))
     }
+
+    fun getProducts(): Flow<List<ThirtyFiveProduct>> = getHomeComponents().map { it.filterIsInstance<ThirtyFiveProduct>() }
 }
 
 /**

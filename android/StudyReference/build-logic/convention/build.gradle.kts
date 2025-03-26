@@ -88,5 +88,10 @@ gradlePlugin {
             id = "study.reference.room"
             implementationClass = "AndroidRoomConventionPlugin"
         }
+
+        register("androidFirebase") {
+            id = "study.reference.firebase"
+            implementationClass = "AndroidFirebaseConventionPlugin"
+        }
     }
 }

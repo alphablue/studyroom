@@ -80,8 +80,16 @@ dependencies {
     api(libs.androidx.compose.material)
     api(libs.bundles.compose.material3)
 
+    // 파이어 베이스 설정 - plugins 설정 이후 사용 가능
+    // sha-1 이 필요한 경우가 있는데 이는 ./gradlew signingReport 를 console 을 사용하면 모듈별로 sha-1이 나온다.
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    // 이걸 사용하려면 flavor 설정에서 productFlavors 을 해주면 사용할 수 있다.
+//    prodImplementation(libs.firebase.analytics)
+
     // icon extended
     implementation(libs.androidx.compose.material.iconsExtended)
+
     // serialize
     implementation(libs.kotlinx.serialization.json)
 

@@ -48,6 +48,10 @@ protobuf = "4.29.2"
 protobufPlugin = "0.9.4"
 room = "2.6.1"
 
+## 파이어베이스 설정
+firebaseBom = "33.11.0"
+gmsPlugin = "4.4.2" ## 구글 관련 서비스 (파이어베이스 등등)
+
 ## androidX lib TEST
 androidx-test-ext-junit = "1.2.1"
 androidxTestRules = "1.6.1"
@@ -191,6 +195,10 @@ third-logger = { group = "com.orhanobut", name = "logger", version.ref = "logger
 ## build-logic 에 등록해야 하는 것
 compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
+## 파이어베이스 설정
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+
 [plugins]
 ## gradle convention 에 연결된 것들
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -225,6 +233,9 @@ reference-android-room = { id = "study.reference.room"}
 
 # DataStore 설정, protobuf 플러긴을 지정해 줘야 된다.
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin"}
+
+## 파이어베이스
+gms = { id = "com.google.gms.google-services", version.ref = "gmsPlugin" }
 
 [bundles]
 default-compose-designSystem = ["androidx-compose-foundation", "androidx-compose-foundation-layout", "androidx-compose-material-iconsExtended", "androidx-compose-runtime", "androidx-compose-ui-util", "androidx-compose-ui-tooling-preview", "androidx-activity-compose"]

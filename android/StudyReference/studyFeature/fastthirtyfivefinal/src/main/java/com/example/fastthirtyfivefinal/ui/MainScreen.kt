@@ -1,5 +1,6 @@
 package com.example.fastthirtyfivefinal.ui
 
+import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -277,7 +278,8 @@ class ThirtyFiveNavigationSuiteScope internal constructor(
 @Composable
 fun MainScreenOlder(
     googleSignInRequester: GetCredentialRequest,
-    firebaseAuth: FirebaseAuth
+    firebaseAuth: FirebaseAuth,
+    activityContext: Context
 ) {
     // hilt-navigation-compose 를 추가 해줘야지만 사용 가능하다.
     val viewModel = hiltViewModel<MainViewModelOld>()
@@ -312,7 +314,8 @@ fun MainScreenOlder(
                 navController = navControllerOlder,
                 mainViewModelOld = viewModel,
                 googleSignInRequester = googleSignInRequester,
-                firebaseAuth = firebaseAuth
+                firebaseAuth = firebaseAuth,
+                activityContext = activityContext
             )
         }
     }
@@ -424,7 +427,8 @@ fun MainNavigationScreenOld(
     navController: NavHostController,
     mainViewModelOld: MainViewModelOld,
     googleSignInRequester: GetCredentialRequest,
-    firebaseAuth: FirebaseAuth
+    firebaseAuth: FirebaseAuth,
+    activityContext: Context
 ) {
     // NavHost 설계 도면을 수행 할 수 있도록 하는 모듈이고
     // navController 에서 createGraph() 를 통해서 만들어지거나 navGraphBuilder 로 만들어진 내용은 설계도 이다.
@@ -442,7 +446,7 @@ fun MainNavigationScreenOld(
         }
 
         composable(ThirtyFiveNavigationRouteName.MAIN_MY_PAGE) {
-            ThirtyFiveMyPageScreen(mainViewModelOld, googleSignInRequester, firebaseAuth)
+            ThirtyFiveMyPageScreen(mainViewModelOld, googleSignInRequester, firebaseAuth, activityContext)
         }
 
         composable(ThirtyFiveNavigationRouteName.CATEGORY + "/{category}",

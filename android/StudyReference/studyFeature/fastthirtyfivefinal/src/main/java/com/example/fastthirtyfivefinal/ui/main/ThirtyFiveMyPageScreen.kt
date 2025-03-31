@@ -1,6 +1,6 @@
 package com.example.fastthirtyfivefinal.ui.main
 
-import androidx.activity.compose.LocalActivity
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,13 +19,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.credentials.ClearCredentialStateRequest
-import androidx.credentials.Credential
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
-import androidx.credentials.PasswordCredential
-import androidx.credentials.PublicKeyCredential
+import com.example.fastthirtyfivefinal.util.e
+import com.example.fastthirtyfivefinal.util.i
 import com.example.fastthirtyfivefinal.viewmodel.MainViewModelOld
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseAuth
@@ -37,12 +36,13 @@ import kotlinx.coroutines.launch
 fun ThirtyFiveMyPageScreen(
     viewModelOld: MainViewModelOld,
     googleSignInRequester: GetCredentialRequest,
-    firebaseAuth: FirebaseAuth
+    firebaseAuth: FirebaseAuth,
+    activityContext: Context
 ) {
     val accountInfo by viewModelOld.accountInfo.collectAsState()
 //    val firebaseAuth by lazy { FirebaseAuth.getInstance() } // 로그인, 아웃 기능을 사용하기 위한 인스턴스 (과거)
     val context = LocalContext.current
-    val activityContext = LocalActivity.current?.baseContext
+//    val activityContext = LocalActivity.current?.baseContext
     val coroutineScope = rememberCoroutineScope()
     val credentialManager = CredentialManager.create(context)
     var credentialResult: GetCredentialResponse? = null
@@ -52,7 +52,7 @@ fun ThirtyFiveMyPageScreen(
 //    ) { result: ActivityResult ->
 //        if(result.resultCode == Activity.RESULT_OK) {
 //            val indent = result.data
-// djjallaflnflsadlc contecsadf
+//
 //            if(indent != null) {
 //                val task: Task<GetCredentialRequest> =
 //            }
@@ -64,37 +64,39 @@ fun ThirtyFiveMyPageScreen(
         coroutineScope.launch {
             if (activityContext != null) {
                 try {
-                    credentialResult = credentialManager
-                        .getCredential(
-                            context = activityContext,
-                            request = googleSignInRequester
-                        )
+//                    credentialResult = credentialManager
+//                        .getCredential(
+//                            context = activityContext,
+//                            request = googleSignInRequester
+//                        )
 
+                    // TODO : 아래 주석 코드는 실제 가입을 요청 하는 기능
                     // 이후에 이벤트 실행 하도록 정의 할 것
                     // 아래에서 각 상황별로 handling 하는 것에 대해서 보여주고 있다.
-                    val credential = credentialResult!!.credential
-
-                    // ??
-                    when (credential) {
-
-                        // passKey
-                        is PublicKeyCredential -> {
-                            // response Json
-                            credential.authenticationResponseJson
-                        }
-
-                        // Password
-                        is PasswordCredential -> {
-                            val userName = credential.id
-                            val password = credential.password
-                        }
-
-                        // googleIdToken
-                        is CustomCredential -> {
-                            handleSignIn(firebaseAuth, credentialResult!!.credential)
-                        }
-                    }
+//                    val credential = credentialResult!!.credential
+//
+//                    // ??
+//                    when (credential) {
+//
+//                        // passKey
+//                        is PublicKeyCredential -> {
+//                            // response Json
+//                            credential.authenticationResponseJson
+//                        }
+//
+//                        // Password
+//                        is PasswordCredential -> {
+//                            val userName = credential.id
+//                            val password = credential.password
+//                        }
+//
+//                        // googleIdToken
+//                        is CustomCredential -> {
+//                            handleSignIn(firebaseAuth, credentialResult!!.credential)
+//                        }
+//                    }
                 } catch (e: Exception) {
+                    "${e.message}".e()
                     e.printStackTrace()
                 }
             }
@@ -121,7 +123,7 @@ fun ThirtyFiveMyPageScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "로그인 유저 : ${accountInfo?.name}",
+                    text = "로그인 유저 : ${currentUser.displayName}",
                     textAlign = TextAlign.Start,
                     modifier = Modifier.weight(1f)
                 )
@@ -139,9 +141,7 @@ fun ThirtyFiveMyPageScreen(
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    credentialResult?.let {
-                        handleSignIn(firebaseAuth, it.credential)
-                    }
+                    handleSignIn(firebaseAuth, credentialManager, googleSignInRequester, activityContext, coroutineScope)
                 }
             ) {
                 Text(text = "로그인")
@@ -155,12 +155,22 @@ fun ThirtyFiveMyPageScreen(
  * */
 private fun handleSignIn(
     firebaseAuth: FirebaseAuth,
-    credential: Credential
+    credentialManager: CredentialManager,
+    googleSignInRequester: GetCredentialRequest,
+    activityContext: Context,
+    coroutineScope: CoroutineScope
 ) {
-    if (credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
-        val idToken = GoogleIdTokenCredential.createFrom(credential.data).idToken
+    coroutineScope.launch {
+        credentialManager.getCredential(
+            activityContext,
+            googleSignInRequester
+        ).credential.let {
+            if (it is CustomCredential && it.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                val idToken = GoogleIdTokenCredential.createFrom(it.data).idToken
 
-        firebaseAuthWithGoogle(firebaseAuth, idToken)
+                firebaseAuthWithGoogle(firebaseAuth, idToken)
+            }
+        }
     }
 }
 
@@ -175,8 +185,10 @@ private fun firebaseAuthWithGoogle(
                 val user = firebaseAuth.currentUser
 
                 // ui 작업
+                "로그인 성공".i()
             } else { // 실패
                 // ui 작업
+                "로그인 실패".i()
             }
         }
 }

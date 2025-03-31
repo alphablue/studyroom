@@ -1,5 +1,6 @@
 package com.example.fastthirtyfivefinal.ui
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -112,7 +113,8 @@ class FastThirtyFiveFinalActivity : ComponentActivity() {
             // material 2 컴포넌트 적용
             ShowOldVersion(
                 googleSignInRequester,
-                Firebase.auth
+                Firebase.auth,
+                activityContext = this
             )
         }
         // 화면의 사이즈가 다양한데 변화에 맞게 보여줄 아이템의 갯수를 조절하기 위한 부분
@@ -137,12 +139,14 @@ class FastThirtyFiveFinalActivity : ComponentActivity() {
 @Composable
 fun ShowOldVersion(
     googleSignInRequester: GetCredentialRequest,
-    firebaseAuth: FirebaseAuth
+    firebaseAuth: FirebaseAuth,
+    activityContext: Context
 ) {
     StudyReferenceTheme {
         MainScreenOlder(
             googleSignInRequester,
-            firebaseAuth
+            firebaseAuth,
+            activityContext
         )
     }
 }

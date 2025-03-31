@@ -23,6 +23,8 @@ import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.PasswordCredential
 import androidx.credentials.PublicKeyCredential
+import com.example.fastthirtyfive_domain.model.ThirtyFiveAccountInfo
+import com.example.fastthirtyfivefinal.util.d
 import com.example.fastthirtyfivefinal.util.i
 import com.example.fastthirtyfivefinal.viewmodel.MainViewModelOld
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -43,12 +45,12 @@ fun ThirtyFiveMyPageScreen(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val credentialManager = CredentialManager.create(context)
+    val currentUser = firebaseAuth.currentUser // state 로 사용이 된다. 값이 바뀔때마다 데이터가 넘어옴
 
-    // 새로운 로그인 방법
-    val currentUser = firebaseAuth.currentUser
-    if (currentUser != null) {
-        // google id 토큰을 받음 -> firebase 증명 으로 교환 -> firebase 증명을 활용해 로그인
-
+    if(accountInfo != null) {
+        "로그인 정보 존재".d()
+    } else {
+        "로그인 정보 XXXXX".d()
     }
 
     // 로그인 ui
@@ -64,15 +66,15 @@ fun ThirtyFiveMyPageScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "로그인 유저 : ${currentUser.displayName}",
+                    text = "로그인 유저 : ${accountInfo?.name}",
                     textAlign = TextAlign.Start,
                     modifier = Modifier.weight(1f)
                 )
 
                 Button(
                     onClick = {
-                        viewModelOld.signOutGoogle()
                         signOut(firebaseAuth, credentialManager, coroutineScope)
+                        viewModelOld.signOutGoogle()
                     }
                 ) {
                     Text(text = "로그아웃")
@@ -82,7 +84,7 @@ fun ThirtyFiveMyPageScreen(
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    handleSignIn(firebaseAuth, credentialManager, googleSignInRequester, activityContext, coroutineScope)
+                    handleSignIn(firebaseAuth, credentialManager, googleSignInRequester, viewModelOld, activityContext, coroutineScope)
                 }
             ) {
                 Text(text = "로그인")
@@ -98,6 +100,7 @@ private fun handleSignIn(
     firebaseAuth: FirebaseAuth,
     credentialManager: CredentialManager,
     googleSignInRequester: GetCredentialRequest,
+    viewModelOld: MainViewModelOld,
     activityContext: Context,
     coroutineScope: CoroutineScope
 ) {
@@ -122,7 +125,7 @@ private fun handleSignIn(
                     if (it.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                         val idToken = GoogleIdTokenCredential.createFrom(it.data).idToken
 
-                        firebaseAuthWithGoogle(firebaseAuth, idToken)
+                        firebaseAuthWithGoogle(viewModelOld, firebaseAuth, idToken)
                     }
                 }
             }
@@ -131,6 +134,7 @@ private fun handleSignIn(
 }
 
 private fun firebaseAuthWithGoogle(
+    mainViewModelOld: MainViewModelOld,
     firebaseAuth: FirebaseAuth,
     idToken: String
 ) {
@@ -142,6 +146,13 @@ private fun firebaseAuthWithGoogle(
 
                 // ui 작업
                 "로그인 성공".i()
+                mainViewModelOld.signInGoogle(
+                    ThirtyFiveAccountInfo(
+                        idToken,
+                        user?.displayName ?: "최초사용자",
+                        ThirtyFiveAccountInfo.LoginType.GOOGLE
+                    )
+                )
             } else { // 실패
                 // ui 작업
                 "로그인 실패".i()

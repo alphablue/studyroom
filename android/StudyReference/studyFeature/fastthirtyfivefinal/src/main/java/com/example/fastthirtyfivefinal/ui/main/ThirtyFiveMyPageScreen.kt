@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -22,8 +21,8 @@ import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
-import androidx.credentials.GetCredentialResponse
-import com.example.fastthirtyfivefinal.util.e
+import androidx.credentials.PasswordCredential
+import androidx.credentials.PublicKeyCredential
 import com.example.fastthirtyfivefinal.util.i
 import com.example.fastthirtyfivefinal.viewmodel.MainViewModelOld
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -42,66 +41,8 @@ fun ThirtyFiveMyPageScreen(
     val accountInfo by viewModelOld.accountInfo.collectAsState()
 //    val firebaseAuth by lazy { FirebaseAuth.getInstance() } // 로그인, 아웃 기능을 사용하기 위한 인스턴스 (과거)
     val context = LocalContext.current
-//    val activityContext = LocalActivity.current?.baseContext
     val coroutineScope = rememberCoroutineScope()
     val credentialManager = CredentialManager.create(context)
-    var credentialResult: GetCredentialResponse? = null
-
-//    val startForResult = rememberLauncherForActivityResult( // startForActivityResult 의 compose 버전
-//        contract = ActivityResultContracts.StartActivityForResult()
-//    ) { result: ActivityResult ->
-//        if(result.resultCode == Activity.RESULT_OK) {
-//            val indent = result.data
-//
-//            if(indent != null) {
-//                val task: Task<GetCredentialRequest> =
-//            }
-//        }
-//    }
-
-    // 파이어베이스 로그인 관련 코드들
-    LaunchedEffect(accountInfo) {
-        coroutineScope.launch {
-            if (activityContext != null) {
-                try {
-//                    credentialResult = credentialManager
-//                        .getCredential(
-//                            context = activityContext,
-//                            request = googleSignInRequester
-//                        )
-
-                    // TODO : 아래 주석 코드는 실제 가입을 요청 하는 기능
-                    // 이후에 이벤트 실행 하도록 정의 할 것
-                    // 아래에서 각 상황별로 handling 하는 것에 대해서 보여주고 있다.
-//                    val credential = credentialResult!!.credential
-//
-//                    // ??
-//                    when (credential) {
-//
-//                        // passKey
-//                        is PublicKeyCredential -> {
-//                            // response Json
-//                            credential.authenticationResponseJson
-//                        }
-//
-//                        // Password
-//                        is PasswordCredential -> {
-//                            val userName = credential.id
-//                            val password = credential.password
-//                        }
-//
-//                        // googleIdToken
-//                        is CustomCredential -> {
-//                            handleSignIn(firebaseAuth, credentialResult!!.credential)
-//                        }
-//                    }
-                } catch (e: Exception) {
-                    "${e.message}".e()
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
 
     // 새로운 로그인 방법
     val currentUser = firebaseAuth.currentUser
@@ -162,13 +103,28 @@ private fun handleSignIn(
 ) {
     coroutineScope.launch {
         credentialManager.getCredential(
-            activityContext,
+            activityContext,  // 무조건 activity context 를 가져와야 한다.
             googleSignInRequester
         ).credential.let {
-            if (it is CustomCredential && it.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
-                val idToken = GoogleIdTokenCredential.createFrom(it.data).idToken
+            when (it) {
+                // passKey
+                is PublicKeyCredential -> {
+                    // response Json
+                    it.authenticationResponseJson
+                }
+                // Password
+                is PasswordCredential -> {
+                    val userName = it.id
+                    val password = it.password
+                }
+                // googleIdToken
+                is CustomCredential -> {
+                    if (it.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                        val idToken = GoogleIdTokenCredential.createFrom(it.data).idToken
 
-                firebaseAuthWithGoogle(firebaseAuth, idToken)
+                        firebaseAuthWithGoogle(firebaseAuth, idToken)
+                    }
+                }
             }
         }
     }

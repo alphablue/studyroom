@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.protobuf)
     id("kotlin-parcelize") // parcelable 객체를 kotlin-serialization 에서 사용하기 위해 쓰는 것
     alias(libs.plugins.reference.android.room)
+    alias(libs.plugins.reference.android.google.service)  // TODO : 이미 build logic 에 관련 내용이 포함되어 있는데 수동으로 넣어야 하는 이유는?
 }
 
 android {
@@ -84,6 +85,13 @@ dependencies {
     // sha-1 이 필요한 경우가 있는데 이는 ./gradlew signingReport 를 console 을 사용하면 모듈별로 sha-1이 나온다.
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+
+    // Import the Firebase BoM as usual
+    // Make sure to use Firebase BoM v32.5.0 or higher 인 경우 일반, ktx 라이브러리의 구분 없이 사용 가능
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.auth.credentials)
+    implementation(libs.firebase.auth.credentials.service)
+    implementation(libs.firebase.auth.identity.id)
     // 이걸 사용하려면 flavor 설정에서 productFlavors 을 해주면 사용할 수 있다.
 //    prodImplementation(libs.firebase.analytics)
 

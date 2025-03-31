@@ -42,7 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.credentials.GetCredentialRequest
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -64,14 +64,15 @@ import com.example.fastthirtyfivefinal.designsystem.icon.ThirtyFiveIcons
 import com.example.fastthirtyfivefinal.ui.category.ThirtyFiveCategoryScreen
 import com.example.fastthirtyfivefinal.ui.main.ThirtyFiveMainCategoryScreen
 import com.example.fastthirtyfivefinal.ui.main.ThirtyFiveMainHomeScreen
+import com.example.fastthirtyfivefinal.ui.main.ThirtyFiveMyPageScreen
 import com.example.fastthirtyfivefinal.ui.product_detail.ThirtyFiveProductDetailScreen
 import com.example.fastthirtyfivefinal.ui.screen.category.categorySection
 import com.example.fastthirtyfivefinal.ui.screen.main.mainSection
 import com.example.fastthirtyfivefinal.ui.screen.mypage.myPageSection
 import com.example.fastthirtyfivefinal.ui.search.ThirtyFiveSearchScreen
-import com.example.fastthirtyfivefinal.ui.theme.StudyReferenceTheme
 import com.example.fastthirtyfivefinal.util.TimeZoneMonitor
 import com.example.fastthirtyfivefinal.viewmodel.MainViewModelOld
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -79,15 +80,6 @@ import kotlinx.datetime.TimeZone
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlin.reflect.KClass
-
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    StudyReferenceTheme {
-        MainScreenOlder()
-    }
-}
 
 /**
  * older 의 디자인은 material1~2 를 사용하는 경우 api 의 종류가 달라 구현 방법이 다르고
@@ -283,7 +275,10 @@ class ThirtyFiveNavigationSuiteScope internal constructor(
 }
 
 @Composable
-fun MainScreenOlder() {
+fun MainScreenOlder(
+    googleSignInRequester: GetCredentialRequest,
+    firebaseAuth: FirebaseAuth
+) {
     // hilt-navigation-compose 를 추가 해줘야지만 사용 가능하다.
     val viewModel = hiltViewModel<MainViewModelOld>()
 
@@ -315,7 +310,9 @@ fun MainScreenOlder() {
         ) {
             MainNavigationScreenOld(
                 navController = navControllerOlder,
-                mainViewModelOld = viewModel
+                mainViewModelOld = viewModel,
+                googleSignInRequester = googleSignInRequester,
+                firebaseAuth = firebaseAuth
             )
         }
     }
@@ -425,7 +422,9 @@ fun NavController.navigateToMyPage(navOptions: NavOptions) = navigate(route = My
 @Composable
 fun MainNavigationScreenOld(
     navController: NavHostController,
-    mainViewModelOld: MainViewModelOld
+    mainViewModelOld: MainViewModelOld,
+    googleSignInRequester: GetCredentialRequest,
+    firebaseAuth: FirebaseAuth
 ) {
     // NavHost 설계 도면을 수행 할 수 있도록 하는 모듈이고
     // navController 에서 createGraph() 를 통해서 만들어지거나 navGraphBuilder 로 만들어진 내용은 설계도 이다.
@@ -443,7 +442,7 @@ fun MainNavigationScreenOld(
         }
 
         composable(ThirtyFiveNavigationRouteName.MAIN_MY_PAGE) {
-            Text(text = "Hello MyPage")
+            ThirtyFiveMyPageScreen(mainViewModelOld, googleSignInRequester, firebaseAuth)
         }
 
         composable(ThirtyFiveNavigationRouteName.CATEGORY + "/{category}",

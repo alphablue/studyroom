@@ -3,4 +3,8 @@
     <string name="bottom_nav_main">Main</string>
     <string name="bottom_nav_category">Category</string>
     <string name="bottom_nav_my_page">MyPage</string>
+
+    <!-- 파이어베이스 프로젝트를 생성하면 자동으로 구글 클라우드 콘성에도 동일한 프로젝트가 자동으로 등록되고  -->
+    <!-- api의 설정 권한, 비용 등을 관리 할 수 있다. -->
+    <string name="firebase_auth_client_id">717466059769-6rmt8h1lirjml2uhe5p6rersnmrtf9os.apps.googleusercontent.com</string>
 </resources>

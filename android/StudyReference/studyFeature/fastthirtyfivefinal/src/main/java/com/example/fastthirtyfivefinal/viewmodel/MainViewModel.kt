@@ -3,6 +3,7 @@ package com.example.fastthirtyfivefinal.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
+import com.example.fastthirtyfive_domain.model.ThirtyFiveAccountInfo
 import com.example.fastthirtyfive_domain.model.ThirtyFiveBanner
 import com.example.fastthirtyfive_domain.model.ThirtyFiveBannerList
 import com.example.fastthirtyfive_domain.model.ThirtyFiveBaseModel
@@ -10,6 +11,7 @@ import com.example.fastthirtyfive_domain.model.ThirtyFiveCarousel
 import com.example.fastthirtyfive_domain.model.ThirtyFiveCategory
 import com.example.fastthirtyfive_domain.model.ThirtyFiveProduct
 import com.example.fastthirtyfive_domain.model.ThirtyFiveRanking
+import com.example.fastthirtyfive_domain.usecase.ThirtyFiveAccountUseCase
 import com.example.fastthirtyfive_domain.usecase.ThirtyFiveCategoryUseCase
 import com.example.fastthirtyfive_domain.usecase.ThirtyFiveMainUseCase
 import com.example.fastthirtyfivefinal.delegate.ThirtyFiveBannerDelegate
@@ -34,7 +36,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModelOld @Inject constructor(
     mainUseCase: ThirtyFiveMainUseCase,
-    categoryUseCase: ThirtyFiveCategoryUseCase
+    categoryUseCase: ThirtyFiveCategoryUseCase,
+    private val accountUseCase: ThirtyFiveAccountUseCase
 ): ViewModel(), ThirtyFiveProductDelegate, ThirtyFiveBannerDelegate, ThirtyFiveCategoryDelegate {
 
     // 무분별한 수정을 막기위해 데이터 변경은 뷰모델 안에서 되도록 함
@@ -43,9 +46,22 @@ class MainViewModelOld @Inject constructor(
 
     val productList = mainUseCase.getProductList().map(::convertToPresentationVM)
     val categories = categoryUseCase.getCategories()
+    val accountInfo = accountUseCase.getAccountInfo()
 
     fun openSearchForm(navHostController: NavHostController) {
         ThirtyFiveNavigationUtils.navigate(navHostController, ThirtyFiveNavigationRouteName.SEARCH)
+    }
+
+    fun signInGoogle(accountInfo: ThirtyFiveAccountInfo) {
+        viewModelScope.launch {
+            accountUseCase.signInGoogle(accountInfo)
+        }
+    }
+
+    fun signOutGoogle() {
+        viewModelScope.launch {
+            accountUseCase.signOutGoogle()
+        }
     }
 
     fun updateColumnCount(count: Int) {

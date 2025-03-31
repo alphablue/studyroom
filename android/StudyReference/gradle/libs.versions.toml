@@ -51,6 +51,8 @@ room = "2.6.1"
 ## 파이어베이스 설정
 firebaseBom = "33.11.0"
 gmsPlugin = "4.4.2" ## 구글 관련 서비스 (파이어베이스 등등)
+credentials = "1.3.0"
+googleId = "1.1.1"
 
 ## androidX lib TEST
 androidx-test-ext-junit = "1.2.1"
@@ -198,6 +200,12 @@ compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-
 ## 파이어베이스 설정
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
+
+## 구글 로그인 추가 라이브러리
+firebase-auth-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials"}
+firebase-auth-credentials-service = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentials" }
+firebase-auth-identity-id = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleId"}
 
 [plugins]
 ## gradle convention 에 연결된 것들
@@ -230,6 +238,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 reference-android-hilt = { id = "study.reference.hilt"}
 reference-android-feature = { id = "study.reference.feature"}
 reference-android-room = { id = "study.reference.room"}
+reference-android-google-service = { id = "study.reference.firebase"}
 
 # DataStore 설정, protobuf 플러긴을 지정해 줘야 된다.
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin"}

@@ -47,6 +47,14 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+    // 파이어베이스
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.auth.credentials)
+    implementation(libs.firebase.auth.credentials.service)
+    implementation(libs.firebase.auth.identity.id)
+
     // serialize
     implementation(libs.kotlinx.serialization.json)
 }

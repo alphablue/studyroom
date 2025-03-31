@@ -1,11 +1,13 @@
 package com.example.fastthirtyfivefinal.di
 
 import com.example.fastthirtyfive_data.repository.TempRepositoryImpl
+import com.example.fastthirtyfive_data.repository.ThirtyFiveAccountRepositoryImpl
 import com.example.fastthirtyfive_data.repository.ThirtyFiveCategoryRepositoryImpl
 import com.example.fastthirtyfive_data.repository.ThirtyFiveProductDetailRepositoryImpl
 import com.example.fastthirtyfive_data.repository.ThirtyFiveRepositoryImpl
 import com.example.fastthirtyfive_data.repository.ThirtyFiveSearchRepositoryImpl
 import com.example.fastthirtyfive_domain.repository.TempRepository
+import com.example.fastthirtyfive_domain.repository.ThirtyFiveAccountRepository
 import com.example.fastthirtyfive_domain.repository.ThirtyFiveCategoryRepository
 import com.example.fastthirtyfive_domain.repository.ThirtyFiveProductDetailRepository
 import com.example.fastthirtyfive_domain.repository.ThirtyFiveRepository
@@ -36,11 +38,15 @@ interface ThirtyFiveOldDataModule {
 
     @Binds
     @Singleton
-    fun bindsProductDetailRepository(categoryRepositoryImpl: ThirtyFiveProductDetailRepositoryImpl): ThirtyFiveProductDetailRepository
+    fun bindsProductDetailRepository(productRepositoryImpl: ThirtyFiveProductDetailRepositoryImpl): ThirtyFiveProductDetailRepository
 
     @Binds
     @Singleton
-    fun bindsSearchRepository(categoryRepositoryImpl: ThirtyFiveSearchRepositoryImpl): ThirtyFiveSearchRepository
+    fun bindsSearchRepository(searchRepositoryImpl: ThirtyFiveSearchRepositoryImpl): ThirtyFiveSearchRepository
+
+    @Binds
+    @Singleton
+    fun bindAccountRepository(accountRepositoryImpl: ThirtyFiveAccountRepositoryImpl): ThirtyFiveAccountRepository
 }
 
 // 강의 에서는 interface 로 정의 했지만, now in 에서는 접근 제한자의 관리를 위해 추상클래스로 관리함

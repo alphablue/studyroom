@@ -39,7 +39,7 @@ fun ThirtyFiveCarouselCard(
             fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
             text = viewModel.model.title,
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.padding(10.dp),
         )
 
         LazyRow(

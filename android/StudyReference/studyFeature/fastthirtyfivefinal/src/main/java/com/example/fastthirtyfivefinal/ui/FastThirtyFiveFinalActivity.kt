@@ -36,9 +36,13 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.credentials.GetCredentialRequest
 import com.example.fastthirtyfivefinal.ui.theme.StudyReferenceTheme
 import com.example.fastthirtyfivefinal.util.TimeZoneMonitor
 import com.example.fastthirtyfivefinal.viewmodel.MainViewModelOld
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -56,6 +60,9 @@ class FastThirtyFiveFinalActivity : ComponentActivity() {
 
     @Inject
     lateinit var timeZoneMonitor: TimeZoneMonitor
+
+    @Inject
+    lateinit var googleSignInRequester: GetCredentialRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,7 +110,10 @@ class FastThirtyFiveFinalActivity : ComponentActivity() {
 //            ShowNewVersion(timeZoneMonitor)
 
             // material 2 컴포넌트 적용
-            ShowOldVersion()
+            ShowOldVersion(
+                googleSignInRequester,
+                Firebase.auth
+            )
         }
         // 화면의 사이즈가 다양한데 변화에 맞게 보여줄 아이템의 갯수를 조절하기 위한 부분
         thirtyFiveMainViewModel.updateColumnCount(getColumnCount())
@@ -125,9 +135,15 @@ class FastThirtyFiveFinalActivity : ComponentActivity() {
 }
 
 @Composable
-fun ShowOldVersion() {
+fun ShowOldVersion(
+    googleSignInRequester: GetCredentialRequest,
+    firebaseAuth: FirebaseAuth
+) {
     StudyReferenceTheme {
-        MainScreenOlder()
+        MainScreenOlder(
+            googleSignInRequester,
+            firebaseAuth
+        )
     }
 }
 

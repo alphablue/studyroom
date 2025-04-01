@@ -5,12 +5,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.fastthirtyfive_data.database.entity.ThirtyFiveLikeProductEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ThirtyFiveLikeDao {
 
     @Query("SELECT * FROM thirty_five_like")
-    suspend fun getAll() : List<ThirtyFiveLikeProductEntity>
+    fun getAll() : Flow<List<ThirtyFiveLikeProductEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: ThirtyFiveLikeProductEntity)

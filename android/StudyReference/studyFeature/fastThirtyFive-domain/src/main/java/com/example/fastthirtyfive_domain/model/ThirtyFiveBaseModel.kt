@@ -6,6 +6,10 @@ import kotlinx.serialization.Serializable
 abstract class ThirtyFiveBaseModel {
 }
 
+enum class ThirtyFiveProductIds {
+    PRODUCT, BANNER, BANNER_LIST, CAROUSEL, RANKING
+}
+
 const val SERIAL_PRODUCT = "PRODUCT"
 const val SERIAL_BANNER = "BANNER"
 const val SERIAL_BANNER_LIST = "BANNER_LIST"

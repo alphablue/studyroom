@@ -23,7 +23,7 @@ class ThirtyFiveProductDataSource @Inject constructor(
 ) {
     fun getHomeComponents(): Flow<List<ThirtyFiveBaseModel>> = flow {
 //        val inputStream = context.assets.open("study_thirty_five_product_list.json")
-        val inputStream = context.assets.open("clip09_product_list.json")
+        val inputStream = context.assets.open("clip31_product_list.json.json")
         val inputStreamReader = InputStreamReader(inputStream)
         val jsonString = inputStreamReader.readText()
 

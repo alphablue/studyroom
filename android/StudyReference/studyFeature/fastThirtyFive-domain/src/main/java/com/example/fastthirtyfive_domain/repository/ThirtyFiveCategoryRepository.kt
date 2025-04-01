@@ -7,4 +7,6 @@ import kotlinx.coroutines.flow.Flow
 interface ThirtyFiveCategoryRepository {
     fun getCategories(): Flow<List<ThirtyFiveCategory>>
     fun getProductsByCategory(category: ThirtyFiveCategory): Flow<List<ThirtyFiveProduct>>
+
+    suspend fun likeProduct(product: ThirtyFiveProduct)
 }

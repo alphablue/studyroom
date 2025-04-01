@@ -3,6 +3,7 @@ package com.example.fastthirtyfivefinal.di
 import android.content.Context
 import androidx.room.Room
 import com.example.fastthirtyfive_data.database.ThirtyFiveApplicationDatabase
+import com.example.fastthirtyfive_data.database.dao.ThirtyFiveLikeDao
 import com.example.fastthirtyfive_data.database.dao.ThirtyFiveSearchDao
 import dagger.Module
 import dagger.Provides
@@ -34,5 +35,13 @@ object DataBaseModule {
         database: ThirtyFiveApplicationDatabase
     ): ThirtyFiveSearchDao {
         return database.thirtyFiveSearchDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideThirtyLikeDao(
+        database: ThirtyFiveApplicationDatabase
+    ): ThirtyFiveLikeDao {
+        return database.thirtyFiveLikeDao()
     }
 }

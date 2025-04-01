@@ -19,6 +19,7 @@ data class ThirtyFiveLikeProductEntity(
     val category: ThirtyFiveCategory,
     val shop: ThirtyFiveShop,
     val isNew: Boolean,
+    val isLike: Boolean,
     val isFreeShipping: Boolean,
 )
 
@@ -31,6 +32,11 @@ fun ThirtyFiveLikeProductEntity.toDomainModel(): ThirtyFiveProduct {
         category = category,
         shop = shop,
         isNew = isNew,
+        isLike = isLike,
         isFreeShipping = isFreeShipping
     )
+}
+
+fun ThirtyFiveProduct.toLikeProductEntity(): ThirtyFiveLikeProductEntity {
+    return ThirtyFiveLikeProductEntity(productId = productId, productName = productName, imageUrl = imageUrl, price = price, category = category, shop = shop, isNew = isNew, isLike = isLike, isFreeShipping = isFreeShipping)
 }

@@ -19,6 +19,7 @@ data class ThirtyFiveBasketProductEntity(
     val category: ThirtyFiveCategory,
     val shop: ThirtyFiveShop,
     val isNew: Boolean,
+    val isLike: Boolean,
     val isFreeShipping: Boolean,
 )
 
@@ -31,6 +32,7 @@ fun ThirtyFiveBasketProductEntity.toDomainModel(): ThirtyFiveProduct {
         category = category,
         shop = shop,
         isNew = isNew,
+        isLike = isLike,
         isFreeShipping = isFreeShipping
     )
 }

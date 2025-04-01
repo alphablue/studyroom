@@ -13,6 +13,7 @@ data class ThirtyFiveProduct(
     val category: ThirtyFiveCategory,
     val shop: ThirtyFiveShop,
     val isNew: Boolean,
+    val isLike: Boolean,
     val isFreeShipping: Boolean
 ) : ThirtyFiveBaseModel()
 

@@ -15,13 +15,8 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "StudyReference"
-include(":uiChallengeXmlView")
-include(":uichallengecompose")
-include(":architectmodule")
 
-include(":studyFeature:challengeUI")
-include(":studyFeature:CommonUI")
-include(":toyappsentrypoints")
 include(":studyFeature:fastthirtyfivefinal")
 include(":studyFeature:fastThirtyFive-data")
 include(":studyFeature:fastThirtyFive-domain")
+include(":studyFeature:studystartingpoint")

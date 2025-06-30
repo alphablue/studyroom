@@ -3,7 +3,7 @@
 
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
     <!-- sdk 33(android 13) 이상 버전 사용시 설정 -> 시계나 스케줄 앱인 경우에 자동으로 알람 설정에 대한 권한이 부여됨 -->
-    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
+<!--    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>-->
     
     <application
         android:allowBackup="true"

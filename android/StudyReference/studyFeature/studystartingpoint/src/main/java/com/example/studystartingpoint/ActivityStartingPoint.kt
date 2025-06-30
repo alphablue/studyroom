@@ -52,7 +52,7 @@ fun StateFulBroadCastController(
     LifecycleStartEffect(true) {
         registrationBroadCastReceiver(context, exactAlarmReceiver)
         onStopOrDispose {
-            unRegistrationBroadCastReceiver(context, exactAlarmReceiver)
+//            unRegistrationBroadCastReceiver(context, exactAlarmReceiver)
             "리시버 등록 해제".d("alarmTest")
         }
     }

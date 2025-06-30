@@ -3,7 +3,7 @@ package com.example.studystartingpoint.ui.CommonDesignedComponent.Toast
 import android.content.Context
 import android.widget.Toast
 
-fun toastShort(
+fun makeToastShort(
     context: Context,
     message: String
 ) {

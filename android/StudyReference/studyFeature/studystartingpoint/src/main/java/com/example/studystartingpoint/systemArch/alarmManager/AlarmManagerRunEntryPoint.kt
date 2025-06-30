@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.net.toUri
 import com.example.studystartingpoint.ui.CommonDesignedComponent.Button.SpaceButton
-import com.example.studystartingpoint.ui.CommonDesignedComponent.Toast.toastShort
+import com.example.studystartingpoint.ui.CommonDesignedComponent.Toast.makeToastShort
 import com.example.studystartingpoint.util.d
 
 @Composable
@@ -65,7 +65,9 @@ fun AlarmManagerRunEntryPoint(paddingValues: PaddingValues) {
                     .wrapContentWidth()
                     .height(36.dp),
                 shape = RoundedCornerShape(4.dp),
-                onClick = { startAlarmOneShot(context, alarmManager) }
+                onClick = {
+                    startAlarmOneShot(context, alarmManager)
+                }
             ) {
                 Text("정확한 알람 등록하기")
             }
@@ -92,7 +94,7 @@ fun requestExactAlarmPermission(
 
         context.startActivity(requestAlarmIntent)
     } else {
-        toastShort(context, "이미 정확한 알람 권한이 있습니다.")
+        makeToastShort(context, "이미 정확한 알람 권한이 있습니다.")
     }
 }
 
@@ -100,18 +102,40 @@ fun startAlarmOneShot(
     context: Context,
     alarmManager: AlarmManager
 ) {
+    /**
+     * 참조: https://developer.android.com/reference/android/app/PendingIntent
+     *
+     * pendingIntent 를 만들 때 주의 할 점은 intent의 "추가된" 내용만 다른 intent 를 만들어 줬을 때,
+     * 매번 다른 pendingIntent 를 생성하지 않는 다는 것이다. 같은 pendingIntent를 생성하게 되면서 여러개의 실행을 요청했더라도
+     * 하나로 간주될 수 있다. 이것을 방지 하기 위해서는 requestCode 를 명확하게 정의해 줘야 한다.
+     *
+     * 만약 매번 하나의 pendingIntent를 생성해야 한다면 PendingIntent.FLAG_CANCEL_CURRENT 나 PendingIntent.FLAG_UPDATE_CURRENT 를 flag로 넘겨 주자
+     * */
+
     val alarmIntent = Intent(
         context,
         ExactListenBroadCast::class.java
     ).let {
-        PendingIntent.getBroadcast(context, 0, it, 0)
+        it.action = ExactListenBroadCast.ACTION_EXACT_ALARM_RECEIVER_TRIGGER
+        it.putExtra("exactAlarm", "액션의 등록 완료")
+        // 12 이상인 경우 PendingIntent.FLAG_IMMUTABLE을 사용해야함 (보안 강화의 목적)
+        PendingIntent.getBroadcast(context, 0, it, 0 or PendingIntent.FLAG_IMMUTABLE)
     }
 
     alarmManager.set(
         AlarmManager.ELAPSED_REALTIME_WAKEUP,
-        SystemClock.elapsedRealtime() + 60 * 1000,
+        SystemClock.elapsedRealtime() + 30 * 1000,
         alarmIntent
     )
+
+    /**
+     * 알람 및 리마인더 권한이 허용되어 있지 않다면 아래 함수 호출시 app crash가 발생 한다.
+     * */
+//    alarmManager.setExact(
+//        AlarmManager.ELAPSED_REALTIME_WAKEUP,
+//        SystemClock.elapsedRealtime() + 30 * 1000,
+//        alarmIntent
+//    )
 
     "알람매니저 1분뒤 실행 요청 등록 완료".d("alarmTest")
 }

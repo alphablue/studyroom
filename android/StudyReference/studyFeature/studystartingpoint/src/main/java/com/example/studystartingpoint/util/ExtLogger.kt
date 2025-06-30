@@ -88,8 +88,6 @@ private fun displayLog(
     var fileName =  ""
     var lineNumber = ""
     runCatching {
-        Log.d("logInfo", "${Thread.currentThread().stackTrace.first { it.className.startsWith("com.example.studystartingpoint") }}")
-
         Thread.currentThread().stackTrace
             .filterNot { it.fileName == "ExtLogger.kt" }
             .firstOrNull { it.className.startsWith("com.example.studystartingpoint") }

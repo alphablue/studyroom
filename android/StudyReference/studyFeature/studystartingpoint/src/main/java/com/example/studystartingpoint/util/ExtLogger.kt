@@ -31,14 +31,24 @@ fun String?.e(tag: String = ExtLoggerImpl.TAG) {
 
 private object ExtLoggerImpl {
     private fun convertMessage(message: String): String {
-        val element = Thread.currentThread().stackTrace[4]
-        val fileName = element.fileName
+//        val element = Thread.currentThread().stackTrace[4]
+//        val fileName = element.fileName
+
+        /**
+         * message 만 넣어도 구분하면서 보기 좋을거 같은데 참고만 할것
+         * */
+//        return String.format(
+//            Locale.getDefault(),
+//            "%s::%s() #%d] %s",
+//            fileName.substring(0, fileName.indexOf(".")),
+//            element.methodName,
+//            element.lineNumber,
+//            message
+//        )
+
         return String.format(
             Locale.getDefault(),
-            "%s::%s() #%d] %s",
-            fileName.substring(0, fileName.indexOf(".")),
-            element.methodName,
-            element.lineNumber,
+            "%s",
             message
         )
     }
@@ -78,8 +88,11 @@ private fun displayLog(
     var fileName =  ""
     var lineNumber = ""
     runCatching {
+        Log.d("logInfo", "${Thread.currentThread().stackTrace.first { it.className.startsWith("com.example.studystartingpoint") }}")
+
         Thread.currentThread().stackTrace
-            .firstOrNull()
+            .filterNot { it.fileName == "ExtLogger.kt" }
+            .firstOrNull { it.className.startsWith("com.example.studystartingpoint") }
             ?.let {
                 fileName = it.fileName
                 lineNumber = it.lineNumber.toString()

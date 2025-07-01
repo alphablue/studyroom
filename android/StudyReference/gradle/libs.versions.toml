@@ -1,5 +1,5 @@
 [versions]
-agp = "8.7.3" # https://developer.android.com/build/releases/gradle-plugin
+agp = "8.11.0" # https://developer.android.com/build/releases/gradle-plugin
 kotlin = "2.1.0"
 kotlin-ksp = "2.1.0-1.0.29" # https://kotlinlang.org/docs/ksp-quickstart.html#add-a-processor
 core-ktx = "1.15.0"
@@ -75,6 +75,9 @@ activity = "1.10.0"
 ## third party
 # 로거
 logger = "2.2.0"
+
+## 위치 location
+gmsLocation = "21.3.0"
 
 [libraries]
 
@@ -206,6 +209,9 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 firebase-auth-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials"}
 firebase-auth-credentials-service = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentials" }
 firebase-auth-identity-id = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleId"}
+
+## 위치 정보(location) 라이브러리
+gms-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "gmsLocation"}
 
 [plugins]
 ## gradle convention 에 연결된 것들

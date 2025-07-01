@@ -49,6 +49,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.activity.compose)
 
+    // gms 라이브러리들
+    implementation(libs.gms.location)
+
     // preview
     implementation(libs.androidx.compose.ui.tooling.preview)
     debugImplementation(libs.androidx.compose.ui.tooling)  // 이게 있어야 프리뷰가 잘 작동함

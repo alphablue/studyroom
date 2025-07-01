@@ -4,7 +4,14 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
     <!-- sdk 33(android 13) 이상 버전 사용시 설정 -> 시계나 스케줄 앱인 경우에 자동으로 알람 설정에 대한 권한이 부여됨 -->
 <!--    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>-->
-    
+
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <!-- 위치 권한의 설정 -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,6 +31,7 @@
             </intent-filter>
         </activity>
 
+        <!-- 정적 리시버 등록, 코드상에서 리시버를 등록하지 앱이 실행되면 무조건 실행 되도록 하는 코드 -->
         <receiver
             android:name=".systemArch.alarmManager.ExactListenBroadCast"
             android:exported="false"
@@ -33,6 +41,12 @@
                 <action android:name="com.example.studystartingpoint.START_EXACT_ALARM_TEST"/>
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".systemArch.gpsModule.GpsBackground"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+
     </application>
 
 </manifest>

@@ -26,7 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.net.toUri
-import com.example.studystartingpoint.ui.CommonDesignedComponent.Button.SpaceButton
+import com.example.studystartingpoint.ui.CommonDesignedComponent.Button.VerticalSpaceButton
 import com.example.studystartingpoint.ui.CommonDesignedComponent.Toast.makeToastShort
 import com.example.studystartingpoint.util.d
 
@@ -43,7 +43,7 @@ fun AlarmManagerRunEntryPoint(paddingValues: PaddingValues) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        SpaceButton(12.dp) {
+        VerticalSpaceButton(12.dp, {
             Button(
                 modifier = Modifier
                     .wrapContentWidth()
@@ -57,9 +57,9 @@ fun AlarmManagerRunEntryPoint(paddingValues: PaddingValues) {
             ) {
                 Text("정확한 알람 권한 요청하기")
             }
-        }
+        })
 
-        SpaceButton(12.dp) {
+        VerticalSpaceButton(12.dp, {
             Button(
                 modifier = Modifier
                     .wrapContentWidth()
@@ -71,7 +71,7 @@ fun AlarmManagerRunEntryPoint(paddingValues: PaddingValues) {
             ) {
                 Text("정확한 알람 등록하기")
             }
-        }
+        })
     }
 }
 

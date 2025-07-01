@@ -3,6 +3,10 @@ package com.example.studystartingpoint.systemArch.alarmManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import com.example.studystartingpoint.util.d
 
 /**
@@ -21,5 +25,14 @@ class ExactListenBroadCast: BroadcastReceiver() {
         "우리가 요청한 액션이 맞는가? ${intent?.action == ACTION_EXACT_ALARM_RECEIVER_TRIGGER}".d("alarmTest")
 
         "정확한 알람 브로드캐스트 리시버 테스트, ${intent?.getStringExtra("exactAlarm")}".d("alarmTest")
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            (context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager).defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        }.run {
+            vibrate(VibrationEffect.createOneShot(1000L, VibrationEffect.DEFAULT_AMPLITUDE))
+        }
     }
 }

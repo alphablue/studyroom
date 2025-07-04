@@ -52,7 +52,7 @@
         </receiver>
 
         <service
-            android:name=".systemArch.gpsModule.GpsBackground"
+            android:name=".systemArch.gpsModule.GpsForegroundService"
             android:exported="false"
             android:foregroundServiceType="location" />
 

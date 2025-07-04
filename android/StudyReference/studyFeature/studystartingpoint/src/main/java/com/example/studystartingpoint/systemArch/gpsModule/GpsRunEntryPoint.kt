@@ -24,12 +24,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.example.studystartingpoint.ui.CommonDesignedComponent.Button.VerticalSpaceButton
 import com.example.studystartingpoint.util.RequestGpsPermissionAlert
 import com.example.studystartingpoint.util.RequestNotificationPermissionAlert
@@ -51,6 +55,10 @@ val locationCallback = object : LocationCallback() {
     }
 }
 
+/**
+ * service 는 앱을 완전 종료 시켜도 살아 있고 worker 는 앱의 프로세스를 날렸을 경우 죽는 것을 확인 할 수 있었다.
+ * 하지만 단순히 앱을 백그라운드로 남겨두고 다른앱을 실행하고 있는 경우는 worker가 작동하는 것을 볼 수 있었다.
+ * */
 @Composable
 fun GpsRunEntryPoint(
     paddingValues: PaddingValues
@@ -58,6 +66,7 @@ fun GpsRunEntryPoint(
     val context = LocalContext.current
     var locationPermissionState by remember { mutableStateOf(false) }
     var notificationPermissionState by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         Modifier
@@ -94,11 +103,6 @@ fun GpsRunEntryPoint(
                         context = context,
                         callBackRequestPermission = { locationPermissionState = it }
                     )
-
-//                    testOption(
-//                        context = context,
-//                        locationManager = (context as Activity).getSystemService(Context.LOCATION_SERVICE) as LocationManager
-//                    )
                 }
             ) {
                 Text("GPS 실행 하기")
@@ -112,12 +116,7 @@ fun GpsRunEntryPoint(
                     .height(36.dp),
                 shape = RoundedCornerShape(4.dp),
                 onClick = {
-//                    stopGpsCollect(activity = context as Activity)
-                    context.startForegroundService(
-                        Intent(context, GpsBackground::class.java)
-                            .apply {
-                                action = GpsBackground.ACTION_STOP_GPS
-                            })
+                    stopGpsCollect(activity = context as Activity)
                 }
             ) {
                 Text("GPS 중단 요청")
@@ -133,9 +132,6 @@ fun GpsRunEntryPoint(
                 onClick = {
                     if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                         notificationPermissionState = true
-                    } else {
-                        context.startForegroundService(Intent(context, GpsBackground::class.java))
-//                    context.startService(Intent(context, GpsBackground::class.java))
                     }
                 }
             ) {
@@ -151,14 +147,64 @@ fun GpsRunEntryPoint(
                 shape = RoundedCornerShape(4.dp),
                 onClick = {
                     context.startForegroundService(
-                        Intent(context, GpsBackground::class.java)
+                        Intent(context, GpsForegroundService::class.java)
                             .apply {
-                                action = GpsBackground.ACTION_START_GPS
+                                action = GpsForegroundService.ACTION_START_GPS // action 값으로 조정
                             })
-//                    context.startService(Intent(context, GpsBackground::class.java))
                 }
             ) {
-                Text("GPS 백그라운드 서비스 실행")
+                Text("GPS 포그라운드 서비스 실행")
+            }
+        })
+
+        VerticalSpaceButton(12.dp, {
+            Button(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .height(36.dp),
+                shape = RoundedCornerShape(4.dp),
+                onClick = {
+                    context.startForegroundService(
+                        Intent(context, GpsForegroundService::class.java)
+                            .apply {
+                                action = GpsForegroundService.ACTION_STOP_GPS
+                            })
+                }
+            ) {
+                Text("GPS 포그라운드 서비스 중단")
+            }
+        })
+
+        VerticalSpaceButton(12.dp, {
+            Button(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .height(36.dp),
+                shape = RoundedCornerShape(4.dp),
+                onClick = {
+                        WorkManager.getInstance(context).enqueueUniqueWork(
+                            "TestWorker",
+                            ExistingWorkPolicy.REPLACE,
+                            OneTimeWorkRequest.Builder(GpsWorker::class)
+                                .build()
+                        )
+                }
+            ) {
+                Text("GPS 워커 실행")
+            }
+        })
+
+        VerticalSpaceButton(12.dp, {
+            Button(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .height(36.dp),
+                shape = RoundedCornerShape(4.dp),
+                onClick = {
+                    WorkManager.getInstance(context).cancelUniqueWork("TestWorker")
+                }
+            ) {
+                Text("GPS 워커 중단")
             }
         })
     }
@@ -332,9 +378,4 @@ fun testOption(
     } else {
         "gps 옵션이 꺼져 있습니다.".d("locationInfo")
     }
-}
-
-@Composable
-fun GpsOptionAlert() {
-
 }

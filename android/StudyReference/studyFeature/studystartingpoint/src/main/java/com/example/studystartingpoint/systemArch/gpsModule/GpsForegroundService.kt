@@ -29,7 +29,9 @@ import com.google.android.gms.location.Priority
 /**
  * foreground 로 실행시 알림(noti)가 떠 있는동안은 위치 정보를 수집함
  * */
-class GpsBackground : Service(), LocationListener {
+class GpsForegroundService : Service(), LocationListener {
+
+    private val GPS_INTERVAL_MILLI = 1000L
 
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private val locationCallback: LocationCallback = object : LocationCallback() {
@@ -40,7 +42,7 @@ class GpsBackground : Service(), LocationListener {
         }
     }
     private val locationRequest = LocationRequest
-        .Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000L)
+        .Builder(Priority.PRIORITY_HIGH_ACCURACY, GPS_INTERVAL_MILLI)
         .build()
     private var locationManager: LocationManager? = null
 
@@ -68,11 +70,6 @@ class GpsBackground : Service(), LocationListener {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-//        ServiceCompat.startForeground(
-//            this, 123123, Notification.Builder(this, "위치정보")
-//                .build(),
-//            ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
-//        )
 
         startForeground(NOTIFICATION_ID, createNotification())
 
@@ -95,10 +92,10 @@ class GpsBackground : Service(), LocationListener {
                 val isNetworkEnabled = locationManager!!.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
                 if (isGpsEnabled) {
-                    locationManager!!.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 0f, this)
+                    locationManager!!.requestLocationUpdates(LocationManager.GPS_PROVIDER, GPS_INTERVAL_MILLI, 0f, this)
                     "Standard GPS (GPS_PROVIDER) 업데이트 시작".d("locationService")
                 } else if (isNetworkEnabled) {
-                    locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000L, 0f, this)
+                    locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, GPS_INTERVAL_MILLI, 0f, this)
                     "Standard GPS (NETWORK_PROVIDER) 업데이트 시작".d("locationService")
                 } else {
                     "사용 가능한 위치 제공자 없음 (Standard)".d("locationService")

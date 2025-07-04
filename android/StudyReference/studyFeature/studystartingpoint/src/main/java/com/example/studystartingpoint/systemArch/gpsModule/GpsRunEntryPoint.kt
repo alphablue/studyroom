@@ -5,7 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.location.Location
+import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.provider.Settings
 import androidx.annotation.RequiresPermission
@@ -21,26 +21,43 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import com.example.studystartingpoint.ui.CommonDesignedComponent.Button.VerticalSpaceButton
-import com.example.studystartingpoint.util.RequestGpsPermissionButton
+import com.example.studystartingpoint.util.RequestGpsPermissionAlert
+import com.example.studystartingpoint.util.RequestNotificationPermissionAlert
+import com.example.studystartingpoint.util.checkLocationPermissionAndList
 import com.example.studystartingpoint.util.d
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsStatusCodes
 import com.google.android.gms.location.Priority
+
+val locationCallback = object : LocationCallback() {
+    override fun onLocationResult(location: LocationResult) {
+        "fusedLocationClient 에서 update 요청 값 받음 $location".d("locationInfo")
+    }
+}
 
 @Composable
 fun GpsRunEntryPoint(
     paddingValues: PaddingValues
 ) {
     val context = LocalContext.current
+    var locationPermissionState by remember { mutableStateOf(false) }
+    var notificationPermissionState by remember { mutableStateOf(false) }
 
     Column(
         Modifier
@@ -51,7 +68,19 @@ fun GpsRunEntryPoint(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        RequestGpsPermissionButton()
+        VerticalSpaceButton(12.dp) {
+            Button(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .height(36.dp),
+                shape = RoundedCornerShape(4.dp),
+                onClick = {
+                    locationPermissionState = true
+                }
+            ) {
+                Text("GPS 권한 요청 하기")
+            }
+        }
 
         VerticalSpaceButton(12.dp, {
             Button(
@@ -61,7 +90,10 @@ fun GpsRunEntryPoint(
                 shape = RoundedCornerShape(4.dp),
                 onClick = {
                     @SuppressLint("MissingPermission")
-                    runGpsCollect(context = context)
+                    runGpsCollect(
+                        context = context,
+                        callBackRequestPermission = { locationPermissionState = it }
+                    )
 
 //                    testOption(
 //                        context = context,
@@ -72,13 +104,84 @@ fun GpsRunEntryPoint(
                 Text("GPS 실행 하기")
             }
         })
+
+        VerticalSpaceButton(12.dp, {
+            Button(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .height(36.dp),
+                shape = RoundedCornerShape(4.dp),
+                onClick = {
+//                    stopGpsCollect(activity = context as Activity)
+                    context.startForegroundService(
+                        Intent(context, GpsBackground::class.java)
+                            .apply {
+                                action = GpsBackground.ACTION_STOP_GPS
+                            })
+                }
+            ) {
+                Text("GPS 중단 요청")
+            }
+        })
+
+        VerticalSpaceButton(12.dp, {
+            Button(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .height(36.dp),
+                shape = RoundedCornerShape(4.dp),
+                onClick = {
+                    if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                        notificationPermissionState = true
+                    } else {
+                        context.startForegroundService(Intent(context, GpsBackground::class.java))
+//                    context.startService(Intent(context, GpsBackground::class.java))
+                    }
+                }
+            ) {
+                Text("포그라운드 서비스 권한 요청")
+            }
+        })
+
+        VerticalSpaceButton(12.dp, {
+            Button(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .height(36.dp),
+                shape = RoundedCornerShape(4.dp),
+                onClick = {
+                    context.startForegroundService(
+                        Intent(context, GpsBackground::class.java)
+                            .apply {
+                                action = GpsBackground.ACTION_START_GPS
+                            })
+//                    context.startService(Intent(context, GpsBackground::class.java))
+                }
+            ) {
+                Text("GPS 백그라운드 서비스 실행")
+            }
+        })
+    }
+
+    if (locationPermissionState) {
+        RequestGpsPermissionAlert(
+            requiredBackground = true,
+            completeCallback = { locationPermissionState = false }
+        )
+    }
+
+    if (notificationPermissionState) {
+        RequestNotificationPermissionAlert { notificationPermissionState = false }
     }
 }
 
 const val LOCATION_POPUP_CALL_CODE = 787878
 
 @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
-fun runGpsCollect(context: Context) {
+fun runGpsCollect(
+    context: Context,
+    callBackRequestPermission: (Boolean) -> Unit = {}
+) {
     val activity = context as? Activity
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     val locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -90,8 +193,6 @@ fun runGpsCollect(context: Context) {
         .addOnSuccessListener {
             "[gms location] 마지막 위치 정보 가져옴 $it".d("locationInfo")
         }
-
-//    fusedLocationClient.getCurrentLocation()
 
     /**
      * 위치 요청의 우선순위를 설정합니다. 우선순위는 위치 서비스가 사용할 위치 정보 출처와 전력 소모량에 영향을 미칩니다.
@@ -118,8 +219,8 @@ fun runGpsCollect(context: Context) {
      *   - 설명: 앱에서 직접 위치 업데이트를 트리거하지 않고, 다른 앱에서 트리거한 위치 정보를 수신합니다.
      *          전력 소비에 미치는 영향이 거의 없습니다.
      * */
-    val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000)
-        .setMinUpdateIntervalMillis(300)
+    val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000L)
+        .setMinUpdateIntervalMillis(300L)
         .build()
 
     /**
@@ -141,24 +242,33 @@ fun runGpsCollect(context: Context) {
 //            }
 
             val response = task.getResult(ApiException::class.java)
-            "툴바의 위치 옵션 설정 [성공] ${response.locationSettingsStates}".d("locationInfo")
+            "툴바의 GPS 옵션 설정 확인 [성공] ${response.locationSettingsStates}".d("locationInfo")
 
             /**
-             * 위치 정보 업데이트 요청
+             * 위치 정보 권한 확인
              * */
-            locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER,
-                1000L,
-                10f
-            ) {
-                "locationManager 에서 update 요청 값 받음 $it".d("locationInfo")
-            }
+            val checkLocationAndList = checkLocationPermissionAndList(context)
 
-            fusedLocationClient.requestLocationUpdates(
-                locationRequest,
-                { location: Location? -> "fusedLocationClient 에서 update 요청 값 받음 $location".d("locationInfo") },
-                context.mainLooper
-            )
+            if (checkLocationAndList.isNotEmpty()) {
+                callBackRequestPermission(true)
+            } else {
+                /**
+                 * 위치 정보 업데이트 요청
+                 * */
+//                locationManager.requestLocationUpdates(
+//                    LocationManager.NETWORK_PROVIDER,
+//                    1000L,
+//                    10f
+//                ) {
+//                    "locationManager 에서 update 요청 값 받음 $it".d("locationInfo")
+//                }
+
+                fusedLocationClient.requestLocationUpdates(
+                    locationRequest,
+                    locationCallback,
+                    context.mainLooper
+                )
+            }
         } catch (exception: ApiException) {
             /**
              * gps off 일때만 실행 하고 싶을때 아래 코드 활용
@@ -182,12 +292,12 @@ fun runGpsCollect(context: Context) {
 
             when (exception.statusCode) {
                 LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
-                    "툴바의 위치 옵션 설정 [실패] 팝업 노출 가능".d("locationInfo")
+                    "툴바의 GPS 옵션 설정 확인 [실패] 팝업 노출 가능".d("locationInfo")
 
                     /**
                      * google service 에서 제공하는 gps 설정 가능한 팝업 실행
                      * */
-                    if(exception is ResolvableApiException){
+                    if (exception is ResolvableApiException) {
                         exception.startResolutionForResult(activity, LOCATION_POPUP_CALL_CODE)
                     }
 
@@ -198,11 +308,18 @@ fun runGpsCollect(context: Context) {
                 }
 
                 LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
-                    "툴바의 위치 옵션 설정 [실패] 팝업 노출 x".d("locationInfo")
+                    "툴바의 GPS 옵션 설정 확인 [실패] 팝업 노출 x".d("locationInfo")
                 }
             }
         }
     }
+}
+
+fun stopGpsCollect(
+    activity: Activity
+) {
+    "gps 업데이트 요청 취소".d("locationInfo")
+    LocationServices.getFusedLocationProviderClient(activity).removeLocationUpdates(locationCallback)
 }
 
 fun testOption(

@@ -143,23 +143,32 @@ fun onMultiLocationPermissionResult(
 
 //        "백그라운드 위치 권한 정보 $backgroundOptionLabel".d("locationInfo")
 
+    // 권한 중 하나라도 거부된 경우
     if (result.values.any { granted -> !granted }) {
-        // 권한 중 하나라도 거부된 경우
+        // "다시 묻지 않음" 상태
         if (result.keys.any { permission ->
                 "권한의 안내 다이얼로그 표출 여부 확인 ${!ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)}".d("locationInfo")
                 !ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
             }
         ) {
-            showPermissionDeniedDialog(true) // "다시 묻지 않음" 상태
-        } else {
-            showRationaleDialog(true) // 단순 거부 상태
+            showPermissionDeniedDialog(true)
         }
-    } else if (checkBackgroundGpsPermission) {
+        // 단순 거부 상태
+        else {
+            showRationaleDialog(true)
+        }
+    }
+    // background 위치 권한 확인
+    else if (checkBackgroundGpsPermission) {
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             "백그라운드 위치 권한이 허용되지 않았습니다.".d("locationInfo")
             showPermissionDeniedDialogBackground(true)
+        } else {
+            complete()
         }
-    } else {
+    }
+    // 모든 조건 통과
+    else {
         complete()
     }
 }

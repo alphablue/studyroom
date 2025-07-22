@@ -46,6 +46,11 @@ class GpsWorker(
             }
         }
 
+        /**
+         * 장기 실행을 보장하는 worker 를 만들 수 있기는 하지만 결국에는 foreground 를 설정해야 한다.
+         * */
+//        setForeground()
+
         return Result.success()
     }
 

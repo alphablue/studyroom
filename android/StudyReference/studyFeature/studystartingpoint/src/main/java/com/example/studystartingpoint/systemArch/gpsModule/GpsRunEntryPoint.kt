@@ -182,12 +182,19 @@ fun GpsRunEntryPoint(
                     .height(36.dp),
                 shape = RoundedCornerShape(4.dp),
                 onClick = {
-                        WorkManager.getInstance(context).enqueueUniqueWork(
-                            "TestWorker",
-                            ExistingWorkPolicy.REPLACE,
-                            OneTimeWorkRequest.Builder(GpsWorker::class)
-                                .build()
-                        )
+                    // 단발성으로 실행 하는 경우
+                    WorkManager.getInstance(context).enqueueUniqueWork(
+                        "TestWorker",
+                        ExistingWorkPolicy.REPLACE,
+                        OneTimeWorkRequest.Builder(GpsWorker::class)
+                            .build()
+                    )
+
+                    // 여러번 실행 하는 경우
+//                    WorkManager.getInstance(context).enqueue(
+//                        PeriodicWorkRequest.Builder(GpsWorker::class, 1L, TimeUnit.DAYS)
+//                            .build()
+//                    )
                 }
             ) {
                 Text("GPS 워커 실행")

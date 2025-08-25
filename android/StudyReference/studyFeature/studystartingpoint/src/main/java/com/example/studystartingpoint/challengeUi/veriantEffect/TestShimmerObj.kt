@@ -1,8 +1,8 @@
-package com.ktcs.whowho.customlayout
+package com.example.studystartingpoint.challengeUi.veriantEffect
 
 import android.animation.ValueAnimator
 import android.graphics.RectF
-import androidx.annotation.ColorInt
+import androidx.core.graphics.toColorInt
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.round
@@ -29,12 +29,19 @@ class TestShimmerObj {
     /**
      * gradient의 3가지 색상 정의
      * */
-    @ColorInt
-    var startColor: Int = 0x4c0075ff
-    @ColorInt
-    var centerColor: Int = 0x4c9763e2
-    @ColorInt
-    var endColor: Int = 0x4cffb86c
+//    var sColor = ContextCompat.getColor(WhoWhoApp.instance, R.color.colorTestGradientStart)
+//    var cColor = ContextCompat.getColor(WhoWhoApp.instance, R.color.colorTestGradientCenter)
+//    var eColor = ContextCompat.getColor(WhoWhoApp.instance, R.color.colorTestGradientEnd)
+
+    // 아래 처럼 hex color 를 직접대입하면 colorInt 값으로 인식할 수 없음, 확장함수로 제공하는 color.parseColor() 를 활용하자
+//    var startColor: UInt = 0xff0075ff
+//    var centerColor: Int = 0xff9763e2
+//    var endColor: Int = 0xffffb86c
+
+    var startColor: Int = "#ff0075ff".toColorInt()
+    var centerColor: Int = "#ff9763e2".toColorInt()
+    var endColor: Int = "#ffffb86c".toColorInt()
+
     val colors: MutableList<Int> = mutableListOf(startColor, centerColor, endColor)
     val positions: MutableList<Float> = mutableListOf(
         max((1f - 0f - 0.5f) / 2f, 0f),

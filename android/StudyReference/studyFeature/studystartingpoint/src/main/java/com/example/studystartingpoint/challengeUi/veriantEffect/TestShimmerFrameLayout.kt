@@ -1,7 +1,8 @@
-package com.ktcs.whowho.customlayout
+package com.example.studystartingpoint.challengeUi.veriantEffect
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
@@ -18,6 +19,7 @@ class TestShimmerFrameLayout(
     init {
         setWillNotDraw(false)
         testShimmerDrawable.callback = this
+        setLayerType(LAYER_TYPE_HARDWARE, Paint())
     }
 
     fun startShimmer() {
@@ -65,5 +67,6 @@ class TestShimmerFrameLayout(
         testShimmerDrawable.draw(canvas)
 
         "layout draw IN".d("shimmerTest")
+        startShimmer()
     }
 }

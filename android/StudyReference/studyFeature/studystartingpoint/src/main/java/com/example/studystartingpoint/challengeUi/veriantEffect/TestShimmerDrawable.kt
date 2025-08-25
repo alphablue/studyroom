@@ -1,8 +1,7 @@
-package com.ktcs.whowho.customlayout
+package com.example.studystartingpoint.challengeUi.veriantEffect
 
 import android.animation.ValueAnimator
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.ColorFilter
 import android.graphics.LinearGradient
 import android.graphics.Matrix
@@ -15,8 +14,6 @@ import android.graphics.Shader
 import android.graphics.drawable.Drawable
 import android.view.animation.LinearInterpolator
 import com.ktcs.whowho.extension.d
-import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.tan
 
 class TestShimmerDrawable(
@@ -31,7 +28,7 @@ class TestShimmerDrawable(
 
     init {
         testShimmerPaint.isAntiAlias = true
-        testShimmerPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
+        testShimmerPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OVER)
 
         updateShader()
         updateValueAnimator()
@@ -39,6 +36,7 @@ class TestShimmerDrawable(
     }
 
     override fun draw(canvas: Canvas) {
+        "is Called draw()".d("animTest")
         if (testShimmerPaint.shader == null) return
 
 //        val titleTan = tan(20f) // 20 라디안
@@ -77,7 +75,7 @@ class TestShimmerDrawable(
         shaderMatrix.apply {
             reset()
             setRotate(20f, drawRect.width() / 2f, drawRect.height() / 2f)
-            preTranslate(dx, dy)
+//            preTranslate(dx, dy)
         }
         testShimmerPaint.shader.setLocalMatrix(shaderMatrix)
         canvas.drawRect(drawRect, testShimmerPaint)
@@ -150,14 +148,18 @@ class TestShimmerDrawable(
         }
 
         // repeatDelay 와 duration 의 설정에 따라서 다른 형태가 되도록 조절 가능함
-        valueAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
+        valueAnimator = ValueAnimator.ofFloat(0f, 1f + (100L/3000)).apply {
             interpolator = LinearInterpolator()
             repeatMode = testShimmer.repeatMode
 //            startDelay = testShimmer.startDelay
             repeatCount = testShimmer.repeatCount
 //            duration = testShimmer.animationDuration + testShimmer.repeatDelay
+            startDelay = 100L
+            duration = 3000L
             addUpdateListener {
-                invalidateSelf()
+                // animation 이 작동은 하고 있음, 근데 애니메이션의 동작을 잘못 설정한거 같음
+//                "animation listener check".d("animTest")
+                
             }
         }
 
@@ -188,25 +190,25 @@ class TestShimmerDrawable(
 
                 "[Drawable] shared IN : $endX , $endY".d("shimmerTest")
 
-//                LinearGradient(
-//                    0f, 0f, endX, endY, testShimmer.colors.toIntArray(), testShimmer.positions.toFloatArray(), Shader.TileMode.CLAMP
-//                )
-
                 LinearGradient(
-                    0f, 0f, endX, endY,
-                    intArrayOf(
-                        0x4cffffff,
-                        Color.WHITE,
-                        Color.WHITE,
-                        0x4cffffff
-                    ),
-                    floatArrayOf(
-                        max((1f - 0f - 0.5f) / 2f, 0f),
-                        min((1f - 0f - 0.01f) / 2f, 0f),
-                        min((1f + 0f + 0.01f) / 2f, 1f),
-                        min((1f + 0f + 0.5f) / 2f, 1f)
-                    ), Shader.TileMode.CLAMP
+                    0f, 0f, endX, endY, testShimmer.colors.toIntArray(), testShimmer.positions.toFloatArray(), Shader.TileMode.CLAMP
                 )
+
+//                LinearGradient(
+//                    0f, 0f, endX, endY,
+//                    intArrayOf(
+//                        0x4cffffff,
+//                        Color.WHITE,
+//                        Color.WHITE,
+//                        0x4cffffff
+//                    ),
+//                    floatArrayOf(
+//                        max((1f - 0f - 0.5f) / 2f, 0f),
+//                        max((1f - 0f - 0.01f) / 2f, 0f),
+//                        min((1f + 0f + 0.01f) / 2f, 1f),
+//                        min((1f + 0f + 0.5f) / 2f, 1f)
+//                    ), Shader.TileMode.CLAMP
+//                )
             }
         }
 

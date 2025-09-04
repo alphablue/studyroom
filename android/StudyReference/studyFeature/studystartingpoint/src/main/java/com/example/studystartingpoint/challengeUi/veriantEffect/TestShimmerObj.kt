@@ -38,14 +38,18 @@ class TestShimmerObj {
 //    var centerColor: Int = 0xff9763e2
 //    var endColor: Int = 0xffffb86c
 
-    var startColor: Int = "#ff0075ff".toColorInt()
-    var centerColor: Int = "#ff9763e2".toColorInt()
-    var endColor: Int = "#ffffb86c".toColorInt()
+    var startColor: Int = "#000000".toColorInt()
+    var betweenColor: Int = "#00ffffff".toColorInt()
+    var centerColor: Int = "#ffffff".toColorInt()
+    var endColor: Int = "#000000".toColorInt()
 
-    val colors: MutableList<Int> = mutableListOf(startColor, centerColor, endColor)
+    val colors: MutableList<Int> = mutableListOf(startColor, betweenColor, centerColor, centerColor, betweenColor, endColor)
     val positions: MutableList<Float> = mutableListOf(
         max((1f - 0f - 0.5f) / 2f, 0f),
-        min((1f + 0f + 0.01f) / 2f, 1f),
+        max((1f - 0f - 0.42f) / 2f, 0f),
+        max((1f - 0.01f) / 2f, 0f),
+        min((1f + 0.01f) / 2f, 1f),
+        min((1f + 0f + 0.42f) / 2f, 1f),
         min((1f + 0f + 0.5f) / 2f, 1f)
     )
 

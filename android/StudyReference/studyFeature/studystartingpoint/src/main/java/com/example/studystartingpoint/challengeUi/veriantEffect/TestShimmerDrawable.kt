@@ -2,6 +2,7 @@ package com.example.studystartingpoint.challengeUi.veriantEffect
 
 import android.animation.ValueAnimator
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.ColorFilter
 import android.graphics.LinearGradient
 import android.graphics.Matrix
@@ -13,7 +14,9 @@ import android.graphics.Rect
 import android.graphics.Shader
 import android.graphics.drawable.Drawable
 import android.view.animation.LinearInterpolator
-import com.ktcs.whowho.extension.d
+import com.example.studystartingpoint.util.d
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.tan
 
 class TestShimmerDrawable(
@@ -75,7 +78,7 @@ class TestShimmerDrawable(
         shaderMatrix.apply {
             reset()
             setRotate(20f, drawRect.width() / 2f, drawRect.height() / 2f)
-//            preTranslate(dx, dy)
+            preTranslate(dx, dy)
         }
         testShimmerPaint.shader.setLocalMatrix(shaderMatrix)
         canvas.drawRect(drawRect, testShimmerPaint)
@@ -156,10 +159,11 @@ class TestShimmerDrawable(
 //            duration = testShimmer.animationDuration + testShimmer.repeatDelay
             startDelay = 100L
             duration = 3000L
+
             addUpdateListener {
                 // animation 이 작동은 하고 있음, 근데 애니메이션의 동작을 잘못 설정한거 같음
 //                "animation listener check".d("animTest")
-                
+                invalidateSelf()
             }
         }
 
@@ -191,24 +195,25 @@ class TestShimmerDrawable(
                 "[Drawable] shared IN : $endX , $endY".d("shimmerTest")
 
                 LinearGradient(
-                    0f, 0f, endX, endY, testShimmer.colors.toIntArray(), testShimmer.positions.toFloatArray(), Shader.TileMode.CLAMP
+                    0f, 0f, endX, endY,
+                    intArrayOf(
+                        0x4cffffff,
+                        Color.WHITE,
+                        Color.WHITE,
+                        0x4cffffff
+                    ),
+                    floatArrayOf(
+                        max((1f - 0f - 0.5f) / 2f, 0f),
+                        max((1f - 0f - 0.01f) / 2f, 0f),
+                        min((1f + 0f + 0.01f) / 2f, 1f),
+                        min((1f + 0f + 0.5f) / 2f, 1f)
+                    ),
+                    Shader.TileMode.CLAMP
                 )
 
-//                LinearGradient(
-//                    0f, 0f, endX, endY,
-//                    intArrayOf(
-//                        0x4cffffff,
-//                        Color.WHITE,
-//                        Color.WHITE,
-//                        0x4cffffff
-//                    ),
-//                    floatArrayOf(
-//                        max((1f - 0f - 0.5f) / 2f, 0f),
-//                        max((1f - 0f - 0.01f) / 2f, 0f),
-//                        min((1f + 0f + 0.01f) / 2f, 1f),
-//                        min((1f + 0f + 0.5f) / 2f, 1f)
-//                    ), Shader.TileMode.CLAMP
-//                )
+                LinearGradient(
+                    0f, 0f, endX, endY, testShimmer.colors.toIntArray(), testShimmer.positions.toFloatArray(), Shader.TileMode.CLAMP
+                )
             }
         }
 

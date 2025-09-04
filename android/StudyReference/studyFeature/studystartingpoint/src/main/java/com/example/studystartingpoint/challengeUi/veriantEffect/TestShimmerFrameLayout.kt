@@ -3,11 +3,12 @@ package com.example.studystartingpoint.challengeUi.veriantEffect
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.view.isVisible
-import com.ktcs.whowho.extension.d
+import com.example.studystartingpoint.util.d
 
 class TestShimmerFrameLayout(
     context: Context,
@@ -60,6 +61,13 @@ class TestShimmerFrameLayout(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         stopShimmer()
+    }
+
+    /**
+     * 이 함수에 drawable 을 연결해야지만 drawable의 invalidateSelf()일때 draw() 함수가 호출 됨
+     * */
+    override fun verifyDrawable(who: Drawable): Boolean {
+        return super.verifyDrawable(who) || who is TestShimmerDrawable
     }
 
     override fun dispatchDraw(canvas: Canvas) {

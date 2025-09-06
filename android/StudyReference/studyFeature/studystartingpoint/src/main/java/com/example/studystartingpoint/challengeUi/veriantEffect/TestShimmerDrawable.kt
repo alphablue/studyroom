@@ -31,7 +31,7 @@ class TestShimmerDrawable(
 
     init {
         testShimmerPaint.isAntiAlias = true
-        testShimmerPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OVER)
+        testShimmerPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
 
         updateShader()
         updateValueAnimator()

@@ -15,8 +15,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "StudyReference"
-
-include(":studyFeature:fastthirtyfivefinal")
-include(":studyFeature:fastThirtyFive-data")
-include(":studyFeature:fastThirtyFive-domain")
 include(":studyFeature:studystartingpoint")

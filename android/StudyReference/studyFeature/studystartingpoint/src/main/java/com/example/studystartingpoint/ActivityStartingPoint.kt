@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LifecycleStartEffect
+import com.example.studystartingpoint.challengeUi.veriantEffect.ShimmerEntryPoint
 import com.example.studystartingpoint.systemArch.alarmManager.ExactListenBroadCast
 import com.example.studystartingpoint.systemArch.gpsModule.GpsRunEntryPoint
 import com.example.studystartingpoint.ui.theme.StudyReferenceTheme
@@ -45,7 +46,12 @@ class ActivityStartingPoint : ComponentActivity() {
                     /**
                      * gps 테스트 용
                      * */
-                    GpsRunEntryPoint(paddingValues = innerPadding)
+//                    GpsRunEntryPoint(paddingValues = innerPadding)
+
+                    /**
+                     * shimmer 구현 및 drawable 객체와 paint의 작동
+                     * */
+                    ShimmerEntryPoint()
                 }
             }
         }

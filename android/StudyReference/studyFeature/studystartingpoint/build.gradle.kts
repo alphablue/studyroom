@@ -33,6 +33,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
 }
 
@@ -46,6 +47,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
+    implementation(libs.androidx.compose.ui.viewbinding)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.activity.compose)
 
@@ -55,8 +57,10 @@ dependencies {
     // coroutine Worker
     implementation(libs.androidx.work.ktx)
 
-    // preview
+    // compose preview
     implementation(libs.androidx.compose.ui.tooling.preview)
     debugImplementation(libs.androidx.compose.ui.tooling)  // 이게 있어야 프리뷰가 잘 작동함
 
+    // xml
+    implementation(libs.androidx.constraintlayout)
 }

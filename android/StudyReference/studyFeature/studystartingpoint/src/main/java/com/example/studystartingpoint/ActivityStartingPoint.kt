@@ -17,7 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LifecycleStartEffect
-import com.example.studystartingpoint.challengeUi.veriantEffect.ShimmerEntryPoint
 import com.example.studystartingpoint.systemArch.alarmManager.ExactListenBroadCast
 import com.example.studystartingpoint.ui.customCalendar.CalendarView
 import com.example.studystartingpoint.ui.theme.StudyReferenceTheme
@@ -51,7 +50,7 @@ class ActivityStartingPoint : ComponentActivity() {
                     /**
                      * shimmer 구현 및 drawable 객체와 paint의 작동
                      * */
-                    ShimmerEntryPoint()
+//                    ShimmerEntryPoint()
 
 //                    getCalenderInfo(this@ActivityStartingPoint)
                     CalendarView()

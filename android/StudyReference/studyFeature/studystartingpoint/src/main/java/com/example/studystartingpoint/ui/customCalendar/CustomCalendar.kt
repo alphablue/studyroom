@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -66,20 +65,16 @@ fun CalendarView() {
                 }
                  "outDay $outDay -> 현재 월의 총 일수 : ${currentMonth.lengthOfMonth()}".d("calculateDate")
 
-                // 달력을 몇개의 주만큼 나타내야 하는지를 계산 하는것,
-                val totalDays = inDay + currentMonth.lengthOfMonth() + outDay
-                val rows = (0 until totalDays).chunked(7)
-                 "totalDays $totalDays , rows $rows".d("calculateDate")
+                val monthData = MonthDataSet(
+                    month = currentMonth,
+                    inDays = inDay,
+                    outDays = outDay
+                )
 
-                // 달력에서 보여줘야하는 첫주의 시작일 부터 마지막 일까지 보여줘야 하기 때문에 inDay 만큼 뒤에부터 보여줌
-                val offsetFirstDay = thisMonthFirstDay.minusDays(inDay.toLong())
-                val dateObj = rows.map { rowWeek -> rowWeek.map { dayOffSet -> offsetFirstDay.plusDays(dayOffSet.toLong()) } }
-                 "dateObj $dateObj".d("calculateDate")
-
-                for((row, week) in dateObj.withIndex()) {
+                for((row, week) in monthData.calendarWeekList.withIndex()) {
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .weight(1f)
                     ) {
                         for ((column, day) in week.withIndex()) {
                             Box(
@@ -97,13 +92,36 @@ fun CalendarView() {
     }
 }
 
+data class MonthDataSet(
+    private val month: YearMonth,
+
+    // 첫번째 주에 대한 계산
+    // 달력에서 시작하는 요일(달력의 표기 규정에 관한 것)과 현재 월에서 첫 시작일의 요일 사이에 얼마만큼의 날짜가 있는지를 위한 계산 값
+    private val inDays: Int,
+
+    // 마지막 주에 대한 계산
+    // 마지막 주에서 이번달이 끝나는 날짜가 달력 표기법에서 어느위치에 존재하는지를 확인하는 것, 0 이라면 표기법에서의 가장 마지막 날짜가 되고
+    // 1 이상이라면 달력 표기법에서 추가로 다음달 날짜를 표시해 줘야 하는 날(date)을 나타낸 것이다.
+    private val outDays: Int
+) {
+    private val totalDays = inDays + month.lengthOfMonth() + outDays
+
+    // 첫주에서 달력의 표기 규정에 맞춰 계산된 첫번째 날의 date객체
+    private val firstDateObj = month.atDay(1).minusDays(inDays.toLong())
+
+    // 달력에서 표시할 총 주의 갯수
+    private val rows = (0 until totalDays).chunked(7)
+
+    val calendarWeekList = rows.map { rowWeek -> rowWeek.map { dayOffSet -> firstDateObj.plusDays(dayOffSet.toLong()) } }
+}
+
 @Composable
 fun DayView(
     day: LocalDate
 ) {
     Box(
         modifier = Modifier
-            .wrapContentSize()
+            .fillMaxSize()
             .clip(RectangleShape),
         contentAlignment = Alignment.Center,
     ) {
@@ -123,3 +141,9 @@ public fun DayOfWeek.daysUntil(other: DayOfWeek): Int = (7 + (other.ordinal - or
 fun CalendarPreView() {
     CalendarView()
 }
+
+val YearMonth.nextMonth: YearMonth
+    get() = this.plusMonths(1)
+
+val YearMonth.previousMonth: YearMonth
+    get() = this.minusMonths(1)

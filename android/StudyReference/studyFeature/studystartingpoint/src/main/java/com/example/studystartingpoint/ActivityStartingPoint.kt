@@ -53,7 +53,7 @@ class ActivityStartingPoint : ComponentActivity() {
 //                    ShimmerEntryPoint()
 
 //                    getCalenderInfo(this@ActivityStartingPoint)
-                    CalendarView()
+                    CalendarView(innerPadding)
                 }
             }
         }

@@ -41,8 +41,6 @@ android {
 }
 
 dependencies {
-
-    api(libs.androidx.compose.material)
     api(libs.bundles.compose.material3)
 
     // 필수 라이브러리

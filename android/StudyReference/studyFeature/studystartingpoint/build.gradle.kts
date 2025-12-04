@@ -52,6 +52,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.activity.compose)
 
+    // lifecycle
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
     // gms 라이브러리들
     implementation(libs.gms.location)
 

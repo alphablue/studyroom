@@ -1,6 +1,7 @@
 package com.example.studystartingpoint.ui.customCalendar
 
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -22,10 +23,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,24 +35,46 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.studystartingpoint.systemArch.dateModule.daysOfWeek
+import com.example.studystartingpoint.ui.customCalendar.CalendarVisibleState.EXPANDED
+import com.example.studystartingpoint.ui.customCalendar.CalendarVisibleState.FLIPPED
+import com.example.studystartingpoint.ui.customCalendar.CalendarVisibleState.WEEKLY
 import com.example.studystartingpoint.util.d
+import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.time.temporal.WeekFields
 import java.util.Locale
+import kotlin.math.abs
+
+enum class CalendarVisibleState {
+    EXPANDED,
+    FLIPPED,
+    WEEKLY
+}
 
 @Composable
 fun CalendarView(
-    containerInnerPadding: PaddingValues
+    containerInnerPadding: PaddingValues,
+    viewModel: CustomCalendarViewModel = viewModel()
 ) {
+    var initCalendarVisibleState by remember { mutableStateOf(EXPANDED) }
+    LaunchedEffect(null) {
+        initCalendarVisibleState = FLIPPED
+
+    }
+
+    val coroutine = rememberCoroutineScope()
+
     var today by remember { mutableStateOf(LocalDate.now())  } // yyyy-MM-dd
     val currentMonth = remember(today) { YearMonth.of(today.year, today.month) }
     val daysOfWeek = remember { daysOfWeek() }
@@ -59,17 +83,14 @@ fun CalendarView(
     val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
 
     // drag 오프셋
-    var verticalDragOffset by remember { mutableFloatStateOf(0f) }
-    var isDragging by remember { mutableStateOf(false) }
+    val verticalDragOffset = remember { Animatable(0f) }
+    var isDragging = false
 
-    val animatedOffset by animateFloatAsState(
-        targetValue = if(isDragging) verticalDragOffset else 0f,
-        label = "offsetAnimation"
-    )
     val maxDragPx = 600f
     val draggableState = rememberDraggableState { delta ->
-        verticalDragOffset = (verticalDragOffset - delta).coerceIn(0f, maxDragPx)
-        "dragOffset $verticalDragOffset".d("calendarAnimation")
+        coroutine.launch {
+            verticalDragOffset.snapTo((verticalDragOffset.value - delta).coerceIn(0f, maxDragPx))
+        }
     }
 
     Box(
@@ -92,14 +113,18 @@ fun CalendarView(
                 }
             )
 
-            val minWeightFactor = 0.35f
-            val maxWeightFactor = 1f
+            val minWeightFactor = when(initCalendarVisibleState) {
+                EXPANDED -> 0.55f
+                FLIPPED, WEEKLY -> 0.20f
+            }
 
-            val dragProgress = (animatedOffset / maxDragPx).coerceIn(0f, 1f)
-            "드래그의 정도 확인 ${(animatedOffset / maxDragPx).coerceIn(0f, 1f)}".d("calculator")
+            val maxWeightFactor = when(initCalendarVisibleState) {
+                EXPANDED, FLIPPED -> 1f
+                WEEKLY -> 0.55f
+            }
+
+            val dragProgress = (verticalDragOffset.value / maxDragPx).coerceIn(0f, 1f)
             val currentRowWeight = lerp(maxWeightFactor, minWeightFactor, dragProgress)
-
-            "동적 가중치 $currentRowWeight".d("calendarAnimation")
 
             Column(
                 modifier = Modifier
@@ -109,17 +134,50 @@ fun CalendarView(
                         orientation = Orientation.Vertical,
                         state = draggableState,
                         onDragStarted = { isDragging = true },
-                        onDragStopped = { isDragging = false }
+                        onDragStopped = {
+                            isDragging = false
+
+                            coroutine.launch {
+                                val changeTo = currentRowWeight.findCloser(minWeightFactor, maxWeightFactor)
+
+                                when(initCalendarVisibleState) {
+                                    EXPANDED -> {
+                                        if(changeTo == minWeightFactor) {
+                                            initCalendarVisibleState = FLIPPED
+                                        }
+                                    }
+                                    FLIPPED -> {
+                                        if(changeTo == maxWeightFactor) {
+                                            initCalendarVisibleState = EXPANDED
+                                        } else if(changeTo == minWeightFactor) {
+                                            initCalendarVisibleState = WEEKLY
+                                        }
+                                    }
+                                    WEEKLY -> {
+                                        if(changeTo == maxWeightFactor) {
+                                            initCalendarVisibleState = FLIPPED
+                                        }
+                                    }
+                                }
+
+                                "드래그 후 상태 확인 $initCalendarVisibleState , changeTo : $changeTo".d("calendarAnimation")
+
+                                verticalDragOffset.animateTo(changeTo, animationSpec = spring())
+                            }
+                        }
                     )
+                    .onSizeChanged { size ->
+                        "컬럼 사이즈 확인 ${size.height}".d("calendarAnimation")
+                    }
             ) {
                 // 각 달에서 첫 시작일이 언제인지를 date 객체로 가져옴, 요일등의 데이터가 포함되어 있기 때문에 계산에 용이함
                 val thisMonthFirstDay = currentMonth.atDay(1)
-                 "thisMonthFirstDay $thisMonthFirstDay".d("calculateDate")
+                "thisMonthFirstDay $thisMonthFirstDay".d("calculateDate")
 
                 // 첫번째 주에 대한 계산
                 // 달력에서 시작하는 요일(달력의 표기 규정에 관한 것)과 현재 월에서 첫 시작일의 요일 사이에 얼마만큼의 날짜가 있는지를 계산 하는 부분
                 val inDay = firstDayOfWeek.daysUntil(thisMonthFirstDay.dayOfWeek)
-                 "inDay $inDay ->  ${thisMonthFirstDay.dayOfWeek}".d("calculateDate")
+                "inDay $inDay ->  ${thisMonthFirstDay.dayOfWeek}".d("calculateDate")
 
                 // 마지막 주에 대한 계산
                 // 마지막 주에서 이번달이 끝나는 날짜가 달력 표기법에서 어느위치에 존재하는지를 확인하는 것, 0 이라면 표기법에서의 가장 마지막 날짜가 되고
@@ -128,7 +186,7 @@ fun CalendarView(
                     val endRowDay = if(inDays % 7 != 0) 7 - (inDays % 7) else 0
                     endRowDay
                 }
-                 "outDay $outDay -> 현재 월의 총 일수 : ${currentMonth.lengthOfMonth()}".d("calculateDate")
+                "outDay $outDay -> 현재 월의 총 일수 : ${currentMonth.lengthOfMonth()}".d("calculateDate")
 
                 val monthData = MonthDataSet(
                     month = currentMonth,
@@ -271,3 +329,7 @@ val YearMonth.nextMonth: YearMonth
 
 val YearMonth.previousMonth: YearMonth
     get() = this.minusMonths(1)
+
+fun Float.findCloser(a: Float, b: Float): Float = if(abs(this - a) < abs(this - b)) a else b
+fun Double.findCloser(a: Double, b: Double): Double = if (abs(this - a) < abs(this - b)) a else b
+fun Int.findCloser(a: Int, b: Int): Int = if (abs(this - a) < abs(this - b)) a else b
